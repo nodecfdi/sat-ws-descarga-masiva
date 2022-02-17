@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "module": "esnext",
+        "target": "es6",
+        "moduleResolution": "node",
+        "strict": true,
+        "esModuleInterop": true
+    },
+    "exclude": [
+        "node_modules",
+        "tests"
+    ]
+}
