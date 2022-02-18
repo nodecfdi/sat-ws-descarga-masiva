@@ -52,5 +52,8 @@
         "tslib": "^2.3.1",
         "typedoc": "^0.22.10",
         "typescript": "^4.5.2"
+    },
+    "dependencies": {
+        "@nodecfdi/credentials": "^1.1.0"
     }
 }
