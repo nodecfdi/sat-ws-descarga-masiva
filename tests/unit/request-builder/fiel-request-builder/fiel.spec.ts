@@ -1,5 +1,5 @@
 import { Fiel } from '../../../../src';
-import { TestCase } from '../../../testcase';
+import { TestCase } from '../../../test-case';
 
 describe('Fiel', () => {
 

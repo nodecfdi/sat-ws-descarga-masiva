@@ -1,6 +1,7 @@
 import { Credential } from '@nodecfdi/credentials';
 import { existsSync, readFileSync } from 'fs';
 import { Fiel } from '../src/index';
+import { FielRequestBuilder } from '../src/request-builder/fiel-request-builder/fiel-request-builder';
 
 export class TestCase {
     public static filePath(append = ''): string {
@@ -15,7 +16,12 @@ export class TestCase {
         if (!existsSync(path)) {
             return '';
         }
-        return readFileSync(path, 'binary').toString();
+        return readFileSync(path, 'binary');
+    }
+
+    public static createFielRequestBuilderUsingTestingFiles(password?: string): FielRequestBuilder {
+        const fiel = TestCase.createFielUsingTestingFiles(password);
+        return new FielRequestBuilder(fiel);
     }
 
     public static createFielUsingTestingFiles(password?: string): Fiel {
