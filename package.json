@@ -34,10 +34,12 @@
     },
     "devDependencies": {
         "@microsoft/api-extractor": "^7.18.21",
+        "@peculiar/webcrypto": "^1.2.3",
         "@rollup/plugin-commonjs": "^21.0.1",
         "@rollup/plugin-node-resolve": "^13.0.6",
         "@rollup/plugin-typescript": "^8.3.0",
         "@types/jest": "^27.0.3",
+        "@types/jsrsasign": "^9.0.3",
         "@types/node": "^16.11.12",
         "@typescript-eslint/eslint-plugin": "^5.6.0",
         "@typescript-eslint/parser": "^5.6.0",
@@ -51,9 +53,12 @@
         "ts-node": "^10.4.0",
         "tslib": "^2.3.1",
         "typedoc": "^0.22.10",
-        "typescript": "^4.5.2"
+        "typescript": "^4.5.2",
+        "xadesjs": "^2.4.0"
     },
     "dependencies": {
-        "@nodecfdi/credentials": "^1.1.0"
+        "@nodecfdi/cfdiutils-common": "^0.3.0",
+        "@nodecfdi/credentials": "^1.1.0",
+        "@xmldom/xmldom": "^0.8.1"
     }
 }

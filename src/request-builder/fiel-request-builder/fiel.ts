@@ -18,7 +18,7 @@ export class Fiel {
         return new Fiel(credential);
     }
 
-    public sign(toSign: string, algorithm: SignatureAlgorithm.SHA1withRSA): string {
+    public sign(toSign: string, algorithm: SignatureAlgorithm = SignatureAlgorithm.SHA1): string {
         return this.credential.sign(toSign, algorithm);
     }
 
