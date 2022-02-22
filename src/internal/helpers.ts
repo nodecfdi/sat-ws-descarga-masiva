@@ -17,4 +17,13 @@ export class Helpers {
         });
         return filteredLines.map((line) => line.trim()).join('');
     }
+
+    public static htmlspecialchars(str: string): string {
+        return str.
+            replace(/&/g, '&amp;').
+            replace(/</g, '&lt;').
+            replace(/>/g, '&gt;').
+            replace(/"/g, '&quot;').
+            replace(/'/g, '&#039;');
+    }
 }
