@@ -1,3 +1,4 @@
+import { DOMParser } from '@xmldom/xmldom';
 import { Credential } from '@nodecfdi/credentials';
 import { existsSync, readFileSync } from 'fs';
 import { Fiel } from '../src/index';
@@ -32,5 +33,12 @@ export class TestCase {
                 password || this.fileContents('fake-fiel/EKU9003173C9-password.txt').trim()
             )
         );
+    }
+
+    public static xmlFormat(content: string): string {
+        const document = new DOMParser().parseFromString(content);
+        const xml = document.createProcessingInstruction('xml', 'version="1.0"');
+        document.insertBefore(xml, document.firstChild);
+        return new XMLSerializer().serializeToString(document);  
     }
 }
