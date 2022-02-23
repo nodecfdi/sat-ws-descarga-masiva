@@ -4,6 +4,7 @@ import * as xmldsig from "xadesjs";
 
 export class EnvelopSignatureVerifier {
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public async verify(soapMessage: string, nameSpaceURI: string, mainNodeName: string, includeNameSpaces: string[] = [], certificateContents = ''): Promise<boolean> {
         const soapDocument = new DOMParser().parseFromString(soapMessage);
 
