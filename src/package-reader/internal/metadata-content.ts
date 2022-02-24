@@ -1,21 +1,21 @@
 import { MetadataPreprocessor } from "./metadata-preprocessor";
-import * as os from 'os';
-import * as fs from 'fs';
-import * as path from 'path';
-import * as crypto from 'crypto';
-import * as readline from 'readline'
+import os from 'os';
+import { realpathSync, writeFileSync, createReadStream } from 'fs';
+import { join } from 'path';
+import { randomUUID } from 'crypto';
+import { Interface, createInterface } from 'readline'
 import { MetadataItem } from "../metadata-item";
-import * as events from "events";
+import { EventEmitter } from "events";
 
 export class MetadataContent {
-    private _iterator: readline.Interface;
+    private _iterator: Interface;
 
     /**
     * The iterator will be used in a foreach loop to create MetadataItems
     * The first iteration must contain an array of header names that will be renames to lower case first letter
     * The next iterations must contain an array with data
     */
-    constructor(iterator: readline.Interface) {
+    constructor(iterator: Interface) {
         this._iterator = iterator;
     }
 
@@ -23,14 +23,14 @@ export class MetadataContent {
         // fix known errors on metadata text file
         const preprocessor = new MetadataPreprocessor(contents);
         preprocessor.fix();
-        
 
-        const tmpdir = fs.realpathSync(os.tmpdir());
-        const filePath = path.join(tmpdir, `${crypto.randomUUID()}.csv`)
-        fs.writeFileSync(filePath, preprocessor.getContents());
 
-        const rl = readline.createInterface({
-            input: fs.createReadStream(filePath),
+        const tmpdir = realpathSync(os.tmpdir());
+        const filePath = join(tmpdir, `${randomUUID()}.csv`);
+        writeFileSync(filePath, preprocessor.getContents());
+
+        const rl = createInterface({
+            input: createReadStream(filePath),
             crlfDelay: Infinity,
         });
         return new MetadataContent(rl);
@@ -54,8 +54,7 @@ export class MetadataContent {
             }
             items.push(this.createMetadaItem(headers, data));
         });
-        await events.EventEmitter.once(this._iterator, 'close');
-
+        await EventEmitter.once(this._iterator, 'close');
         return items;
     }
 
@@ -69,8 +68,8 @@ export class MetadataContent {
         }
         if (countValues > countHeaders) {
             for (let index = 1; index <= countValues - countHeaders; index++) {
-                headers.push(`#extra-${index.toLocaleString('en-Us', {minimumIntegerDigits: 2, useGrouping: false})}`);
-                
+                headers.push(`#extra-${index.toLocaleString('en-Us', { minimumIntegerDigits: 2, useGrouping: false })}`);
+
             }
         }
 
@@ -78,7 +77,7 @@ export class MetadataContent {
         for (let index = 0; index < headers.length; index++) {
             map.set(headers[index], values[index]);
         }
-        
+
         return new MetadataItem(Object.fromEntries(map));
     }
 }
