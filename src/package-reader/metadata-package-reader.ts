@@ -1,3 +1,4 @@
+import { Helpers } from "../internal/helpers";
 import { MetadataFileFilter } from "./internal/file-filters/metadata-file-filter";
 import { FilteredPackageReader } from "./internal/filtered-package-reader";
 import { MetadataContent } from "./internal/metadata-content";
@@ -28,11 +29,12 @@ export class MetadaPackageReader implements PackageReaderInterface {
 
     public async metadata(): Promise<Map<string, MetadataItem>> {
         let reader: MetadataContent;
-        const fileContents = await this._packageReader.fileContents()
+        const fileContents = await Helpers.iteratorToMap(this._packageReader.fileContents());
         const metadata = new Map<string, MetadataItem>();
-        for await (const content of fileContents.values()) {
+        for (const content of fileContents.values()) {
             reader = MetadataContent.createFromContents(content);
-            (await reader.eachItem()).forEach(item => {
+            const items = await reader.eachItem();
+            items.forEach(item => {
                 metadata.set(item.get('uuid'), item)
             });
         }
@@ -44,11 +46,13 @@ export class MetadaPackageReader implements PackageReaderInterface {
     }
 
     public async count(): Promise<number> {
-        return (await this.fileContents()).size;
+        return (await Helpers.iteratorToMap(this.fileContents())).size;
     }
 
-    public fileContents(): Promise<Map<string, string>> {
-        return this._packageReader.fileContents();
+    public async *fileContents(): AsyncGenerator<Record<string, string>> {
+        for await (const iterator of this._packageReader.fileContents()) {
+            yield iterator
+        }
     }
 
     public async jsonSerialize(): Promise<{ source: string, files: Record<string, string>, metadata: Record<string, MetadataItem> }> {

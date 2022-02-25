@@ -26,4 +26,16 @@ export class Helpers {
             replace(/"/g, '&quot;').
             replace(/'/g, '&#039;');
     }
+
+    public static async iteratorToMap<T>(iterator: AsyncGenerator<Record<string, T>>): Promise<Map<string, T>> {
+        return new Map<string, T>(Object.entries(await Helpers.iteratorToObject(iterator)));
+    }
+
+    public static async iteratorToObject<T>(iterator: AsyncGenerator<Record<string, T>>): Promise<Record<string, T>> {
+        let temp: Record<string, T> = {};
+        for await (const item of iterator) {
+            temp = { ...item, ...temp };
+        }
+        return temp;
+    }
 }

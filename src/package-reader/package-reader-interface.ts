@@ -20,7 +20,7 @@ export interface PackageReaderInterface {
     /**
      * Traverse each file inside the package, with the filename as key and file content as value
      */
-    fileContents(): Promise<Map<string, string>>;
+    fileContents(): AsyncGenerator<Record<string, string>>;
     /**
      * Return the number of elements on the package
      */

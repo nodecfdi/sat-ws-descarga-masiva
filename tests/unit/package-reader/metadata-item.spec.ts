@@ -1,3 +1,4 @@
+import { Helpers } from "../../../src/internal/helpers";
 import { MetadataItem } from "../../../src/package-reader/metadata-item";
 import { MetadaPackageReader } from "../../../src/package-reader/metadata-package-reader";
 import { TestCase } from "../../test-case";
@@ -21,7 +22,7 @@ describe('metadata item', () => {
         let expectedContent = TestCase.fileContents('zip/metadata.txt');
         const zipFileName = TestCase.filePath('zip/metadata.zip');
         const packageReader = await MetadaPackageReader.createFromFile(zipFileName);
-        const content = await packageReader.fileContents();
+        const content = await Helpers.iteratorToMap(packageReader.fileContents());
         const [key] = content.keys()
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         let extracted = content.get(key)!;

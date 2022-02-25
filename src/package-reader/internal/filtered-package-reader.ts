@@ -8,6 +8,7 @@ import { join } from "path";
 import { randomUUID } from "crypto";
 import { CreateTemporaryZipFileException } from "../exceptions/create-temporary-file-zip-exception";
 import { NullFileFilter } from "./file-filters/null-file-filter";
+import { Helpers } from "../../internal/helpers";
 
 export class FilteredPackageReader implements PackageReaderInterface {
     private _filename: string;
@@ -74,14 +75,13 @@ export class FilteredPackageReader implements PackageReaderInterface {
         return cpackage;
     }
 
-    public async fileContents(): Promise<Map<string, string>> {
+    public async *fileContents(): AsyncGenerator<Record<string, string>> {
         const archive = this.getArchive();
         const filter = this.getFilter();
         const entries = Object.keys(archive.files).map(function (name) {
             return archive.files[name].name;
         });
         let contents: string | undefined;
-        const map: Map<string, string> = new Map();
 
         for (let index = 0; index < entries.length; index++) {
             if (!filter?.filterFilename(entries[index])) {
@@ -91,14 +91,12 @@ export class FilteredPackageReader implements PackageReaderInterface {
             if (contents == undefined || !filter.filterContents(contents)) {
                 continue;
             }
-            map.set(entries[index], contents || '');
+            yield Object.fromEntries([[entries[index], contents || '']]);
         }
-
-        return map;
     }
 
     public async count(): Promise<number> {
-        return (await this.fileContents()).size;
+        return (await Helpers.iteratorToMap(this.fileContents())).size;
     }
 
     public getFilename(): string {
@@ -120,7 +118,7 @@ export class FilteredPackageReader implements PackageReaderInterface {
     public async jsonSerialize(): Promise<{ source: string, files: Record<string, string> }> {
         return {
             source: this.getFilename(),
-            files: Object.fromEntries(await this.fileContents()),
+            files: await Helpers.iteratorToObject(this.fileContents()),
         }
     }
 }

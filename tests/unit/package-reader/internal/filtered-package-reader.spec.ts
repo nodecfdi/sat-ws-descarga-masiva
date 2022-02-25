@@ -7,6 +7,7 @@ import os from "os";
 import { join } from "path/posix";
 import { randomUUID } from "crypto";
 import { NullFileFilter } from "../../../../src/package-reader/internal/file-filters/null-file-filter";
+import { Helpers } from "../../../../src/internal/helpers";
 describe('filtered package reader', () => {
     test('create from file with invalid file', async () => {
         const filename = __dirname;
@@ -43,10 +44,9 @@ describe('filtered package reader', () => {
                 ['sub/bar.txt', 'bar'],
             ]
         );
-
         const packageReader = await FilteredPackageReader.createFromFile(tmpfile);
         packageReader.setFilter(new NullFileFilter);
-        const fileContents = await packageReader.fileContents();
+        const fileContents = await Helpers.iteratorToMap(packageReader.fileContents());
         expect(fileContents).toStrictEqual(expected);
         expect(3).toBe(await packageReader.count());
         unlinkSync(tmpfile);
