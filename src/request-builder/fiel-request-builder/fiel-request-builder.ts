@@ -1,5 +1,4 @@
 import { RequestBuilderInterface } from '../request-builder-interface'
-import * as Crypto from 'crypto';
 import { Fiel } from "./fiel";
 import { Helpers } from '../../internal/helpers';
 import { SignatureAlgorithm } from '@nodecfdi/credentials';
@@ -10,6 +9,7 @@ import { RfcIsNotIssuerOrReceiverException } from '../exceptions/rfc-is-not-issu
 import { RequestTypeInvalidException } from '../exceptions/request-type-invalid-exception';
 import { RfcIssuerAndReceiverAreEmptyException } from '../exceptions/rfc-issuer-and-receiver-are-empty-exception';
 import { hextob64 } from "jsrsasign";
+import { createHash, randomUUID } from 'crypto';
 
 export class FielRequestBuilder implements RequestBuilderInterface {
     private fiel: Fiel;
@@ -178,13 +178,13 @@ export class FielRequestBuilder implements RequestBuilderInterface {
     }
 
     private static createXmlSecurityToken(): string {
-        const md5 = Crypto.createHash('md5').update(Crypto.randomUUID()).digest('hex');
+        const md5 = createHash('md5').update(randomUUID()).digest('hex');
         return `uuid-${md5.substring(0, 8)}-${md5.substring(8, 4)}-${md5.substring(12, 4)}-${md5.substring(16, 4)}-${md5.substring(20)}-1`
     }
 
     private createSignature(toDigest: string, signedInfoUri = '', keyInfo = ''): string {
         toDigest = Helpers.nospaces(toDigest);
-        const digested = Crypto.createHash('sha1').update(toDigest).digest('base64');
+        const digested = createHash('sha1').update(toDigest).digest('base64');
         let signedInfo = this.createSignedInfoCanonicalExclusive(digested, signedInfoUri);
         const signatureValue = hextob64(this.getFiel().sign(signedInfo, SignatureAlgorithm.SHA1,));
 
