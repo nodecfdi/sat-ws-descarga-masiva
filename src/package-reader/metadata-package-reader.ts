@@ -27,18 +27,16 @@ export class MetadaPackageReader implements PackageReaderInterface {
         return new MetadaPackageReader(packageReader);
     }
 
-    public async metadata(): Promise<Map<string, MetadataItem>> {
+    public async *metadata(): AsyncGenerator<Record<string, MetadataItem>> {
         let reader: MetadataContent;
         const fileContents = await Helpers.iteratorToMap(this._packageReader.fileContents());
-        const metadata = new Map<string, MetadataItem>();
         for (const content of fileContents.values()) {
             reader = MetadataContent.createFromContents(content);
             const items = await reader.eachItem();
-            items.forEach(item => {
-                metadata.set(item.get('uuid'), item)
-            });
+            for (const item of items) {
+                yield Object.fromEntries([[item.get('uuid'), item]])
+            }
         }
-        return metadata;
     }
 
     public getFilename(): string {
@@ -60,7 +58,7 @@ export class MetadaPackageReader implements PackageReaderInterface {
         return {
             source: filtered.source,
             files: filtered.files,
-            metadata: Object.fromEntries(await this.metadata())
+            metadata: await Helpers.iteratorToObject(this.metadata())
         }
     }
 }

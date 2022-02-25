@@ -1,3 +1,4 @@
+import { Helpers } from "../../../src/internal/helpers";
 import { MetadaPackageReader } from "../../../src/package-reader/metadata-package-reader";
 import { TestCase } from "../../test-case";
 /**
@@ -23,7 +24,7 @@ describe('metadata package reader', () => {
     test('retrieve metadata contents', async () => {
         const filename = TestCase.filePath('zip/metadata.zip');
         const metadataPackageReader = await MetadaPackageReader.createFromFile(filename);
-        const metadata = await metadataPackageReader.metadata();
+        const metadata = await Helpers.iteratorToMap(metadataPackageReader.metadata());
 
         expect(metadata.size).toBe(2);
 
@@ -35,9 +36,9 @@ describe('metadata package reader', () => {
         const expected = [
             'E7215E3B-2DC5-4A40-AB10-C902FF9258DF',
             '129C4D12-1415-4ACE-BE12-34E71C4EAB4E',
-        ];
+        ].sort();
 
-        expect(extracted).toStrictEqual(expected);
+        expect(extracted.sort()).toStrictEqual(expected);
     });
 
     test('create from file and contents', async () => {
@@ -48,8 +49,8 @@ describe('metadata package reader', () => {
 
         const contents = TestCase.fileContents('zip/metadata.zip');
         const second = await MetadaPackageReader.createFromContents(contents);
-        const metadata1 = await first.metadata();
-        const metadata2 = await second.metadata();
+        const metadata1 = await Helpers.iteratorToMap(first.metadata());
+        const metadata2 = await  Helpers.iteratorToMap(second.metadata());
 
         expect(metadata1).toStrictEqual(metadata2);
     });
@@ -75,6 +76,6 @@ describe('metadata package reader', () => {
             '129C4D12-1415-4ACE-BE12-34E71C4EAB4E',
         ];
         const jsonDataMetadata = jsonData.metadata;
-        expect(Object.keys(jsonDataMetadata)).toStrictEqual(expectedMetadata);
+        expect(Object.keys(jsonDataMetadata).sort()).toStrictEqual(expectedMetadata.sort());
     });
 });
