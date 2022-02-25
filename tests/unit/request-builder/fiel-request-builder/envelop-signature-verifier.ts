@@ -1,6 +1,6 @@
 import { XMLSerializer, DOMParser } from '@xmldom/xmldom';
 import { Crypto } from "@peculiar/webcrypto";
-import * as xmldsig from "xadesjs";
+import { Parse, Application, SignedXml } from "xadesjs";
 
 export class EnvelopSignatureVerifier {
 
@@ -25,16 +25,16 @@ export class EnvelopSignatureVerifier {
 
         const crypto = new Crypto();
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        xmldsig.Application.setEngine('OpenSSL', crypto as any);
+        Application.setEngine('OpenSSL', crypto as any);
 
-        const signedDocument = xmldsig.Parse(document);
+        const signedDocument = Parse(document);
 
         const xmlSignature = signedDocument.getElementsByTagNameNS('http://www.w3.org/2000/09/xmldsig#', 'Signature');
         if (null === xmlSignature) {
             throw new Error('Cannot locate Signature object');
         }
 
-        const signedXml = new xmldsig.SignedXml(signedDocument);
+        const signedXml = new SignedXml(signedDocument);
         let valid: boolean;
         signedXml.LoadXml(xmlSignature[0]);
         try {
