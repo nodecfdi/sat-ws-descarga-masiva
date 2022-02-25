@@ -1,4 +1,4 @@
-import { Helpers } from "../../../src/internal/helpers";
+import { Helpers } from '../../../src/internal/helpers';
 describe('Helpers', () => {
     test('no spaces contents', () => {
         const source = `

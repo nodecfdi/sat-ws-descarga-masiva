@@ -1,7 +1,7 @@
-import { Helpers } from "../../../src/internal/helpers";
-import { MetadataItem } from "../../../src/package-reader/metadata-item";
-import { MetadaPackageReader } from "../../../src/package-reader/metadata-package-reader";
-import { TestCase } from "../../test-case";
+import { Helpers } from '../../../src/internal/helpers';
+import { MetadataItem } from '../../../src/package-reader/metadata-item';
+import { MetadaPackageReader } from '../../../src/package-reader/metadata-package-reader';
+import { TestCase } from '../../test-case';
 describe('metadata item', () => {
     test('with empty data', () => {
         const metadata = new MetadataItem({});
@@ -23,14 +23,14 @@ describe('metadata item', () => {
         const zipFileName = TestCase.filePath('zip/metadata.zip');
         const packageReader = await MetadaPackageReader.createFromFile(zipFileName);
         const content = await Helpers.iteratorToMap(packageReader.fileContents());
-        const [key] = content.keys()
+        const [key] = content.keys();
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         let extracted = content.get(key)!;
 
 
         // normalize line endings
-        expectedContent = expectedContent.replace(new RegExp(/\r\n/, 'g'), "\n");
-        extracted = extracted.replace(new RegExp(/\r\n/, 'g'), "\n");
+        expectedContent = expectedContent.replace(new RegExp(/\r\n/, 'g'), '\n');
+        extracted = extracted.replace(new RegExp(/\r\n/, 'g'), '\n');
 
         expect(extracted).toBe(expectedContent);
     });

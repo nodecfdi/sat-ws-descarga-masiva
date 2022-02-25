@@ -1,5 +1,5 @@
-import { RequestTypeInvalidException } from "../../../../src/request-builder/exceptions/request-type-invalid-exception";
-import { RequestBuilderException } from "../../../../src/request-builder/request-builder-exception";
+import { RequestTypeInvalidException } from '../../../../src/request-builder/exceptions/request-type-invalid-exception';
+import { RequestBuilderException } from '../../../../src/request-builder/request-builder-exception';
 
 describe('Period start greater than end exception', () => {
     test('exception instance of request builder exception', () => {

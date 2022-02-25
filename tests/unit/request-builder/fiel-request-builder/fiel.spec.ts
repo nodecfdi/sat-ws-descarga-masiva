@@ -20,7 +20,7 @@ describe('Fiel', () => {
         expect(fiel.isValid()).toBeTruthy();
     });
     test('fiel with incorrect password create an exception ', () => {
-        expect(() => { TestCase.createFielUsingTestingFiles('wrong password') }).toThrow(new Error('Cannot open private key: malformed plain PKCS8 private key(code:001)'));
+        expect(() => { TestCase.createFielUsingTestingFiles('wrong password'); }).toThrow(new Error('Cannot open private key: malformed plain PKCS8 private key(code:001)'));
     });
     test('is not valid using CSD', () => {
         const fiel = Fiel.create(

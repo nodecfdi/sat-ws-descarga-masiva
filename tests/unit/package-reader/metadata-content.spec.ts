@@ -1,6 +1,6 @@
 import { TestCase } from '../../test-case';
-import { MetadataContent } from "../../../src/package-reader/internal/metadata-content";
-import { MetadataItem } from "../../../src/package-reader/metadata-item";
+import { MetadataContent } from '../../../src/package-reader/internal/metadata-content';
+import { MetadataItem } from '../../../src/package-reader/metadata-item';
 describe('metadata content', () => {
     test('read metadata', async () => {
         const contents = TestCase.fileContents('zip/metadata.txt');
@@ -30,7 +30,7 @@ describe('metadata content', () => {
             '3~three',
             '', // trailing blank lines
             '',
-        ].join("\n");
+        ].join('\n');
         const reader = MetadataContent.createFromContents(contents);
         const extracted: Record<string, string>[] = [];
         const expected = [
@@ -76,14 +76,14 @@ describe('metadata content', () => {
         ['Receptor "SA"', 'Receptor "SA"'],
         ['Receptor "Foo" SA', 'Receptor "Foo" SA'],
         ['Receptor " SA', 'Receptor " SA'],
-        ["\"\nReceptor SA\"", '"Receptor SA"'],
-        ["\"Receptor SA\n\"", '"Receptor SA"'],
-        ["\"Receptor\nSA\"", '"ReceptorSA"'],
-        ["\"Receptor\n\nSA\"", '"ReceptorSA"'],
-        ["Receptor SA\n", 'Receptor SA'],
-        ["\nReceptor SA", 'Receptor SA'],
-        ["Receptor\nSA", 'ReceptorSA'],
-        ["Receptor\n\nSA", 'ReceptorSA'],
+        ['"\nReceptor SA"', '"Receptor SA"'],
+        ['"Receptor SA\n"', '"Receptor SA"'],
+        ['"Receptor\nSA"', '"ReceptorSA"'],
+        ['"Receptor\n\nSA"', '"ReceptorSA"'],
+        ['Receptor SA\n', 'Receptor SA'],
+        ['\nReceptor SA', 'Receptor SA'],
+        ['Receptor\nSA', 'ReceptorSA'],
+        ['Receptor\n\nSA', 'ReceptorSA'],
     ];
 
     it.each(providerReadMetadataWithSpecialCharacters)('read metadata with special chars', async (sourceValue: string, expectedValue: string) => {
@@ -91,7 +91,7 @@ describe('metadata content', () => {
             ['id', 'value', 'foo', 'bar'].join('~'),
             ['1', sourceValue, 'x-foo', 'x-bar'].join('~'),
             ['2', 'second', 'x-foo', 'x-bar'].join('~'),
-        ].join("\r\n");
+        ].join('\r\n');
         const extracted: MetadataItem[] = [];
 
         const reader = MetadataContent.createFromContents(contents);

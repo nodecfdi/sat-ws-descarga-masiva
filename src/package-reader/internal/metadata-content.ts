@@ -1,11 +1,11 @@
-import { MetadataPreprocessor } from "./metadata-preprocessor";
+import { MetadataPreprocessor } from './metadata-preprocessor';
 import os from 'os';
 import { realpathSync, writeFileSync, createReadStream } from 'fs';
 import { join } from 'path';
 import { randomUUID } from 'crypto';
-import { Interface, createInterface } from 'readline'
-import { MetadataItem } from "../metadata-item";
-import { EventEmitter } from "events";
+import { Interface, createInterface } from 'readline';
+import { MetadataItem } from '../metadata-item';
+import { EventEmitter } from 'events';
 
 export class MetadataContent {
     private _iterator: Interface;

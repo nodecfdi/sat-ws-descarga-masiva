@@ -1,4 +1,4 @@
-import { CreateTemporaryZipFileException } from "../../../../src/package-reader/exceptions/create-temporary-file-zip-exception";
+import { CreateTemporaryZipFileException } from '../../../../src/package-reader/exceptions/create-temporary-file-zip-exception';
 describe('temporary zip file exception', () => {
     test('properties', () => {
         const message = 'x-message';

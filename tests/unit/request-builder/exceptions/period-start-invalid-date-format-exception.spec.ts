@@ -1,5 +1,5 @@
-import { PeriodStartInvalidDateFormatException } from "../../../../src/request-builder/exceptions/period-start-invalid-date-format-exception";
-import { RequestBuilderException } from "../../../../src/request-builder/request-builder-exception";
+import { PeriodStartInvalidDateFormatException } from '../../../../src/request-builder/exceptions/period-start-invalid-date-format-exception';
+import { RequestBuilderException } from '../../../../src/request-builder/request-builder-exception';
 
 describe('Period start invalid date format exception', () => {
     test('exception instance of request builder exception', () => {

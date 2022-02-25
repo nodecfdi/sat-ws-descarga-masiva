@@ -1,14 +1,14 @@
-import { unlinkSync, realpathSync, readFileSync, writeFileSync } from "fs";
-import JSZip from "jszip";
-import { OpenZipFileException } from "../exceptions/open-zip-file-exception";
-import { PackageReaderInterface } from "../package-reader-interface";
-import { FileFilterInterface } from "./file-filters/file-filter-interface";
-import os from "os";
-import { join } from "path";
-import { randomUUID } from "crypto";
-import { CreateTemporaryZipFileException } from "../exceptions/create-temporary-file-zip-exception";
-import { NullFileFilter } from "./file-filters/null-file-filter";
-import { Helpers } from "../../internal/helpers";
+import { unlinkSync, realpathSync, readFileSync, writeFileSync } from 'fs';
+import JSZip from 'jszip';
+import { OpenZipFileException } from '../exceptions/open-zip-file-exception';
+import { PackageReaderInterface } from '../package-reader-interface';
+import { FileFilterInterface } from './file-filters/file-filter-interface';
+import os from 'os';
+import { join } from 'path';
+import { randomUUID } from 'crypto';
+import { CreateTemporaryZipFileException } from '../exceptions/create-temporary-file-zip-exception';
+import { NullFileFilter } from './file-filters/null-file-filter';
+import { Helpers } from '../../internal/helpers';
 
 export class FilteredPackageReader implements PackageReaderInterface {
     private _filename: string;
@@ -40,7 +40,7 @@ export class FilteredPackageReader implements PackageReaderInterface {
             throw OpenZipFileException.create(filename, -1);
         }
         try {
-            archive = await JSZip.loadAsync(data)
+            archive = await JSZip.loadAsync(data);
         } catch (error) {
             throw OpenZipFileException.create(filename, -1);
         }
@@ -87,7 +87,7 @@ export class FilteredPackageReader implements PackageReaderInterface {
             if (!filter?.filterFilename(entries[index])) {
                 continue;
             }
-            contents = await archive.file(entries[index])?.async('text')
+            contents = await archive.file(entries[index])?.async('text');
             if (contents == undefined || !filter.filterContents(contents)) {
                 continue;
             }
@@ -119,6 +119,6 @@ export class FilteredPackageReader implements PackageReaderInterface {
         return {
             source: this.getFilename(),
             files: await Helpers.iteratorToObject(this.fileContents()),
-        }
+        };
     }
 }

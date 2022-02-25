@@ -1,13 +1,13 @@
-import { realpathSync, unlinkSync, writeFileSync } from "fs";
-import JSZip from "jszip";
-import { OpenZipFileException } from "../../../../src/package-reader/exceptions/open-zip-file-exception";
-import { FilteredPackageReader } from "../../../../src/package-reader/internal/filtered-package-reader";
-import { TestCase } from "../../../test-case";
-import os from "os";
-import { join } from "path/posix";
-import { randomUUID } from "crypto";
-import { NullFileFilter } from "../../../../src/package-reader/internal/file-filters/null-file-filter";
-import { Helpers } from "../../../../src/internal/helpers";
+import { realpathSync, unlinkSync, writeFileSync } from 'fs';
+import JSZip from 'jszip';
+import { OpenZipFileException } from '../../../../src/package-reader/exceptions/open-zip-file-exception';
+import { FilteredPackageReader } from '../../../../src/package-reader/internal/filtered-package-reader';
+import { TestCase } from '../../../test-case';
+import os from 'os';
+import { join } from 'path/posix';
+import { randomUUID } from 'crypto';
+import { NullFileFilter } from '../../../../src/package-reader/internal/file-filters/null-file-filter';
+import { Helpers } from '../../../../src/internal/helpers';
 describe('filtered package reader', () => {
     test('create from file with invalid file', async () => {
         const filename = __dirname;

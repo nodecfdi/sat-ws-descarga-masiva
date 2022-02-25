@@ -1,5 +1,5 @@
-import { RfcIssuerAndReceiverAreEmptyException } from "../../../../src/request-builder/exceptions/rfc-issuer-and-receiver-are-empty-exception";
-import { RequestBuilderException } from "../../../../src/request-builder/request-builder-exception";
+import { RfcIssuerAndReceiverAreEmptyException } from '../../../../src/request-builder/exceptions/rfc-issuer-and-receiver-are-empty-exception';
+import { RequestBuilderException } from '../../../../src/request-builder/request-builder-exception';
 
 describe('Period start greater than end exception', () => {
     test('exception instance of request builder exception', () => {

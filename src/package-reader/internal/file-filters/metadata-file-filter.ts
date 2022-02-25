@@ -1,4 +1,4 @@
-import { FileFilterInterface } from "./file-filter-interface";
+import { FileFilterInterface } from './file-filter-interface';
 /**
  * Implementation to filter a Metadata Package file contents
  *

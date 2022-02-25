@@ -1,5 +1,5 @@
 import { TestCase } from '../../../test-case';
-import { FielRequestBuilder } from "../../../../src/request-builder/fiel-request-builder/fiel-request-builder";
+import { FielRequestBuilder } from '../../../../src/request-builder/fiel-request-builder/fiel-request-builder';
 import { EnvelopSignatureVerifier } from './envelop-signature-verifier';
 import { Helpers } from '../../../../src/internal/helpers';
 import { Fiel } from '../../../../src';
@@ -8,7 +8,7 @@ describe('Fiel request builder', () => {
     function extractSecurityTokenFromXml(requestBody: string): string {
         const matches = requestBody.match(/o:BinarySecurityToken u:Id="(?<id>.*?)"/u);
 
-        return matches?.groups?.id || ''
+        return matches?.groups?.id || '';
     }
     test('fiel request contains given fiel and implements RequestBuilderInterface', () => {
         const fiel = TestCase.createFielUsingTestingFiles();

@@ -1,6 +1,6 @@
-import { Helpers } from "../../../src/internal/helpers";
-import { MetadaPackageReader } from "../../../src/package-reader/metadata-package-reader";
-import { TestCase } from "../../test-case";
+import { Helpers } from '../../../src/internal/helpers';
+import { MetadaPackageReader } from '../../../src/package-reader/metadata-package-reader';
+import { TestCase } from '../../test-case';
 /**
  * This tests uses the Zip file located at tests/_files/zip/metadata.zip that contains:
  *
@@ -45,7 +45,7 @@ describe('metadata package reader', () => {
         const filename = TestCase.filePath('zip/metadata.zip');
         const first = await MetadaPackageReader.createFromFile(filename);
 
-        expect(first.getFilename()).toBe(filename)
+        expect(first.getFilename()).toBe(filename);
 
         const contents = TestCase.fileContents('zip/metadata.zip');
         const second = await MetadaPackageReader.createFromContents(contents);

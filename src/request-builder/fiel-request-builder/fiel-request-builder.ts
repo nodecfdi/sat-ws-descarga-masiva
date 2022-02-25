@@ -1,5 +1,5 @@
-import { RequestBuilderInterface } from '../request-builder-interface'
-import { Fiel } from "./fiel";
+import { RequestBuilderInterface } from '../request-builder-interface';
+import { Fiel } from './fiel';
 import { Helpers } from '../../internal/helpers';
 import { SignatureAlgorithm } from '@nodecfdi/credentials';
 import { PeriodStartInvalidDateFormatException } from '../exceptions/period-start-invalid-date-format-exception';
@@ -8,7 +8,7 @@ import { PeriodStartGreaterThanEndException } from '../exceptions/period-start-g
 import { RfcIsNotIssuerOrReceiverException } from '../exceptions/rfc-is-not-issuer-or-recevier-exception';
 import { RequestTypeInvalidException } from '../exceptions/request-type-invalid-exception';
 import { RfcIssuerAndReceiverAreEmptyException } from '../exceptions/rfc-issuer-and-receiver-are-empty-exception';
-import { hextob64 } from "jsrsasign";
+import { hextob64 } from 'jsrsasign';
 import { createHash, randomUUID } from 'crypto';
 
 export class FielRequestBuilder implements RequestBuilderInterface {
@@ -100,7 +100,7 @@ export class FielRequestBuilder implements RequestBuilderInterface {
                 return value;
             }
         }).map((value) => {
-            return `${Helpers.htmlspecialchars(value[0])}="${Helpers.htmlspecialchars(value[1])}"`
+            return `${Helpers.htmlspecialchars(value[0])}="${Helpers.htmlspecialchars(value[1])}"`;
         }).join(' ');        
 
         const toDigestXml = `
@@ -179,7 +179,7 @@ export class FielRequestBuilder implements RequestBuilderInterface {
 
     private static createXmlSecurityToken(): string {
         const md5 = createHash('md5').update(randomUUID()).digest('hex');
-        return `uuid-${md5.substring(0, 8)}-${md5.substring(8, 4)}-${md5.substring(12, 4)}-${md5.substring(16, 4)}-${md5.substring(20)}-1`
+        return `uuid-${md5.substring(0, 8)}-${md5.substring(8, 4)}-${md5.substring(12, 4)}-${md5.substring(16, 4)}-${md5.substring(20)}-1`;
     }
 
     private createSignature(toDigest: string, signedInfoUri = '', keyInfo = ''): string {
@@ -188,7 +188,7 @@ export class FielRequestBuilder implements RequestBuilderInterface {
         let signedInfo = this.createSignedInfoCanonicalExclusive(digested, signedInfoUri);
         const signatureValue = hextob64(this.getFiel().sign(signedInfo, SignatureAlgorithm.SHA1,));
 
-        signedInfo = signedInfo.replace('<SignedInfo xmlns="http://www.w3.org/2000/09/xmldsig#">', '<SignedInfo>')
+        signedInfo = signedInfo.replace('<SignedInfo xmlns="http://www.w3.org/2000/09/xmldsig#">', '<SignedInfo>');
 
 
         if ('' === keyInfo) {

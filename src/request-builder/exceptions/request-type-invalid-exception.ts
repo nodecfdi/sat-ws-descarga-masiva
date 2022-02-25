@@ -1,4 +1,4 @@
-import { RequestBuilderException } from "../request-builder-exception";
+import { RequestBuilderException } from '../request-builder-exception';
 
 export class RequestTypeInvalidException extends RequestBuilderException {
 

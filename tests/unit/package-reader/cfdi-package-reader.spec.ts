@@ -1,8 +1,8 @@
-import { readFileSync } from "fs";
-import { Helpers } from "../../../src/internal/helpers";
-import { CfdiPackageReader } from "../../../src/package-reader/cfdi-package-reader";
-import { OpenZipFileException } from "../../../src/package-reader/exceptions/open-zip-file-exception";
-import { TestCase } from "../../test-case";
+import { readFileSync } from 'fs';
+import { Helpers } from '../../../src/internal/helpers';
+import { CfdiPackageReader } from '../../../src/package-reader/cfdi-package-reader';
+import { OpenZipFileException } from '../../../src/package-reader/exceptions/open-zip-file-exception';
+import { TestCase } from '../../test-case';
 /**
  * This tests uses the Zip file located at tests/_files/zip/cfdi.zip that contains:
  *
@@ -16,9 +16,9 @@ import { TestCase } from "../../test-case";
  *
  */
 describe('cfdi package reader', () => {
-    test('reader zip when the content is invalid', () => {
+    test('reader zip when the content is invalid', async () => {
         const zipContents = 'INVALID_ZIP_CONTENT';
-        expect(CfdiPackageReader.createFromContents(zipContents)).rejects.toBeInstanceOf(OpenZipFileException);
+        await expect(CfdiPackageReader.createFromContents(zipContents)).rejects.toBeInstanceOf(OpenZipFileException);
     });
     test('reader zip when the content valid', async () => {
         const zipContents = TestCase.fileContents('zip/cfdi.zip');

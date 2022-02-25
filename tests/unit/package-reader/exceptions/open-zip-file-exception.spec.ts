@@ -1,4 +1,4 @@
-import { OpenZipFileException } from "../../../../src/package-reader/exceptions/open-zip-file-exception";
+import { OpenZipFileException } from '../../../../src/package-reader/exceptions/open-zip-file-exception';
 describe('open zip file exception', () => {
     test('properties', () => {
         const filename = 'filename';

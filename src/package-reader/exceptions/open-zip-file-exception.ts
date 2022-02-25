@@ -1,4 +1,4 @@
-import { PackageReaderException } from "./package-reader-exception";
+import { PackageReaderException } from './package-reader-exception';
 
 export class OpenZipFileException extends PackageReaderException {
 
@@ -15,7 +15,7 @@ export class OpenZipFileException extends PackageReaderException {
 
     public static create(filename: string, code: number, previous?: Error): OpenZipFileException {
         const messageToSend = previous && previous.message != '' ? `Unable to open Zip file ${filename}. previous ${previous.message}` : `Unable to open Zip file ${filename}`;
-        return new OpenZipFileException(messageToSend, code, filename, previous)
+        return new OpenZipFileException(messageToSend, code, filename, previous);
     }
 
     public getFileName(): string {

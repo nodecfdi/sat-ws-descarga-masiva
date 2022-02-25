@@ -1,7 +1,7 @@
-import { Helpers } from "../internal/helpers";
-import { CfdiFileFilter } from "./internal/file-filters/cfdi-file-filter";
-import { FilteredPackageReader } from "./internal/filtered-package-reader";
-import { PackageReaderInterface } from "./package-reader-interface";
+import { Helpers } from '../internal/helpers';
+import { CfdiFileFilter } from './internal/file-filters/cfdi-file-filter';
+import { FilteredPackageReader } from './internal/filtered-package-reader';
+import { PackageReaderInterface } from './package-reader-interface';
 
 export class CfdiPackageReader implements PackageReaderInterface {
     private _packageReader: PackageReaderInterface;
@@ -29,7 +29,7 @@ export class CfdiPackageReader implements PackageReaderInterface {
         for await (const content of contents) {
             const data = Object.values(content)[0];
             const key = CfdiPackageReader.obtainUuidFromXmlCfdi(data);
-            yield Object.fromEntries([[key, data]])
+            yield Object.fromEntries([[key, data]]);
         }
     }
 
@@ -43,7 +43,7 @@ export class CfdiPackageReader implements PackageReaderInterface {
 
     public async *fileContents(): AsyncGenerator<Record<string, string>> {
         for await (const iterator of this._packageReader.fileContents()) {
-            yield iterator
+            yield iterator;
         }
     }
 
@@ -63,6 +63,6 @@ export class CfdiPackageReader implements PackageReaderInterface {
             source: filtered.source,
             files: filtered.files,
             cfdis: await Helpers.iteratorToObject(this.cfdis()),
-        }
+        };
     }
 }

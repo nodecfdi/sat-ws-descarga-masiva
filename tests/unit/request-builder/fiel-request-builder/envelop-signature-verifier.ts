@@ -1,6 +1,6 @@
 import { XMLSerializer, DOMParser } from '@xmldom/xmldom';
-import { Crypto } from "@peculiar/webcrypto";
-import { Parse, Application, SignedXml } from "xadesjs";
+import { Crypto } from '@peculiar/webcrypto';
+import { Parse, Application, SignedXml } from 'xadesjs';
 
 export class EnvelopSignatureVerifier {
 

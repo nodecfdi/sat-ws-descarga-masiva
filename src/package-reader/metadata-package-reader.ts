@@ -1,9 +1,9 @@
-import { Helpers } from "../internal/helpers";
-import { MetadataFileFilter } from "./internal/file-filters/metadata-file-filter";
-import { FilteredPackageReader } from "./internal/filtered-package-reader";
-import { MetadataContent } from "./internal/metadata-content";
-import { MetadataItem } from "./metadata-item";
-import { PackageReaderInterface } from "./package-reader-interface";
+import { Helpers } from '../internal/helpers';
+import { MetadataFileFilter } from './internal/file-filters/metadata-file-filter';
+import { FilteredPackageReader } from './internal/filtered-package-reader';
+import { MetadataContent } from './internal/metadata-content';
+import { MetadataItem } from './metadata-item';
+import { PackageReaderInterface } from './package-reader-interface';
 
 export class MetadaPackageReader implements PackageReaderInterface {
 
@@ -34,7 +34,7 @@ export class MetadaPackageReader implements PackageReaderInterface {
             reader = MetadataContent.createFromContents(content);
             const items = await reader.eachItem();
             for (const item of items) {
-                yield Object.fromEntries([[item.get('uuid'), item]])
+                yield Object.fromEntries([[item.get('uuid'), item]]);
             }
         }
     }
@@ -49,7 +49,7 @@ export class MetadaPackageReader implements PackageReaderInterface {
 
     public async *fileContents(): AsyncGenerator<Record<string, string>> {
         for await (const iterator of this._packageReader.fileContents()) {
-            yield iterator
+            yield iterator;
         }
     }
 
@@ -59,6 +59,6 @@ export class MetadaPackageReader implements PackageReaderInterface {
             source: filtered.source,
             files: filtered.files,
             metadata: await Helpers.iteratorToObject(this.metadata())
-        }
+        };
     }
 }

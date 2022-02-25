@@ -1,5 +1,5 @@
-import { CfdiPackageReader } from "../../cfdi-package-reader";
-import { FileFilterInterface } from "./file-filter-interface";
+import { CfdiPackageReader } from '../../cfdi-package-reader';
+import { FileFilterInterface } from './file-filter-interface';
 export class CfdiFileFilter implements FileFilterInterface {
 
     public filterFilename(filename: string): boolean {
