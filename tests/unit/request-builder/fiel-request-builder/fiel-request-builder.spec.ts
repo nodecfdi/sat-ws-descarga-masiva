@@ -126,7 +126,7 @@ describe('Fiel request builder', () => {
         const date = '2019-01-01T00:00:00';
 
         expect(() => requestBuilder.query(date, date, requestBuilder.USE_SIGNER, '', 'cfdi'))
-            .toThrow('he request type "cfdi" is not CFDI or Metadata');
+            .toThrowError('The request type "cfdi" is not CFDI or Metadata');
     });
 
     test('verify', async () => {

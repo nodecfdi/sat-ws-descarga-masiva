@@ -9,15 +9,15 @@ export class TestCase {
         return `${__dirname}/_files/${append}`;
     }
 
-    public static fileContents(append: string): string {
-        return TestCase.fileContent(TestCase.filePath(append));
+    public static fileContents(append: string, encoding?: BufferEncoding): string {
+        return TestCase.fileContent(TestCase.filePath(append), encoding);
     }
 
-    public static fileContent(path: string): string {
+    public static fileContent(path: string, encoding?: BufferEncoding): string {
         if (!existsSync(path)) {
             return '';
         }
-        return readFileSync(path, 'binary');
+        return readFileSync(path, encoding || 'binary');
     }
 
     public static createFielRequestBuilderUsingTestingFiles(password?: string): FielRequestBuilder {
