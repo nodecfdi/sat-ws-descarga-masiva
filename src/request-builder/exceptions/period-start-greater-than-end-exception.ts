@@ -2,20 +2,20 @@ import { RequestBuilderException } from "../request-builder-exception";
 
 export class PeriodStartGreaterThanEndException extends RequestBuilderException {
 
-    private periodStart: string;
-    private periodEnd: string;
+    private _periodStart: string;
+    private _periodEnd: string;
 
     constructor(periodStart: string, periodEnd: string) {
         super(`The period start "${periodStart}" is greater than end "${periodEnd}"`);
-        this.periodStart = periodStart;
-        this.periodEnd = periodEnd;
+        this._periodStart = periodStart;
+        this._periodEnd = periodEnd;
     }
 
     public getPeriodStart(): string {
-        return this.periodStart;
+        return this._periodStart;
     }
 
     public getPeriodEnd(): string {
-        return this.periodEnd;
+        return this._periodEnd;
     }
 }

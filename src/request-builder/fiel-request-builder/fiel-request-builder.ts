@@ -12,16 +12,16 @@ import { hextob64 } from "jsrsasign";
 import { createHash, randomUUID } from 'crypto';
 
 export class FielRequestBuilder implements RequestBuilderInterface {
-    private fiel: Fiel;
+    private _fiel: Fiel;
 
     public readonly USE_SIGNER = '*';
 
     constructor(fiel: Fiel) {
-        this.fiel = fiel;
+        this._fiel = fiel;
     }
 
     public getFiel(): Fiel {
-        return this.fiel;
+        return this._fiel;
     }
 
     public authorization(created: string, expires: string, securityTokenId?: string): string {

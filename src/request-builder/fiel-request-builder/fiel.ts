@@ -7,10 +7,10 @@ import { SignatureAlgorithm, Credential } from '@nodecfdi/credentials';
  * @see Credential
  */
 export class Fiel {
-    private credential: Credential;
+    private _credential: Credential;
 
     constructor(credential: Credential) {
-        this.credential = credential;
+        this._credential = credential;
     }
 
     public static create(certificateContents: string, privateKeyContents: string, passPhrase: string): Fiel {
@@ -19,33 +19,33 @@ export class Fiel {
     }
 
     public sign(toSign: string, algorithm: SignatureAlgorithm = SignatureAlgorithm.SHA1): string {
-        return this.credential.sign(toSign, algorithm);
+        return this._credential.sign(toSign, algorithm);
     }
 
     public isValid(): boolean {
-        if (!this.credential.certificate().satType().isFiel()) {
+        if (!this._credential.certificate().satType().isFiel()) {
             return false;
         }
-        if (!this.credential.certificate().validOn()) {
+        if (!this._credential.certificate().validOn()) {
             return false;
         }
         return true;
     }
 
     public getCertificatePemContents(): string {
-        return this.credential.certificate().pem();
+        return this._credential.certificate().pem();
     }
 
     public getRfc(): string {
-        return this.credential.rfc();
+        return this._credential.rfc();
     }
 
     public getCertificateSerial(): string {
-        return this.credential.certificate().serialNumber().decimal();
+        return this._credential.certificate().serialNumber().decimal();
     }
 
     /** missing function this.credential.certificate().issuerAsRfc4514() */
     public getCertificateIssuerName(): string {
-        return this.credential.certificate().issuerAsRfc4514();
+        return this._credential.certificate().issuerAsRfc4514();
     }
 }
