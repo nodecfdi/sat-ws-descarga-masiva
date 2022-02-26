@@ -60,6 +60,7 @@
         "@nodecfdi/cfdiutils-common": "^0.3.0",
         "@nodecfdi/credentials": "^1.1.0",
         "@xmldom/xmldom": "^0.8.1",
-        "jszip": "^3.7.1"
+        "jszip": "^3.7.1",
+        "typescript-mix": "^3.1.3"
     }
 }
