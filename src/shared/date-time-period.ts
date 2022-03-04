@@ -31,10 +31,10 @@ export class DateTimePeriod {
         return this._end;
     }
 
-    public jsonSerialize(): { start: DateTime, end: DateTime } {
+    public jsonSerialize(): { start: number, end: number } {
         return {
-            start: this._start,
-            end: this._end
+            start: this._start.jsonSerialize(),
+            end: this._end.jsonSerialize()
         };
     }
 }

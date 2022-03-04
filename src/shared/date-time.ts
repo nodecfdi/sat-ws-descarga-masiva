@@ -90,4 +90,8 @@ export class DateTime {
     public equalsTo(expectedExpires: DateTime): boolean {
         return this.formatSat() == expectedExpires.formatSat();
     }
+
+    public jsonSerialize(): number {
+        return this._value.toSeconds();
+    }
 }
