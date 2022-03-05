@@ -30,6 +30,7 @@
         "build:types": "tsc -p ./tsconfig.json --outDir build --declaration true && api-extractor run",
         "lint": "eslint --ext .js,.ts .",
         "test": "jest",
+        "test-with-memory": "jest --runInBand --logHeapUsage",
         "docs": "typedoc src --out docs"
     },
     "devDependencies": {
