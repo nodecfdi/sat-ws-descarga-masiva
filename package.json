@@ -62,6 +62,7 @@
         "@nodecfdi/cfdiutils-common": "^0.3.0",
         "@nodecfdi/credentials": "^1.1.0",
         "@xmldom/xmldom": "^0.8.1",
+        "axios": "^0.26.0",
         "jszip": "^3.7.1",
         "luxon": "^2.3.1",
         "typescript-mix": "^3.1.3"
