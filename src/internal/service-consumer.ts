@@ -36,8 +36,9 @@ export class ServiceConsumer {
         const headers = new Map();
         headers.set('SOAPAction', soapAction);
         if (token) {
-            headers.set('Authorization', `'WRAP access_token="${token.getValue()}"`);
+            headers.set('Authorization', `WRAP access_token="${token.getValue()}"`);
         }
+        console.log(Object.fromEntries(headers));
         return Object.fromEntries(headers);
     }
 
