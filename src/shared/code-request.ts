@@ -64,6 +64,10 @@ export class CodeRequest {
         return this.value.name;
     }
 
+    public getMessage(): string {
+        return this.value.message;
+    }
+
     public getValue(): number | undefined {
         return this.index;
     }
