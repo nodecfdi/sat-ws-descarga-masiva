@@ -78,9 +78,13 @@ export class DateTime {
         return this._value.setZone(timezone).toISO();
     }
 
-    public modify(modify: string): DateTime {
-        this._value = DateTimeImmutable.fromSQL(modify);
-        return new DateTime(this._value);
+    /**
+     * add or sub in minutes 
+     *
+     */
+    public modify(quantity: number): DateTime {
+        const temp = this._value;
+        return new DateTime(temp.plus({minutes: quantity }));
     }
 
     public compareTo(otherDate: DateTime): number {
