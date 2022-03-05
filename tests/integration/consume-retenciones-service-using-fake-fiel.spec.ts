@@ -7,6 +7,7 @@ import { DateTime } from '../../src/shared/date-time';
 import { QueryParameters } from '../../src/services/query/query-parameters';
 import { DownloadType } from '../../src/shared/download-type';
 import { RequestType } from '../../src/shared/request-type';
+import { ServiceEndpoints } from '../../src/shared/service-endpoints';
 
 describe('consume cfdi service using fake fiel', () => {
 
@@ -17,7 +18,7 @@ describe('consume cfdi service using fake fiel', () => {
     beforeEach(() => {
         requestBuilder = TestCase.createFielRequestBuilderUsingTestingFiles();
         webClient = new AxiosWebClient();
-        service = new Service(requestBuilder, webClient);
+        service = new Service(requestBuilder, webClient, undefined, ServiceEndpoints.retenciones());
     });
 
     test('authentication', async () => {
@@ -33,7 +34,7 @@ describe('consume cfdi service using fake fiel', () => {
         const result = await service.query(parameters);
 
         expect(result.getStatus().getCode()).toBe(305);
-    });
+    }, 5000);
 
     test('verify', async () => {
         const requestId = '3edbd462-9fa0-4363-b60f-bac332338028';
@@ -49,5 +50,5 @@ describe('consume cfdi service using fake fiel', () => {
         const result = await service.download(requestId);
 
         expect(result.getStatus().getCode()).toBe(305);
-    });
+    }, 5000);
 });
