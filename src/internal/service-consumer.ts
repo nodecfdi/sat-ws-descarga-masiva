@@ -38,7 +38,6 @@ export class ServiceConsumer {
         if (token) {
             headers.set('Authorization', `WRAP access_token="${token.getValue()}"`);
         }
-        console.log(Object.fromEntries(headers));
         return Object.fromEntries(headers);
     }
 
