@@ -20,7 +20,7 @@ export class AuthenticateTranslator extends InteractsXmlTrait {
 
     public createSoapRequest(requestBuilder: RequestBuilderInterface): string {
         const since = DateTime.now();
-        const until = since.modify('+ 5 minutos');
+        const until = since.modify(5);
         return this.createSoapRequestWithData(requestBuilder, since, until);
     }
 
