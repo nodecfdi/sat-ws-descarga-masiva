@@ -2,7 +2,6 @@
 /**
  * Helper functions used by the library.
  *
- * This class is internal, do not use it outside this project
  * @internal
  */
 export class Helpers {
