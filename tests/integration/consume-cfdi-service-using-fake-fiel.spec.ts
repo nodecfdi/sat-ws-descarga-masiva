@@ -24,7 +24,18 @@ describe('consume cfdi service using fake fiel', () => {
         const token = await service.authenticate();
         expect(token.isValid()).toBeTruthy();
     });
-    test('query ', async () => {
+    test('query issued', async () => {
+        const since = DateTime.create('2019-01-01 00:00:00');
+        const until = DateTime.create('2019-01-01 00:04:00');
+        const dateTimePeriod = DateTimePeriod.create(since, until);
+        const parameters = QueryParameters.create(dateTimePeriod, DownloadType.issued, RequestType.cfdi);
+
+        const result = await service.query(parameters);
+
+        expect(result.getStatus().getCode()).toBe(305);
+    });
+
+    test('query received', async () => {
         const since = DateTime.create('2019-01-01 00:00:00');
         const until = DateTime.create('2019-01-01 00:04:00');
         const dateTimePeriod = DateTimePeriod.create(since, until);

@@ -18,6 +18,12 @@ describe('Fiel request builder', () => {
         expect(requestBuilder).toHaveProperty('USE_SIGNER');
     });
 
+    test('fiel request contain given fiel', () => {
+        const fiel = TestCase.createFielUsingTestingFiles();
+        const requestBuilder = new FielRequestBuilder(fiel);
+        expect(requestBuilder.getFiel()).toBe(fiel);
+    });
+
     test('authorization', async () => {
         const requestBuilder = TestCase.createFielRequestBuilderUsingTestingFiles();
         const created = '2019-08-01T03:38:19.000Z';
@@ -25,7 +31,7 @@ describe('Fiel request builder', () => {
         const token = 'uuid-cf6c80fb-00ae-44c0-af56-54ec65decbaa-1';
         const requestBody = requestBuilder.authorization(created, expires, token);
 
-        expect(TestCase.xmlFormat(requestBody)).toBe(Helpers.nospaces(TestCase.fileContents('authenticate/request.xml')));
+        expect(Helpers.nospaces(TestCase.xmlFormat(requestBody))).toBe(Helpers.nospaces(TestCase.fileContents('authenticate/request.xml')));
 
         const xmlSecVeritifaction = await (new EnvelopSignatureVerifier()).verify(
             requestBody,
@@ -55,17 +61,18 @@ describe('Fiel request builder', () => {
         expect(otherSecurityTokenId).not.toBe(securityTokenId);
     });
 
-    test('query', async () => {
+    test('query received', async () => {
         const requestBuilder = TestCase.createFielRequestBuilderUsingTestingFiles();
         const start = '2019-01-01T00:00:00';
         const end = '2019-01-01T00:04:00';
         const rfcIssuer = '';
-        const rfcReceiver = requestBuilder.getFiel().getRfc();
+        const rfcReceiver = '*'; // same as signer
         const requestType = 'CFDI';
         const requestBody = requestBuilder.query(start, end, rfcIssuer, rfcReceiver, requestType);
 
 
-        expect(TestCase.xmlFormat(requestBody)).toBe(Helpers.nospaces(TestCase.fileContents('query/request.xml')));
+        expect(Helpers.nospaces(TestCase.xmlFormat(requestBody)))
+            .toBe(Helpers.nospaces(TestCase.fileContents('query/request-received.xml')));
 
         const xmlSecVeritifaction = await (new EnvelopSignatureVerifier()).verify(
             requestBody,
@@ -73,7 +80,28 @@ describe('Fiel request builder', () => {
         );
         // TODO: check this verification.
         expect(xmlSecVeritifaction).toBeTruthy();
+    });
 
+    
+    test('query issued', async () => {
+        const requestBuilder = TestCase.createFielRequestBuilderUsingTestingFiles();
+        const start = '2019-01-01T00:00:00';
+        const end = '2019-01-01T00:04:00';
+        const rfcIssuer = '*'; // same as signer
+        const rfcReceiver = ''; 
+        const requestType = 'CFDI';
+        const requestBody = requestBuilder.query(start, end, rfcIssuer, rfcReceiver, requestType);
+
+
+        expect(Helpers.nospaces(TestCase.xmlFormat(requestBody)))
+            .toBe(Helpers.nospaces(TestCase.fileContents('query/request-issued.xml')));
+
+        const xmlSecVeritifaction = await (new EnvelopSignatureVerifier()).verify(
+            requestBody,
+            'http://DescargaMasivaTerceros.sat.gob.mx', 'SolicitaDescarga'
+        );
+        // TODO: check this verification.
+        expect(xmlSecVeritifaction).toBeTruthy();
     });
 
     test('query with invalid start date', () => {
@@ -140,7 +168,7 @@ describe('Fiel request builder', () => {
         const packageId = '3f30a4e1-af73-4085-8991-e4d97eef16bd';
         const requestBody = requestBuilder.verify(packageId);
 
-        expect(TestCase.xmlFormat(requestBody)).toBe(Helpers.nospaces(TestCase.fileContents('verify/request.xml')));
+        expect(Helpers.nospaces(TestCase.xmlFormat(requestBody))).toBe(Helpers.nospaces(TestCase.fileContents('verify/request.xml')));
 
         const xmlSecVeritifaction = await (new EnvelopSignatureVerifier()).verify(
             requestBody,
@@ -161,7 +189,7 @@ describe('Fiel request builder', () => {
         const packageId = '4e80345d-917f-40bb-a98f-4a73939343c5_01';
         const requestBody = requestBuilder.download(packageId);
 
-        expect(TestCase.xmlFormat(requestBody)).toBe(Helpers.nospaces(TestCase.fileContents('download/request.xml')));
+        expect(Helpers.nospaces(TestCase.xmlFormat(requestBody))).toBe(Helpers.nospaces(TestCase.fileContents('download/request.xml')));
 
         const xmlSecVeritifaction = await (new EnvelopSignatureVerifier()).verify(
             requestBody,
