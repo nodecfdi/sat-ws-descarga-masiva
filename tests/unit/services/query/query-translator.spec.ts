@@ -36,6 +36,6 @@ describe('query translator', () => {
             RequestType.cfdi,
         );
         const requestBody = translator.createSoapRequest(requestBuilder, query);
-        expect(TestCase.xmlFormat(requestBody)).toBe(Helpers.nospaces(TestCase.fileContents('query/request.xml')));
+        expect(Helpers.nospaces(TestCase.xmlFormat(requestBody))).toBe(Helpers.nospaces(TestCase.fileContents('query/request-received.xml')));
     });
 });

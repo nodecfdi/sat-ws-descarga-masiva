@@ -51,6 +51,6 @@ describe('verify translator', () => {
 
         const requestBody = translator.createSoapRequest(requestBuilder, requestId);
 
-        expect(TestCase.xmlFormat(requestBody)).toBe(Helpers.nospaces(TestCase.fileContents('verify/request.xml')));
+        expect(Helpers.nospaces(TestCase.xmlFormat(requestBody))).toBe(Helpers.nospaces(TestCase.fileContents('verify/request.xml')));
     });
 });
