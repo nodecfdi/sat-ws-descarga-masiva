@@ -7,7 +7,11 @@
 export class Helpers {
 
     public static nospaces(input: string): string {
-        return input.replace(/^\s*/gm, '').replace(/\s*\r?\n/gm, '') || '';
+        return input
+            .replace(/^\s*/gm, '') //  A: remove horizontal spaces at beginning
+            .replace(/\s*\r?\n/gm, '') // B: remove horizontal spaces + optional CR + LF
+            .replace(/\?></gm, '?>\n<') // C: xml definition on its own line
+            || '';
     }
 
     public static cleanPemContents(pemContents: string): string {
