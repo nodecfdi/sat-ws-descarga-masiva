@@ -93,7 +93,7 @@ export class FielRequestBuilder implements RequestBuilderInterface {
             throw new RequestTypeInvalidException(requestType);
         }
         const solicitudAttributes: Record<string, string> = {
-           FechaFinal: end,  FechaInicial: start, RfcEmisor: rfcIssuer, RfcReceptor: rfcReceiver, RfcSolicitante: rfcSigner, TipoSolicitud: requestType,
+            FechaFinal: end, FechaInicial: start, RfcEmisor: rfcIssuer, RfcSolicitante: rfcSigner, TipoSolicitud: requestType,
         };
         const solicitudAttributesAsText = Object.entries(solicitudAttributes).filter((value) => {
             if (value[1] != '') {
@@ -101,11 +101,17 @@ export class FielRequestBuilder implements RequestBuilderInterface {
             }
         }).map((value) => {
             return `${Helpers.htmlspecialchars(value[0])}="${Helpers.htmlspecialchars(value[1])}"`;
-        }).join(' ');        
+        }).join(' ');
+        let xmlRfcReceived = '';
+        if ('' != rfcReceiver) {
+            xmlRfcReceived = `<des:RfcReceptores><des:RfcReceptor>${rfcReceiver}</des:RfcReceptor></des:RfcReceptores>`;
+        }
 
         const toDigestXml = `
             <des:SolicitaDescarga xmlns:des="http://DescargaMasivaTerceros.sat.gob.mx">
-                <des:solicitud ${solicitudAttributesAsText}></des:solicitud>
+                <des:solicitud ${solicitudAttributesAsText}>
+                    ${xmlRfcReceived}
+                </des:solicitud>
             </des:SolicitaDescarga>
            `;
         const signatureData = this.createSignature(toDigestXml);
@@ -116,6 +122,7 @@ export class FielRequestBuilder implements RequestBuilderInterface {
                 <s:Body>
                     <des:SolicitaDescarga>
                         <des:solicitud ${solicitudAttributesAsText}>
+                            ${xmlRfcReceived}
                             ${signatureData}
                         </des:solicitud>
                     </des:SolicitaDescarga>
