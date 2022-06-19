@@ -24,6 +24,8 @@ describe('date time period', () => {
         const start = DateTime.create('2019-01-01 00:00:59');
         const end = DateTime.create('2019-01-01 00:00:55');
 
-        expect(() => DateTimePeriod.create(start, end)).toThrowError('The final date must be greater than the initial date');
+        expect(() => DateTimePeriod.create(start, end)).toThrowError(
+            'The final date must be greater than the initial date'
+        );
     });
 });

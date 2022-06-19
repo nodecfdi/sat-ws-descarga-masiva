@@ -33,9 +33,11 @@ describe('query translator', () => {
         const query = QueryParameters.create(
             DateTimePeriod.create(since, until),
             DownloadType.received,
-            RequestType.cfdi,
+            RequestType.cfdi
         );
         const requestBody = translator.createSoapRequest(requestBuilder, query);
-        expect(Helpers.nospaces(TestCase.xmlFormat(requestBody))).toBe(Helpers.nospaces(TestCase.fileContents('query/request-received.xml')));
+        expect(Helpers.nospaces(TestCase.xmlFormat(requestBody))).toBe(
+            Helpers.nospaces(TestCase.fileContents('query/request-received.xml'))
+        );
     });
 });

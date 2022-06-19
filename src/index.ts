@@ -12,4 +12,3 @@ export * from './package-reader/metadata-package-reader';
 export * from './package-reader/cfdi-package-reader';
 export * from './internal/helpers';
 export * from './package-reader/exceptions/open-zip-file-exception';
-

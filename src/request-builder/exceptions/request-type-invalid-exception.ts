@@ -1,7 +1,6 @@
 import { RequestBuilderException } from '../request-builder-exception';
 
 export class RequestTypeInvalidException extends RequestBuilderException {
-
     private _requestType: string;
 
     constructor(requestType: string) {

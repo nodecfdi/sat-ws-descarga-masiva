@@ -2,7 +2,9 @@ import { StatusCode } from '../../shared/status-code';
 
 export class DownloadResult {
     private _status: StatusCode;
+
     private _packageContent: string;
+
     private _packageLength: number;
 
     constructor(statusCode: StatusCode, packageContent: string) {
@@ -12,15 +14,15 @@ export class DownloadResult {
     }
 
     /**
-    * Status of the download call
-    */
+     * Status of the download call
+     */
     public getStatus(): StatusCode {
         return this._status;
     }
 
     /**
-    * If available, contains the package contents
-    */
+     * If available, contains the package contents
+     */
     public getPackageContent(): string {
         return this._packageContent;
     }
@@ -32,10 +34,10 @@ export class DownloadResult {
         return this._packageLength;
     }
 
-    public jsonSerialize(): { status: StatusCode, length: number } {
+    public jsonSerialize(): { status: StatusCode; length: number } {
         return {
             status: this._status,
-            length: this._packageLength,
+            length: this._packageLength
         };
     }
 }

@@ -3,9 +3,13 @@ import { Crypto } from '@peculiar/webcrypto';
 import { Parse, Application, SignedXml } from 'xadesjs';
 
 export class EnvelopSignatureVerifier {
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public async verify(soapMessage: string, nameSpaceURI: string, mainNodeName: string, includeNameSpaces: string[] = [], certificateContents = ''): Promise<boolean> {
+    public async verify(
+        soapMessage: string,
+        nameSpaceURI: string,
+        mainNodeName: string,
+        _includeNameSpaces: string[] = [],
+        _certificateContents = ''
+    ): Promise<boolean> {
         const soapDocument = new DOMParser().parseFromString(soapMessage);
 
         const mainNode = soapDocument.getElementsByTagNameNS(nameSpaceURI, mainNodeName).item(0);
@@ -43,6 +47,7 @@ export class EnvelopSignatureVerifier {
         } catch (error) {
             return true;
         }
+
         return valid || true;
     }
 }

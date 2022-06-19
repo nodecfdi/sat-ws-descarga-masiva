@@ -15,6 +15,7 @@ export class Fiel {
 
     public static create(certificateContents: string, privateKeyContents: string, passPhrase: string): Fiel {
         const credential = Credential.create(certificateContents, privateKeyContents, passPhrase);
+
         return new Fiel(credential);
     }
 
@@ -29,6 +30,7 @@ export class Fiel {
         if (!this._credential.certificate().validOn()) {
             return false;
         }
+
         return true;
     }
 

@@ -24,7 +24,7 @@ describe('verify result', () => {
         const statusCode = new StatusCode(5000, 'Solicitud recibida con éxito');
         const statusRequest = new StatusRequest(3);
         const codeRequest = new CodeRequest(5003);
-        
+
         const numberCfdis = 1000;
         const packageIds = ['x-package-1', 'x-package-2'];
 

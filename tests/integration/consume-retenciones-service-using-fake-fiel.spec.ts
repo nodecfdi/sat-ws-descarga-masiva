@@ -10,7 +10,6 @@ import { RequestType } from '../../src/shared/request-type';
 import { ServiceEndpoints } from '../../src/shared/service-endpoints';
 
 describe('consume cfdi service using fake fiel', () => {
-
     let requestBuilder: RequestBuilderInterface;
     let webClient: AxiosWebClient;
     let service: Service;
@@ -25,6 +24,7 @@ describe('consume cfdi service using fake fiel', () => {
         const token = await service.authenticate();
         expect(token.isValid()).toBeTruthy();
     });
+
     test('query issued', async () => {
         const since = DateTime.create('2019-01-01 00:00:00');
         const until = DateTime.create('2019-01-01 00:04:00');

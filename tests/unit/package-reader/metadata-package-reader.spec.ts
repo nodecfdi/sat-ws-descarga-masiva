@@ -29,14 +29,11 @@ describe('metadata package reader', () => {
         expect(metadata.size).toBe(2);
 
         const extracted: string[] = [];
-        metadata.forEach(item => {
+        metadata.forEach((item) => {
             extracted.push(item.get('uuid'));
         });
 
-        const expected = [
-            'E7215E3B-2DC5-4A40-AB10-C902FF9258DF',
-            '129C4D12-1415-4ACE-BE12-34E71C4EAB4E',
-        ].sort();
+        const expected = ['E7215E3B-2DC5-4A40-AB10-C902FF9258DF', '129C4D12-1415-4ACE-BE12-34E71C4EAB4E'].sort();
 
         expect(extracted.sort()).toStrictEqual(expected);
     });
@@ -50,7 +47,7 @@ describe('metadata package reader', () => {
         const contents = TestCase.fileContents('zip/metadata.zip');
         const second = await MetadaPackageReader.createFromContents(contents);
         const metadata1 = await Helpers.iteratorToMap(first.metadata());
-        const metadata2 = await  Helpers.iteratorToMap(second.metadata());
+        const metadata2 = await Helpers.iteratorToMap(second.metadata());
 
         expect(metadata1).toStrictEqual(metadata2);
     });
@@ -64,17 +61,12 @@ describe('metadata package reader', () => {
         expect(jsonData.source).toBe(zipFilename);
 
         // assert file contents
-        const expectedFiles = [
-            '45C5C344-DA01-497A-9271-5AA3852EE6AE_01.txt',
-        ];
+        const expectedFiles = ['45C5C344-DA01-497A-9271-5AA3852EE6AE_01.txt'];
         const jsonDataFiles = jsonData.files;
         expect(Object.keys(jsonDataFiles)).toStrictEqual(expectedFiles);
 
         // assert metadataItems
-        const expectedMetadata = [
-            'E7215E3B-2DC5-4A40-AB10-C902FF9258DF',
-            '129C4D12-1415-4ACE-BE12-34E71C4EAB4E',
-        ];
+        const expectedMetadata = ['E7215E3B-2DC5-4A40-AB10-C902FF9258DF', '129C4D12-1415-4ACE-BE12-34E71C4EAB4E'];
         const jsonDataMetadata = jsonData.metadata;
         expect(Object.keys(jsonDataMetadata).sort()).toStrictEqual(expectedMetadata.sort());
     });

@@ -7,7 +7,9 @@
  */
 export class MetadataPreprocessor {
     private static readonly CONTROL_CR = '\r';
+
     private static readonly CONTROL_LF = '\n';
+
     private static readonly CONTROL_CRLF = '\r\n';
 
     /** The data to process */
@@ -32,7 +34,11 @@ export class MetadataPreprocessor {
         if (firstLineFeedPosition == undefined) {
             eolIsCrLf = false;
         } else {
-            eolIsCrLf = firstLineFeedPosition > 0 ? this._contents.substring(firstLineFeedPosition - 1, firstLineFeedPosition) === MetadataPreprocessor.CONTROL_CR : this._contents.lastIndexOf(MetadataPreprocessor.CONTROL_CR) == undefined;
+            eolIsCrLf =
+                firstLineFeedPosition > 0
+                    ? this._contents.substring(firstLineFeedPosition - 1, firstLineFeedPosition) ===
+                      MetadataPreprocessor.CONTROL_CR
+                    : this._contents.lastIndexOf(MetadataPreprocessor.CONTROL_CR) == undefined;
         }
 
         // exit early if nothing to do
@@ -41,7 +47,10 @@ export class MetadataPreprocessor {
         }
 
         const lines = this._contents.split(MetadataPreprocessor.CONTROL_CRLF);
-        this._contents = lines.map((line) => { return line.replace(new RegExp(`${MetadataPreprocessor.CONTROL_LF}`, 'g'), ''); })
+        this._contents = lines
+            .map((line) => {
+                return line.replace(new RegExp(`${MetadataPreprocessor.CONTROL_LF}`, 'g'), '');
+            })
             .join(MetadataPreprocessor.CONTROL_LF);
     }
 }

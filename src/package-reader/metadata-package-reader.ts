@@ -6,7 +6,6 @@ import { MetadataItem } from './metadata-item';
 import { PackageReaderInterface } from './package-reader-interface';
 
 export class MetadaPackageReader implements PackageReaderInterface {
-
     private _packageReader: PackageReaderInterface;
 
     constructor(packageReader: PackageReaderInterface) {
@@ -16,6 +15,7 @@ export class MetadaPackageReader implements PackageReaderInterface {
     public static async createFromFile(fileName: string): Promise<MetadaPackageReader> {
         const packageReader = await FilteredPackageReader.createFromFile(fileName);
         packageReader.setFilter(new MetadataFileFilter());
+
         return new MetadaPackageReader(packageReader);
     }
 
@@ -24,6 +24,7 @@ export class MetadaPackageReader implements PackageReaderInterface {
         packageReader.setFilter(new MetadataFileFilter());
         // delete temporary file
         packageReader.destruct();
+
         return new MetadaPackageReader(packageReader);
     }
 
@@ -53,8 +54,13 @@ export class MetadaPackageReader implements PackageReaderInterface {
         }
     }
 
-    public async jsonSerialize(): Promise<{ source: string, files: Record<string, string>, metadata: Record<string, MetadataItem> }> {
+    public async jsonSerialize(): Promise<{
+        source: string;
+        files: Record<string, string>;
+        metadata: Record<string, MetadataItem>;
+    }> {
         const filtered = await (this._packageReader as FilteredPackageReader).jsonSerialize();
+
         return {
             source: filtered.source,
             files: filtered.files,

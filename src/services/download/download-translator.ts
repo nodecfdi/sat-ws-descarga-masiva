@@ -10,9 +10,10 @@ export class DownloadTranslator extends InteractsXmlTrait {
     public createDownloadResultFromSoapResponse(content: string): DownloadResult {
         const env = this.readXmlElement(content);
         const values = this.findAtrributes(env, 'header', 'respuesta');
-        
+
         const status = new StatusCode(Number(values['codestatus']) ?? 0, values['mensaje'] ?? '');
         const cpackage = this.findContent(env, 'body', 'RespuestaDescargaMasivaTercerosSalida', 'Paquete');
+
         return new DownloadResult(status, Buffer.from(cpackage).toString('base64') || '');
     }
 

@@ -19,7 +19,9 @@ describe('filtered package reader', () => {
     });
 
     test('create from content with invalid content', async () => {
-        await expect(FilteredPackageReader.createFromContents('invalid content')).rejects.toBeInstanceOf(OpenZipFileException);
+        await expect(FilteredPackageReader.createFromContents('invalid content')).rejects.toBeInstanceOf(
+            OpenZipFileException
+        );
     });
 
     test('file contents and count with file', async () => {
@@ -37,15 +39,13 @@ describe('filtered package reader', () => {
             compression: 'DEFLATE'
         });
         writeFileSync(tmpfile, data);
-        const expected = new Map(
-            [
-                ['empty file.txt', ''],
-                ['foo.txt', 'foo'],
-                ['sub/bar.txt', 'bar'],
-            ]
-        );
+        const expected = new Map([
+            ['empty file.txt', ''],
+            ['foo.txt', 'foo'],
+            ['sub/bar.txt', 'bar']
+        ]);
         const packageReader = await FilteredPackageReader.createFromFile(tmpfile);
-        packageReader.setFilter(new NullFileFilter);
+        packageReader.setFilter(new NullFileFilter());
         const fileContents = await Helpers.iteratorToMap(packageReader.fileContents());
         expect(fileContents).toStrictEqual(expected);
         expect(3).toBe(await packageReader.count());

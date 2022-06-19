@@ -8,36 +8,39 @@ export interface RequestBuilderInterface {
     /**
      * Creates an authorization signed xml message
      *
-     * @param created must use SAT format 'Y-m-d\TH:i:s.000T'
-     * @param expires must use SAT format 'Y-m-d\TH:i:s.000T'
-     * @param securityTokenId if empty, the authentication method will create one by its own
-     * @return string
+     * @param created - must use SAT format 'Y-m-dTH:i:s.000T'
+     * @param expires - must use SAT format 'Y-m-dTH:i:s.000T'
+     * @param securityTokenId - if empty, the authentication method will create one by its own
+     * @returns string
      */
     authorization(created: string, expires: string, securityTokenId?: string): string;
+
     /**
      * Creates a query signed xml message
      *
-     * @param start must use format 'Y-m-d\TH:i:s'
-     * @param end must use format 'Y-m-d\TH:i:s'
-     * @param rfcIssuer can be empty if $rfcReceiver is set, USE_SIGNER to use certificate owner
-     * @param rfcReceiver can be empty if $rfcIssuer is set, USE_SIGNER to use certificate owner
-     * @param requestType one of "CFDI" or "metadata"
+     * @param start - must use format 'Y-m-dTH:i:s'
+     * @param end - must use format 'Y-m-dTH:i:s'
+     * @param rfcIssuer - can be empty if $rfcReceiver is set, USE_SIGNER to use certificate owner
+     * @param rfcReceiver - can be empty if $rfcIssuer is set, USE_SIGNER to use certificate owner
+     * @param requestType - one of "CFDI" or "metadata"
      * @throws RequestBuilderException
-     * @return string
+     * @returns string
      */
     query(start: string, end: string, rfcIssuer: string, rfcReceiver: string, requestType: string): string;
+
     /**
      * Creates a verify signed xml message
      *
-     * @param requestId
-     * @return string
+     * @param requestId - RequestId
+     * @returns string
      */
     verify(requestId: string): string;
+
     /**
      * Creates a download signed xml message
      *
-     * @param packageId
-     * @return string
+     * @param packageId - PackageId
+     * @returns string
      */
     download(packageId: string): string;
 }

@@ -1,2 +1,1 @@
-export abstract class RequestBuilderException extends Error {
-}
+export abstract class RequestBuilderException extends Error {}

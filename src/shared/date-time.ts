@@ -4,6 +4,7 @@ import { DateTime as DateTimeImmutable } from 'luxon';
  */
 export class DateTime {
     private _value: DateTimeImmutable;
+
     private _defaultTimeZone: string;
 
     /**
@@ -18,15 +19,16 @@ export class DateTime {
         value = value ?? 'now';
         const originalValue = value;
         this._defaultTimeZone = defaultTimeZone || 'America/Mexico_City';
-        if (typeof (value) == 'number') {
+        if (typeof value == 'number') {
             this._value = DateTimeImmutable.fromSeconds(value);
             if (!this._value.isValid) {
                 throw new Error(`Unable to create a Datetime("${originalValue}")`);
             }
             this._value.setZone(defaultTimeZone);
+
             return;
         }
-        if (typeof (value) == 'string') {
+        if (typeof value == 'string') {
             if (value == 'now') {
                 value = DateTimeImmutable.now();
             } else {
@@ -67,6 +69,7 @@ export class DateTime {
             timezone = this._defaultTimeZone;
         }
         this._value = this._value.setZone(timezone);
+
         return this._value.toFormat(format);
     }
 
@@ -79,12 +82,13 @@ export class DateTime {
     }
 
     /**
-     * add or sub in minutes 
+     * add or sub in minutes
      *
      */
     public modify(quantity: number): DateTime {
         const temp = this._value;
-        return new DateTime(temp.plus({minutes: quantity }));
+
+        return new DateTime(temp.plus({ minutes: quantity }));
     }
 
     public compareTo(otherDate: DateTime): number {

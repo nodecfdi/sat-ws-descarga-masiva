@@ -11,10 +11,10 @@ export class MetadataContent {
     private _iterator: Interface;
 
     /**
-    * The iterator will be used in a foreach loop to create MetadataItems
-    * The first iteration must contain an array of header names that will be renames to lower case first letter
-    * The next iterations must contain an array with data
-    */
+     * The iterator will be used in a foreach loop to create MetadataItems
+     * The first iteration must contain an array of header names that will be renames to lower case first letter
+     * The next iterations must contain an array with data
+     */
     constructor(iterator: Interface) {
         this._iterator = iterator;
     }
@@ -24,15 +24,15 @@ export class MetadataContent {
         const preprocessor = new MetadataPreprocessor(contents);
         preprocessor.fix();
 
-
         const tmpdir = realpathSync(os.tmpdir());
         const filePath = join(tmpdir, `${randomUUID()}.csv`);
         writeFileSync(filePath, preprocessor.getContents());
 
         const rl = createInterface({
             input: createReadStream(filePath),
-            crlfDelay: Infinity,
+            crlfDelay: Infinity
         });
+
         return new MetadataContent(rl);
     }
 
@@ -50,11 +50,13 @@ export class MetadataContent {
             if (onFirstLine) {
                 onFirstLine = false;
                 headers = data.map((value) => value.charAt(0).toLowerCase() + value.substring(1));
+
                 return;
             }
             items.push(this.createMetadaItem(headers, data));
         });
         await EventEmitter.once(this._iterator, 'close');
+
         return items;
     }
 
@@ -68,8 +70,9 @@ export class MetadataContent {
         }
         if (countValues > countHeaders) {
             for (let index = 1; index <= countValues - countHeaders; index++) {
-                headers.push(`#extra-${index.toLocaleString('en-Us', { minimumIntegerDigits: 2, useGrouping: false })}`);
-
+                headers.push(
+                    `#extra-${index.toLocaleString('en-Us', { minimumIntegerDigits: 2, useGrouping: false })}`
+                );
             }
         }
 

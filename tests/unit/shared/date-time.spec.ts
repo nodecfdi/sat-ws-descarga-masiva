@@ -3,7 +3,6 @@ import { DateTime as DateTimeImmutable } from 'luxon';
 describe('date time', () => {
     const mexicoTimeZone = 'America/Mexico_City';
 
-
     test('create using timezon zulu', () => {
         const date = DateTime.create('2019-01-14T04:23:24.000Z', mexicoTimeZone);
 

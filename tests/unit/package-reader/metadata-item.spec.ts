@@ -27,7 +27,6 @@ describe('metadata item', () => {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         let extracted = content.get(key)!;
 
-
         // normalize line endings
         expectedContent = expectedContent.replace(new RegExp(/\r\n/, 'g'), '\n');
         extracted = extracted.replace(new RegExp(/\r\n/, 'g'), '\n');

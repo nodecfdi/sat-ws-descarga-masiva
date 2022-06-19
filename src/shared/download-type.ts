@@ -1,4 +1,4 @@
 export enum DownloadType {
     issued = 'RfcEmisor',
-    received = 'RfcReceptor',
+    received = 'RfcReceptor'
 }

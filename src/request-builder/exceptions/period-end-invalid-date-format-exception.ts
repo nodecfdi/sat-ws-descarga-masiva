@@ -1,7 +1,6 @@
 import { RequestBuilderException } from '../request-builder-exception';
 
 export class PeriodEndInvalidDateFormatException extends RequestBuilderException {
-
     private _periodEnd: string;
 
     constructor(periodEnd: string) {

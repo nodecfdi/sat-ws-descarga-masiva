@@ -7,7 +7,10 @@ import { TestCase } from '../../../test-case';
 
 describe('query parameters', () => {
     test('all properties', () => {
-        const period = DateTimePeriod.create(DateTime.create('2019-01-01 00:00:00'), DateTime.create('2019-01-01 00:04:00'));
+        const period = DateTimePeriod.create(
+            DateTime.create('2019-01-01 00:00:00'),
+            DateTime.create('2019-01-01 00:04:00')
+        );
         const downloadType = DownloadType.received;
         const requestType = RequestType.cfdi;
         const rfcMatch = 'AAA010101AAA';
@@ -21,7 +24,10 @@ describe('query parameters', () => {
     });
 
     test('minimal create', () => {
-        const period = DateTimePeriod.create(DateTime.create('2019-01-01 00:00:00'), DateTime.create('2019-01-01 00:04:00'));
+        const period = DateTimePeriod.create(
+            DateTime.create('2019-01-01 00:00:00'),
+            DateTime.create('2019-01-01 00:04:00')
+        );
 
         const query = QueryParameters.create(period);
 
@@ -43,4 +49,3 @@ describe('query parameters', () => {
         expect(JSON.stringify(query.jsonSerialize())).toBe(JSON.stringify(JSON.parse(expectedFile)));
     });
 });
-

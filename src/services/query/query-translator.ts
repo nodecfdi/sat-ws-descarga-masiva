@@ -15,14 +15,19 @@ export class QueryTranslator extends InteractsXmlTrait {
         const values = this.findAtrributes(env, 'body', 'solicitaDescargaResponse', 'solicitaDescargaResult');
         const status = new StatusCode(Number(values['codestatus']) ?? 0, values['mensaje'] ?? '');
         const requestId = values['idsolicitud'] ?? '';
+
         return new QueryResult(status, requestId);
     }
 
     public createSoapRequest(requestBuilder: RequestBuilderInterface, parameters: QueryParameters): string {
         const start = parameters.getPeriod().getStart().format(`yyyy-MM-dd'T'HH:mm:ss`);
         const end = parameters.getPeriod().getEnd().format(`yyyy-MM-dd'T'HH:mm:ss`);
-        const rfcIssuer = parameters.getDownloadType() == DownloadType.issued ? requestBuilder.USE_SIGNER : parameters.getRfcMatch();
-        const rfcReceiver = parameters.getDownloadType() == DownloadType.received ? requestBuilder.USE_SIGNER : parameters.getRfcMatch();
+        const rfcIssuer =
+            parameters.getDownloadType() == DownloadType.issued ? requestBuilder.USE_SIGNER : parameters.getRfcMatch();
+        const rfcReceiver =
+            parameters.getDownloadType() == DownloadType.received
+                ? requestBuilder.USE_SIGNER
+                : parameters.getRfcMatch();
         const requestType = parameters.getRequestType().valueOf();
 
         return requestBuilder.query(start, end, rfcIssuer, rfcReceiver, requestType);

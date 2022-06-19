@@ -8,8 +8,11 @@
  */
 export class ServiceEndpoints {
     private _authenticate: string;
+
     private _query: string;
+
     private _verify: string;
+
     private _download: string;
 
     constructor(authenticate: string, query: string, verify: string, download: string) {

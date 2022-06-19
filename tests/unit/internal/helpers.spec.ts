@@ -4,10 +4,10 @@ describe('Helpers', () => {
         const source = `
             <root>
                 <foo a="1" b="2">foo</foo>
-                
+
                 <bar>
                     <baz>
-                        BAZZ        
+                        BAZZ
                     </baz>
                 </bar>
             </root>

@@ -1,3 +1,4 @@
+/* eslint-disable jest/no-conditional-expect */
 import { CRequest } from '../../../src/web-client/crequest';
 import { AxiosWebClient } from '../../../src/web-client/axios-web-client';
 import { WebClientException } from '../../../src/web-client/exceptions/web-client-exception';

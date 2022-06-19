@@ -17,4 +17,3 @@ describe('web client exception', () => {
         expect(exception.getPrevious()).toBe(previous);
     });
 });
-

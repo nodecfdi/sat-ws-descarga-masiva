@@ -17,11 +17,13 @@ export class TestCase {
         if (!existsSync(path)) {
             return '';
         }
+
         return readFileSync(path, encoding || 'binary');
     }
 
     public static createFielRequestBuilderUsingTestingFiles(password?: string): FielRequestBuilder {
         const fiel = TestCase.createFielUsingTestingFiles(password);
+
         return new FielRequestBuilder(fiel);
     }
 
@@ -40,6 +42,7 @@ export class TestCase {
         const xml = document.createProcessingInstruction('xml', 'version="1.0"');
         document.insertBefore(xml, document.firstChild);
         const serializer = new XMLSerializer();
-        return serializer.serializeToString(document);  
+
+        return serializer.serializeToString(document);
     }
 }

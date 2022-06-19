@@ -26,6 +26,8 @@ describe('download translator', () => {
 
         const requestBody = translator.createSoapRequest(requestBuilder, packageId);
 
-        expect(Helpers.nospaces(TestCase.xmlFormat(requestBody))).toBe(Helpers.nospaces(TestCase.fileContents('download/request.xml')));
+        expect(Helpers.nospaces(TestCase.xmlFormat(requestBody))).toBe(
+            Helpers.nospaces(TestCase.fileContents('download/request.xml'))
+        );
     });
 });

@@ -73,10 +73,10 @@ export class FielRequestBuilder implements RequestBuilderInterface {
         rfcReceiver = (this.USE_SIGNER == rfcReceiver ? rfcSigner : rfcReceiver).toUpperCase();
 
         //check inputs
-        if (! /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(start)) {
+        if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(start)) {
             throw new PeriodStartInvalidDateFormatException(start);
         }
-        if (! /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(end)) {
+        if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(end)) {
             throw new PeriodEndInvalidDateFormatException(end);
         }
         if (start > end) {
@@ -93,15 +93,24 @@ export class FielRequestBuilder implements RequestBuilderInterface {
             throw new RequestTypeInvalidException(requestType);
         }
         const solicitudAttributes: Record<string, string> = {
-            FechaFinal: end, FechaInicial: start, RfcEmisor: rfcIssuer, RfcSolicitante: rfcSigner, TipoSolicitud: requestType,
+            FechaFinal: end,
+            FechaInicial: start,
+            RfcEmisor: rfcIssuer,
+            RfcSolicitante: rfcSigner,
+            TipoSolicitud: requestType
         };
-        const solicitudAttributesAsText = Object.entries(solicitudAttributes).filter((value) => {
-            if (value[1] != '') {
-                return value;
-            }
-        }).map((value) => {
-            return `${Helpers.htmlspecialchars(value[0])}="${Helpers.htmlspecialchars(value[1])}"`;
-        }).join(' ');
+        const solicitudAttributesAsText = Object.entries(solicitudAttributes)
+            .filter((value) => {
+                if (value[1] != '') {
+                    return true;
+                }
+
+                return false;
+            })
+            .map((value) => {
+                return `${Helpers.htmlspecialchars(value[0])}="${Helpers.htmlspecialchars(value[1])}"`;
+            })
+            .join(' ');
         let xmlRfcReceived = '';
         if ('' != rfcReceiver) {
             xmlRfcReceived = `<des:RfcReceptores><des:RfcReceptor>${rfcReceiver}</des:RfcReceptor></des:RfcReceptores>`;
@@ -129,6 +138,7 @@ export class FielRequestBuilder implements RequestBuilderInterface {
                 </s:Body>
             </s:Envelope>
         `;
+
         return Helpers.nospaces(xml);
     }
 
@@ -186,17 +196,20 @@ export class FielRequestBuilder implements RequestBuilderInterface {
 
     private static createXmlSecurityToken(): string {
         const md5 = createHash('md5').update(randomUUID()).digest('hex');
-        return `uuid-${md5.substring(0, 8)}-${md5.substring(8, 4)}-${md5.substring(12, 4)}-${md5.substring(16, 4)}-${md5.substring(20)}-1`;
+
+        return `uuid-${md5.substring(0, 8)}-${md5.substring(8, 4)}-${md5.substring(12, 4)}-${md5.substring(
+            16,
+            4
+        )}-${md5.substring(20)}-1`;
     }
 
     private createSignature(toDigest: string, signedInfoUri = '', keyInfo = ''): string {
         toDigest = Helpers.nospaces(toDigest);
         const digested = createHash('sha1').update(toDigest).digest('base64');
         let signedInfo = this.createSignedInfoCanonicalExclusive(digested, signedInfoUri);
-        const signatureValue = hextob64(this.getFiel().sign(signedInfo, SignatureAlgorithm.SHA1,));
+        const signatureValue = hextob64(this.getFiel().sign(signedInfo, SignatureAlgorithm.SHA1));
 
         signedInfo = signedInfo.replace('<SignedInfo xmlns="http://www.w3.org/2000/09/xmldsig#">', '<SignedInfo>');
-
 
         if ('' === keyInfo) {
             keyInfo = this.createKeyInfoData();
@@ -227,6 +240,7 @@ export class FielRequestBuilder implements RequestBuilderInterface {
                 </Reference>
             </SignedInfo>
         `;
+
         return Helpers.nospaces(xml);
     }
 
@@ -235,6 +249,7 @@ export class FielRequestBuilder implements RequestBuilderInterface {
         const certificate = Helpers.cleanPemContents(fiel.getCertificatePemContents());
         const serial = fiel.getCertificateSerial();
         const issuerName = fiel.getCertificateIssuerName();
+
         return `
             <KeyInfo>
                 <X509Data>

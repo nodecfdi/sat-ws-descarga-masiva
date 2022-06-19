@@ -2,8 +2,11 @@ import { Method } from 'axios';
 
 export class CRequest {
     private _method: Method;
+
     private _uri: string;
+
     private _body: string;
+
     private _headers: Record<string, string>;
 
     /**
@@ -34,22 +37,22 @@ export class CRequest {
     }
 
     public defaultHeaders(): {
-        'Content-type': string,
-        'Accept': string,
-        'Cache-Control': string,
+        'Content-type': string;
+        'Accept': string;
+        'Cache-Control': string;
     } {
         return {
             'Content-type': 'text/xml; charset="utf-8"',
             'Accept': 'text/xml',
-            'Cache-Control': 'no-cache',
+            'Cache-Control': 'no-cache'
         };
     }
 
     public jsonSerialize(): {
-        method: string,
-        uri: string,
-        body: string,
-        headers: Record<string, string>
+        method: string;
+        uri: string;
+        body: string;
+        headers: Record<string, string>;
     } {
         return {
             method: this._method,

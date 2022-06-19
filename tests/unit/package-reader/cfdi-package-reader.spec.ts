@@ -24,20 +24,22 @@ describe('cfdi package reader', () => {
         const zipContents = TestCase.fileContents('zip/cfdi.zip');
         const cfdiPackageReader = await CfdiPackageReader.createFromContents(zipContents);
         const temporaryFileName = cfdiPackageReader.getFilename();
-        expect(() => readFileSync(temporaryFileName)).toThrow(`ENOENT: no such file or directory, open '${temporaryFileName}'`);
+        expect(() => readFileSync(temporaryFileName)).toThrow(
+            `ENOENT: no such file or directory, open '${temporaryFileName}'`
+        );
     });
 
     test('reader zip with other files', async () => {
         let expectedFileNames = [
             'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee.xml',
-            'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee.xml.xml',
+            'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee.xml.xml'
         ];
         expectedFileNames = expectedFileNames.sort();
 
         const filename = TestCase.filePath('zip/cfdi.zip');
         const cfdiPackageReader = await CfdiPackageReader.createFromFile(filename);
 
-        const objects = (await Helpers.iteratorToObject(cfdiPackageReader.fileContents()));
+        const objects = await Helpers.iteratorToObject(cfdiPackageReader.fileContents());
         const filenames = Object.keys(objects).sort();
         expect(filenames).toStrictEqual(expectedFileNames);
     });
@@ -60,53 +62,61 @@ describe('cfdi package reader', () => {
         const contents = TestCase.fileContents('zip/cfdi.zip');
         const second = await CfdiPackageReader.createFromContents(contents);
 
-        expect(await Helpers.iteratorToObject(first.fileContents())).toStrictEqual(await Helpers.iteratorToObject(second.fileContents()));
+        expect(await Helpers.iteratorToObject(first.fileContents())).toStrictEqual(
+            await Helpers.iteratorToObject(second.fileContents())
+        );
     });
 
     const providerObtainUuidFromXmlCfdi = [
-        [`
+        [
+            `
             <cfdi:Complemento>
                     <tfd:TimbreFiscalDigital UUID="ff833b27-c8ab-4c44-a559-2c197bdd4067"/>
             <cfdi:Complemento/>
         `,
-            'ff833b27-c8ab-4c44-a559-2c197bdd4067',
+            'ff833b27-c8ab-4c44-a559-2c197bdd4067'
         ],
-        [`
+        [
+            `
             <cfdi:Complemento>
                 <tfd:TimbreFiscalDigital UUID="FF833B27-C8AB-4C44-A559-2C197BDD4067"/>
             <cfdi:Complemento/>
         `,
             'ff833b27-c8ab-4c44-a559-2c197bdd4067'
         ],
-        [`
+        [
+            `
             <cfdi:Complemento>
                 <tfd:TimbreFiscalDigital a="a" UUID="ff833b27-c8ab-4c44-a559-2c197bdd4067" b="b"/>
             cfdi:Complemento/>
          `,
-            'ff833b27-c8ab-4c44-a559-2c197bdd4067',
+            'ff833b27-c8ab-4c44-a559-2c197bdd4067'
         ],
-        [`
+        [
+            `
             <cfdi:Complemento>
                 <tfd:TimbreFiscalDigital
                     UUID="ff833b27-c8ab-4c44-a559-2c197bdd4067"
                 />
             <cfdi:Complemento/>
          `,
-            'ff833b27-c8ab-4c44-a559-2c197bdd4067',
+            'ff833b27-c8ab-4c44-a559-2c197bdd4067'
         ],
-        [`
+        [
+            `
             <cfdi:Complemento>
-                <tfd:TimbreFiscalDigital  
+                <tfd:TimbreFiscalDigital
                     UUID="ff833b27-ÑÑÑÑ-4c44-a559-2c197bdd4067"
                 />
             <cfdi:Complemento/>
         `,
-            '',
+            ''
         ],
         ['', ''],
         ['invalid xml', ''],
         ['<xml/>', ''],
-        [`
+        [
+            `
             <cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/3"
               xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital">
               <cfdi:CfdiRelacionados TipoRelacion="07">
@@ -117,13 +127,16 @@ describe('cfdi package reader', () => {
               </cfdi:Complemento>
             </cfdi:Comprobante>
         `,
-            '000d04ba-18b8-4b78-b266-7fa7bdb24603',
+            '000d04ba-18b8-4b78-b266-7fa7bdb24603'
         ]
     ];
-    test.each(providerObtainUuidFromXmlCfdi)('provider obtain uuid from xml cfdi', (source: string, expected: string) => {
-        const uuid = CfdiPackageReader.obtainUuidFromXmlCfdi(source);
-        expect(uuid).toBe(expected);
-    });
+    test.each(providerObtainUuidFromXmlCfdi)(
+        'provider obtain uuid from xml cfdi',
+        (source: string, expected: string) => {
+            const uuid = CfdiPackageReader.obtainUuidFromXmlCfdi(source);
+            expect(uuid).toBe(expected);
+        }
+    );
 
     test('json', async () => {
         const zipFilename = TestCase.filePath('zip/cfdi.zip');
@@ -134,14 +147,12 @@ describe('cfdi package reader', () => {
 
         const expectedFiles = [
             'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee.xml',
-            'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee.xml.xml',
+            'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee.xml.xml'
         ].sort();
         const jsonDataFiles = jsonData.files;
         expect(Object.keys(jsonDataFiles).sort()).toStrictEqual(expectedFiles);
 
-        const expectedCfdis = [
-            '11111111-2222-3333-4444-000000000001',
-        ];;
+        const expectedCfdis = ['11111111-2222-3333-4444-000000000001'];
         const jsonDataCfdis = jsonData.cfdis;
         expect(Object.keys(jsonDataCfdis)).toStrictEqual(expectedCfdis);
     });

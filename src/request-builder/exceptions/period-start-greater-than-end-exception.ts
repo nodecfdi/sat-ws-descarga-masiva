@@ -1,8 +1,8 @@
 import { RequestBuilderException } from '../request-builder-exception';
 
 export class PeriodStartGreaterThanEndException extends RequestBuilderException {
-
     private _periodStart: string;
+
     private _periodEnd: string;
 
     constructor(periodStart: string, periodEnd: string) {

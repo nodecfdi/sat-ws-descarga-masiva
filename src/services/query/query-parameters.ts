@@ -6,8 +6,11 @@ import { RequestType } from '../../shared/request-type';
  */
 export class QueryParameters {
     private _period: DateTimePeriod;
+
     private _downloadType: DownloadType;
+
     private _requestType: RequestType;
+
     private _rfcMatch: string;
 
     constructor(period: DateTimePeriod, downloadType: DownloadType, requestType: RequestType, rfcMatch: string) {
@@ -17,12 +20,17 @@ export class QueryParameters {
         this._rfcMatch = rfcMatch;
     }
 
-    public static create(period: DateTimePeriod, downloadType?: DownloadType, requestType?: RequestType, rfcMatch = ''): QueryParameters {
+    public static create(
+        period: DateTimePeriod,
+        downloadType?: DownloadType,
+        requestType?: RequestType,
+        rfcMatch = ''
+    ): QueryParameters {
         downloadType = downloadType || DownloadType.issued;
         requestType = requestType || RequestType.metadata;
+
         return new QueryParameters(period, downloadType, requestType, rfcMatch);
     }
-
 
     public getPeriod(): DateTimePeriod {
         return this._period;
@@ -40,7 +48,12 @@ export class QueryParameters {
         return this._rfcMatch;
     }
 
-    public jsonSerialize(): { period: { start: number, end: number }, downloadType: DownloadType, requestType: RequestType, rfcMatch: string } {
+    public jsonSerialize(): {
+        period: { start: number; end: number };
+        downloadType: DownloadType;
+        requestType: RequestType;
+        rfcMatch: string;
+    } {
         return {
             period: this._period.jsonSerialize(),
             downloadType: this._downloadType,

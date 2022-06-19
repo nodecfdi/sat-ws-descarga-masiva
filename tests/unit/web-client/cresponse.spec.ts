@@ -22,13 +22,27 @@ describe('cresponse', () => {
         expect(response.isEmpty()).toBeTruthy();
     });
 
-    test.each([[200, false], [399, false], [400, true], [499, true], [500, false]])('status code is client error', (code: number, expected: boolean) => {
+    test.each([
+        [200, false],
+        [399, false],
+        [400, true],
+        [499, true],
+        [500, false]
+    ])('status code is client error', (code: number, expected: boolean) => {
         const response = new CResponse(code, '', {});
 
         expect(response.statusCodeIsClientError()).toBe(expected);
     });
 
-    test.each([[200, false], [399, false], [400, false], [499, false], [500, true], [599, true], [600, false]])('status code is server error', (code: number, expected: boolean) => {
+    test.each([
+        [200, false],
+        [399, false],
+        [400, false],
+        [499, false],
+        [500, true],
+        [599, true],
+        [600, false]
+    ])('status code is server error', (code: number, expected: boolean) => {
         const response = new CResponse(code, '', {});
 
         expect(response.statusCodeIsServerError()).toBe(expected);
@@ -39,7 +53,7 @@ describe('cresponse', () => {
         const body = 'this is the body';
         const headers = {
             'X-First': 'first header',
-            'X-Second': 'second header',
+            'X-Second': 'second header'
         };
 
         const response = new CResponse(statusCode, body, headers);

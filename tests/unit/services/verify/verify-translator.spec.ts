@@ -12,7 +12,7 @@ describe('verify translator', () => {
 
         const translator = new VerifyTranslator();
         const responseBody = Helpers.nospaces(TestCase.fileContents('verify/response-0-packages.xml'));
-        
+
         const result = translator.createVerifyResultFromSoapResponse(responseBody);
         const status = result.getStatus();
         const statusRequest = result.getStatusRequest();
@@ -32,7 +32,7 @@ describe('verify translator', () => {
     test('create verify result from soap response with two package', () => {
         const expectedPackagesIds = [
             '4e80345d-917f-40bb-a98f-4a73939343c5_01',
-            '4e80345d-917f-40bb-a98f-4a73939343c5_02',
+            '4e80345d-917f-40bb-a98f-4a73939343c5_02'
         ];
 
         const translator = new VerifyTranslator();
@@ -51,6 +51,8 @@ describe('verify translator', () => {
 
         const requestBody = translator.createSoapRequest(requestBuilder, requestId);
 
-        expect(Helpers.nospaces(TestCase.xmlFormat(requestBody))).toBe(Helpers.nospaces(TestCase.fileContents('verify/request.xml')));
+        expect(Helpers.nospaces(TestCase.xmlFormat(requestBody))).toBe(
+            Helpers.nospaces(TestCase.fileContents('verify/request.xml'))
+        );
     });
 });

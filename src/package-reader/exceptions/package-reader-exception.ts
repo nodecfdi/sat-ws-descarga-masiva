@@ -1,4 +1,1 @@
-export abstract class PackageReaderException extends Error {
-
-    
-}
+export abstract class PackageReaderException extends Error {}

@@ -12,8 +12,11 @@ import { Helpers } from '../../internal/helpers';
 
 export class FilteredPackageReader implements PackageReaderInterface {
     private _filename: string;
+
     private _archive: JSZip;
+
     private _removeOnDestruct = false;
+
     private _filter?: FileFilterInterface;
 
     /**
@@ -44,6 +47,7 @@ export class FilteredPackageReader implements PackageReaderInterface {
         } catch (error) {
             throw OpenZipFileException.create(filename, -1);
         }
+
         return new FilteredPackageReader(filename, archive);
     }
 
@@ -56,7 +60,7 @@ export class FilteredPackageReader implements PackageReaderInterface {
         } catch (error) {
             throw CreateTemporaryZipFileException.create('Cannot create a temporary file', error as Error);
         }
-        // write contents 
+        // write contents
         try {
             writeFileSync(tmpfile, contents, { encoding: 'binary' });
         } catch (error) {
@@ -72,6 +76,7 @@ export class FilteredPackageReader implements PackageReaderInterface {
             throw error;
         }
         cpackage._removeOnDestruct = true;
+
         return cpackage;
     }
 
@@ -115,10 +120,10 @@ export class FilteredPackageReader implements PackageReaderInterface {
         this._filter = filter ?? new NullFileFilter();
     }
 
-    public async jsonSerialize(): Promise<{ source: string, files: Record<string, string> }> {
+    public async jsonSerialize(): Promise<{ source: string; files: Record<string, string> }> {
         return {
             source: this.getFilename(),
-            files: await Helpers.iteratorToObject(this.fileContents()),
+            files: await Helpers.iteratorToObject(this.fileContents())
         };
     }
 }

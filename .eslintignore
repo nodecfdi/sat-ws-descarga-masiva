@@ -1,6 +1,3 @@
-node_modules
-dist
-build
-docs
-
-jest.config.js
+/dist
+web_modules
+.prettierrc.js

@@ -11,7 +11,6 @@ describe('crequest', () => {
         const request = new CRequest(method, uri, body, customHeaders);
         const map = new Map([...Object.entries(customHeaders), ...Object.entries(request.defaultHeaders())]);
         const headers = Object.fromEntries(map);
-        
 
         expect(request.getMethod()).toBe(method);
         expect(request.getUri()).toBe(uri);

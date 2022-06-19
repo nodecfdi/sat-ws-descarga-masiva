@@ -14,16 +14,24 @@ import { WebClientInterface } from './web-client/web-client-interface';
 
 export class Service {
     private _requestBuilder: RequestBuilderInterface;
+
     private _webClient: WebClientInterface;
+
     public _currentToken?: Token;
+
     private _endpoints: ServiceEndpoints;
 
     /**
      * Client constructor of "servicio de consulta y recuperación de comprobantes"
      *
-     * @param endpoints|undefined $endpoints If undefined uses CFDI endpoints
+     * @param endpoints - endpoints If undefined uses CFDI endpoints
      */
-    constructor(requestBuilder: RequestBuilderInterface, webClient: WebClientInterface, currentToken?: Token, endpoints?: ServiceEndpoints) {
+    constructor(
+        requestBuilder: RequestBuilderInterface,
+        webClient: WebClientInterface,
+        currentToken?: Token,
+        endpoints?: ServiceEndpoints
+    ) {
         this._requestBuilder = requestBuilder;
         this._webClient = webClient;
         this._currentToken = currentToken;
@@ -38,6 +46,7 @@ export class Service {
         if (!this._currentToken || !this._currentToken.isValid()) {
             this._currentToken = await this.authenticate();
         }
+
         return this._currentToken;
     }
 
@@ -47,7 +56,12 @@ export class Service {
     public async authenticate(): Promise<Token> {
         const authenticateTranslator = new AuthenticateTranslator();
         const soapBody = authenticateTranslator.createSoapRequest(this._requestBuilder);
-        const responseBody = await this.consume('http://DescargaMasivaTerceros.gob.mx/IAutenticacion/Autentica', this._endpoints.getAuthenticate(), soapBody);
+        const responseBody = await this.consume(
+            'http://DescargaMasivaTerceros.gob.mx/IAutenticacion/Autentica',
+            this._endpoints.getAuthenticate(),
+            soapBody
+        );
+
         return authenticateTranslator.createTokenFromSoapResponse(responseBody);
     }
 
@@ -57,9 +71,15 @@ export class Service {
     public async query(parameters: QueryParameters): Promise<QueryResult> {
         const queryTranslator = new QueryTranslator();
         const soapBody = queryTranslator.createSoapRequest(this._requestBuilder, parameters);
-        
+
         const currentToken = await this.obtainCurrentToken();
-        const responseBody = await this.consume('http://DescargaMasivaTerceros.sat.gob.mx/ISolicitaDescargaService/SolicitaDescarga', this._endpoints.getQuery(), soapBody, currentToken);
+        const responseBody = await this.consume(
+            'http://DescargaMasivaTerceros.sat.gob.mx/ISolicitaDescargaService/SolicitaDescarga',
+            this._endpoints.getQuery(),
+            soapBody,
+            currentToken
+        );
+
         return queryTranslator.createQueryResultFromSoapResponse(responseBody);
     }
 
@@ -70,7 +90,13 @@ export class Service {
         const verifyTranslator = new VerifyTranslator();
         const soapBody = verifyTranslator.createSoapRequest(this._requestBuilder, requestId);
         const currentToken = await this.obtainCurrentToken();
-        const responseBody = await this.consume('http://DescargaMasivaTerceros.sat.gob.mx/IVerificaSolicitudDescargaService/VerificaSolicitudDescarga', this._endpoints.getVerify(), soapBody, currentToken);
+        const responseBody = await this.consume(
+            'http://DescargaMasivaTerceros.sat.gob.mx/IVerificaSolicitudDescargaService/VerificaSolicitudDescarga',
+            this._endpoints.getVerify(),
+            soapBody,
+            currentToken
+        );
+
         return verifyTranslator.createVerifyResultFromSoapResponse(responseBody);
     }
 
@@ -78,7 +104,13 @@ export class Service {
         const downloadTranslator = new DownloadTranslator();
         const soapBody = downloadTranslator.createSoapRequest(this._requestBuilder, packageId);
         const currentToken = await this.obtainCurrentToken();
-        const responseBody = await this.consume('http://DescargaMasivaTerceros.sat.gob.mx/IDescargaMasivaTercerosService/Descargar', this._endpoints.getDownload(), soapBody, currentToken);
+        const responseBody = await this.consume(
+            'http://DescargaMasivaTerceros.sat.gob.mx/IDescargaMasivaTercerosService/Descargar',
+            this._endpoints.getDownload(),
+            soapBody,
+            currentToken
+        );
+
         return downloadTranslator.createDownloadResultFromSoapResponse(responseBody);
     }
 

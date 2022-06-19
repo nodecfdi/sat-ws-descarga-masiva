@@ -15,21 +15,22 @@ export class AuthenticateTranslator extends InteractsXmlTrait {
         timeContent = this.findContent(env, 'header', 'security', 'timestamp', 'expires');
         const expires = DateTime.create(timeContent != '' ? timeContent : 0);
         const value = this.findContent(env, 'body', 'autenticaResponse', 'autenticaResult');
+
         return new Token(created, expires, value);
     }
 
     public createSoapRequest(requestBuilder: RequestBuilderInterface): string {
         const since = DateTime.now();
         const until = since.modify(5);
+
         return this.createSoapRequestWithData(requestBuilder, since, until);
     }
-
 
     public createSoapRequestWithData(
         requestBuilder: RequestBuilderInterface,
         since: DateTime,
         until: DateTime,
-        securityToken = '',
+        securityToken = ''
     ): string {
         return requestBuilder.authorization(since.formatSat(), until.formatSat(), securityToken);
     }

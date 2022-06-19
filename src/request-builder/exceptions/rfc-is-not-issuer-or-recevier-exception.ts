@@ -1,9 +1,10 @@
 import { RequestBuilderException } from '../request-builder-exception';
 
 export class RfcIsNotIssuerOrReceiverException extends RequestBuilderException {
-
     private _rfcSigner: string;
+
     private _rfcIssuer: string;
+
     private _rfcReceiver: string;
 
     constructor(rfcSigner: string, rfcIssuer: string, rfcReceiver: string) {

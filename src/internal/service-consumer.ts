@@ -8,11 +8,23 @@ import { WebClientInterface } from '../web-client/web-client-interface';
 import { SoapFaultInfoExtractor } from './soap-fault-info-extractor';
 
 export class ServiceConsumer {
-    public static consume(webClient: WebClientInterface, soapAction: string, uri: string, body: string, token?: Token): Promise<string> {
+    public static consume(
+        webClient: WebClientInterface,
+        soapAction: string,
+        uri: string,
+        body: string,
+        token?: Token
+    ): Promise<string> {
         return new ServiceConsumer().execute(webClient, soapAction, uri, body, token);
     }
 
-    public async execute(webClient: WebClientInterface, soapAction: string, uri: string, body: string, token?: Token): Promise<string> {
+    public async execute(
+        webClient: WebClientInterface,
+        soapAction: string,
+        uri: string,
+        body: string,
+        token?: Token
+    ): Promise<string> {
         const headers = this.createHeaders(soapAction, token);
         const request = this.createRequest(uri, body, headers);
         let exception: WebClientException | undefined;
@@ -25,6 +37,7 @@ export class ServiceConsumer {
             response = webError.getResponse();
         }
         this.checkErrors(request, response, exception);
+
         return response.getBody();
     }
 
@@ -38,6 +51,7 @@ export class ServiceConsumer {
         if (token) {
             headers.set('Authorization', `WRAP access_token="${token.getValue()}"`);
         }
+
         return Object.fromEntries(headers);
     }
 
@@ -52,6 +66,7 @@ export class ServiceConsumer {
             throw webError;
         }
         webClient.fireResponse(response);
+
         return response;
     }
 

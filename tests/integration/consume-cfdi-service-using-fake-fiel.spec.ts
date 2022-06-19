@@ -9,7 +9,6 @@ import { DownloadType } from '../../src/shared/download-type';
 import { RequestType } from '../../src/shared/request-type';
 
 describe('consume cfdi service using fake fiel', () => {
-
     let requestBuilder: RequestBuilderInterface;
     let webClient: AxiosWebClient;
     let service: Service;

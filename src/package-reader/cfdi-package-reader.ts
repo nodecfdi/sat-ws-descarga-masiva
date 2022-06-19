@@ -13,6 +13,7 @@ export class CfdiPackageReader implements PackageReaderInterface {
     public static async createFromFile(filename: string): Promise<CfdiPackageReader> {
         const packageReader = await FilteredPackageReader.createFromFile(filename);
         packageReader.setFilter(new CfdiFileFilter());
+
         return new CfdiPackageReader(packageReader);
     }
 
@@ -21,6 +22,7 @@ export class CfdiPackageReader implements PackageReaderInterface {
         packageReader.setFilter(new CfdiFileFilter());
         // delete temporary file
         packageReader.destruct();
+
         return new CfdiPackageReader(packageReader);
     }
 
@@ -47,22 +49,27 @@ export class CfdiPackageReader implements PackageReaderInterface {
         }
     }
 
-
     public static obtainUuidFromXmlCfdi(xmlContent: string): string {
         const pattern = /:Complemento.*?:TimbreFiscalDigital.*?UUID="(?<uuid>[-a-zA-Z0-9]{36})"/s;
         const found = xmlContent.match(pattern);
         if (found && found.groups && found.groups['uuid']) {
             return found.groups['uuid'].toLowerCase();
         }
+
         return '';
     }
 
-    public async jsonSerialize(): Promise<{ source: string, files: Record<string, string>, cfdis: Record<string, string> }> {
+    public async jsonSerialize(): Promise<{
+        source: string;
+        files: Record<string, string>;
+        cfdis: Record<string, string>;
+    }> {
         const filtered = await (this._packageReader as FilteredPackageReader).jsonSerialize();
+
         return {
             source: filtered.source,
             files: filtered.files,
-            cfdis: await Helpers.iteratorToObject(this.cfdis()),
+            cfdis: await Helpers.iteratorToObject(this.cfdis())
         };
     }
 }

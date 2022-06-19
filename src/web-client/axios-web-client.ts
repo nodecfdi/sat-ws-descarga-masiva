@@ -30,20 +30,20 @@ export class AxiosWebClient implements WebClientInterface {
     }
 
     public async call(request: CRequest): Promise<CResponse> {
-
         let response: AxiosResponse;
         try {
             response = await this._client.request({
                 method: request.getMethod(),
                 headers: request.getHeaders(),
                 data: request.getBody(),
-                url: request.getUri(),
+                url: request.getUri()
             });
         } catch (error) {
-            const axiosError = error as AxiosError;
+            const axiosError = error as AxiosError<string>;
             const errorResponse = new CResponse(Number(axiosError.code) ?? 0, axiosError.response?.data ?? '', {});
             throw new WebClientException(axiosError.message, request, errorResponse, error as Error);
         }
+
         return new CResponse(response.status, response.data, response.headers);
     }
 }
