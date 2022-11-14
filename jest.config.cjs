@@ -3,9 +3,9 @@ module.exports = {
     testEnvironment: 'node',
     moduleDirectories: ['node_modules', 'src'],
     setupFilesAfterEnv: ['<rootDir>/jestSetup.ts'],
-    // moduleNameMapper: {
-    //   '~/(.*)': '<rootDir>/src/$1'
-    // },
+    moduleNameMapper: {
+        '~/(.*)': '<rootDir>/src/$1'
+    },
     watchPlugins: ['jest-watch-typeahead/filename', 'jest-watch-typeahead/testname'],
     reporters: ['default', 'github-actions'],
     globals: {

@@ -72,6 +72,7 @@
         "husky": "^8.0.1",
         "jest": "^28.1.1",
         "jest-mock-console": "^2.0.0",
+        "jest-mock-extended": "^3.0.1",
         "jest-watch-typeahead": "^1.1.0",
         "lint-staged": "^13.0.2",
         "microbundle": "^0.15.0",
