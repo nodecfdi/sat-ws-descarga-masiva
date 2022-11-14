@@ -29,7 +29,7 @@ describe('cfdi package reader', () => {
         );
     });
 
-    test('reader zip with other files', async () => {
+    test('reader zip with other files and double xml extension', async () => {
         let expectedFileNames = [
             'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee.xml',
             'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee.xml.xml'
