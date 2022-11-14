@@ -10,7 +10,8 @@ export class WebClientException extends Error {
 
     constructor(message: string, request: CRequest, response: CResponse, previous?: Error) {
         super(message);
-        (this._request = request), (this._response = response);
+        this._request = request;
+        this._response = response;
         this._previous = previous;
     }
 
