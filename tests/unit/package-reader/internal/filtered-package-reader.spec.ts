@@ -39,6 +39,7 @@ describe('filtered package reader', () => {
             compression: 'DEFLATE'
         });
         writeFileSync(tmpfile, data);
+        // zip excludes "empty dir/""
         const expected = new Map([
             ['empty file.txt', ''],
             ['foo.txt', 'foo'],
@@ -47,7 +48,9 @@ describe('filtered package reader', () => {
         const packageReader = await FilteredPackageReader.createFromFile(tmpfile);
         packageReader.setFilter(new NullFileFilter());
         const fileContents = await Helpers.iteratorToMap(packageReader.fileContents());
+
         expect(fileContents).toStrictEqual(expected);
+        // zip excludes "empty dir/""
         expect(3).toBe(await packageReader.count());
         unlinkSync(tmpfile);
         packageReader.destruct();
