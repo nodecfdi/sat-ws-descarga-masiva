@@ -1,7 +1,7 @@
 import { MetadataPreprocessor } from './metadata-preprocessor';
 import { MetadataItem } from '../metadata-item';
 import { CsvReader } from './csv-reader';
-import { ThirdPartiesInterface, ThirdPartiesRecords } from './third-parties-records';
+import { ThirdPartiesRecords } from './third-parties-records';
 
 export class MetadataContent {
     /**
@@ -23,7 +23,7 @@ export class MetadataContent {
         const preprocessor = new MetadataPreprocessor(contents);
         preprocessor.fix();
 
-        const csvReader = CsvReader.createFromContents(contents);
+        const csvReader = CsvReader.createFromContents(preprocessor.getContents());
 
         return new MetadataContent(csvReader, thirdParties);
     }
@@ -31,15 +31,21 @@ export class MetadataContent {
     public async *eachItem(): AsyncGenerator<MetadataItem> {
         for await (const iterator of this._csvReader.records()) {
             let data = this._thirdParties.addToData(iterator);
-            data = this.changeArrayKeysFirstLetterLoweCase(data) as Record<string, ThirdPartiesInterface>;
+            data = this.changeArrayKeysFirstLetterLoweCase(data);
+
             yield new MetadataItem(data);
         }
     }
 
-    private changeArrayKeysFirstLetterLoweCase(data: Record<string, unknown>): Record<string, unknown> {
-        const keys = Object.keys(data).map((key) => key.charAt(0).toLowerCase + key.slice(1));
-        const values = Object.values(data);
+    private changeArrayKeysFirstLetterLoweCase(data: Record<string, string>): Record<string, string> {
+        for (const [key, value] of Object.entries(data)) {
+            const newKey = key.charAt(0).toLowerCase() + key.slice(1);
+            data[newKey] = value;
+            if (key != newKey) {
+                delete data[key];
+            }
+        }
 
-        return Object.fromEntries([[keys[0], values[0]]]);
+        return data;
     }
 }

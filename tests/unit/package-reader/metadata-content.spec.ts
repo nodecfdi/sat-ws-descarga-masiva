@@ -5,13 +5,12 @@ describe('metadata content', () => {
     test('read metadata', async () => {
         const contents = TestCase.fileContents('zip/metadata.txt');
         const reader = MetadataContent.createFromContents(contents);
-        const extracted: string[] = [];
+        const extracted = [];
         const expected = ['E7215E3B-2DC5-4A40-AB10-C902FF9258DF', '129C4D12-1415-4ACE-BE12-34E71C4EAB4E'];
 
-        const items = await reader.eachItem();
-        items.forEach((item) => {
+        for await (const item of reader.eachItem()) {
             extracted.push(item.get('uuid'));
-        });
+        }
 
         expect(extracted).toStrictEqual(expected);
     });
@@ -44,10 +43,10 @@ describe('metadata content', () => {
             const extracted: MetadataItem[] = [];
 
             const reader = MetadataContent.createFromContents(contents);
-            const items = await reader.eachItem();
-            items.forEach((item) => {
+
+            for await (const item of reader.eachItem()) {
                 extracted.push(item);
-            });
+            }
 
             expect(extracted[0].get('value')).toBe(expectedValue);
         }

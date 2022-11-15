@@ -7,22 +7,18 @@ interface ThirdPartiesInterface {
 }
 
 class ThirdPartiesRecords {
-    private _records: Record<string, ThirdPartiesInterface>[];
-
-    constructor(records: Record<string, ThirdPartiesInterface>[]) {
-        this._records = records;
-    }
+    constructor(private _records: Record<string, ThirdPartiesInterface>) {}
 
     public static createEmpty(): ThirdPartiesRecords {
-        return new ThirdPartiesRecords([]);
+        return new ThirdPartiesRecords({});
     }
 
     public static async createFromPackageReader(packageReader: PackageReaderInterface): Promise<ThirdPartiesRecords> {
         const thirdPartiesBuilder = await ThirdPartiesExtractor.createFromPackageReader(packageReader);
-        const records = [];
+        const records: Record<string, ThirdPartiesInterface> = {};
         for await (const iterator of thirdPartiesBuilder.eachRecord()) {
             const key = ThirdPartiesRecords.formatUuid(Object.keys(iterator)[0]);
-            records.push(Object.fromEntries([[key, Object.values(iterator)[0]]]));
+            records[key] = Object.values(iterator)[0] as ThirdPartiesInterface;
         }
 
         return new ThirdPartiesRecords(records);
@@ -32,21 +28,20 @@ class ThirdPartiesRecords {
         return uuid.toLowerCase();
     }
 
-    public addToData(data: Record<string, string>): Record<string, ThirdPartiesInterface> {
-        const uuid = Object.keys(data)[0] ?? '';
+    public addToData(data: Record<string, string>): Record<string, string> {
+        const uuid = data['Uuid'] ?? '';
         const values = this.getDataFromUuid(uuid);
 
-        return Object.fromEntries([[uuid, values as ThirdPartiesInterface]]);
+        return { ...data, ...values };
     }
 
     public getDataFromUuid(uuid: string): ThirdPartiesInterface {
-        const value = this._records.find((item) => Object.keys(item)[0] == ThirdPartiesRecords.formatUuid(uuid));
         const defaultValue = {
             RfcACuentaTerceros: '',
             NombreACuentaTerceros: ''
         };
 
-        return value ? value[ThirdPartiesRecords.formatUuid(uuid)] : defaultValue;
+        return this._records[ThirdPartiesRecords.formatUuid(uuid)] ?? defaultValue;
     }
 }
 

@@ -1,6 +1,6 @@
 import { Helpers } from '../../../src/internal/helpers';
 import { MetadataItem } from '../../../src/package-reader/metadata-item';
-import { MetadaPackageReader } from '../../../src/package-reader/metadata-package-reader';
+import { MetadataPackageReader } from '../../../src/package-reader/metadata-package-reader';
 import { TestCase } from '../../test-case';
 describe('metadata item', () => {
     test('with empty data', () => {
@@ -21,7 +21,7 @@ describe('metadata item', () => {
     test('reader cfdi in zip', async () => {
         let expectedContent = TestCase.fileContents('zip/metadata.txt');
         const zipFileName = TestCase.filePath('zip/metadata.zip');
-        const packageReader = await MetadaPackageReader.createFromFile(zipFileName);
+        const packageReader = await MetadataPackageReader.createFromFile(zipFileName);
         const content = await Helpers.iteratorToMap(packageReader.fileContents());
         const [key] = content.keys();
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

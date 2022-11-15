@@ -212,14 +212,14 @@ Cada paquete puede contener uno o más archivos internos. Cada paquete se lee in
 ## Lectura de paquetes de tipo Metadata
 
 ```ts
-import { MetadaPackageReader, OpenZipFileException, Helpers } from '@nodecfdi/sat-ws-descarga-masiva';
+import { MetadataPackageReader, OpenZipFileException, Helpers } from '@nodecfdi/sat-ws-descarga-masiva';
 /**
  * @var zipfile: string contiene la ruta al archivo de paquete de Metadata
  */
-let metadataReader: MetadaPackageReader;
+let metadataReader: MetadataPackageReader;
 // abrir el archivo de Metadata
 try {
-    metadataReader = await MetadaPackageReader.createFromFile(zipFile);
+    metadataReader = await MetadataPackageReader.createFromFile(zipFile);
 } catch (error) {
     const zipError = error as OpenZipFileException;
     console.log(zipError.message);

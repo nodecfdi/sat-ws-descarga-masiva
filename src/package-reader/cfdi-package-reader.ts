@@ -4,11 +4,7 @@ import { FilteredPackageReader } from './internal/filtered-package-reader';
 import { PackageReaderInterface } from './package-reader-interface';
 
 export class CfdiPackageReader implements PackageReaderInterface {
-    private _packageReader: PackageReaderInterface;
-
-    constructor(packageReader: PackageReaderInterface) {
-        this._packageReader = packageReader;
-    }
+    constructor(private _packageReader: PackageReaderInterface) {}
 
     public static async createFromFile(filename: string): Promise<CfdiPackageReader> {
         const packageReader = await FilteredPackageReader.createFromFile(filename);
@@ -27,11 +23,9 @@ export class CfdiPackageReader implements PackageReaderInterface {
     }
 
     public async *cfdis(): AsyncGenerator<Record<string, string>> {
-        const contents = this._packageReader.fileContents();
-        for await (const content of contents) {
+        for await (const content of this._packageReader.fileContents()) {
             const data = Object.values(content)[0];
-            const key = CfdiPackageReader.obtainUuidFromXmlCfdi(data);
-            yield Object.fromEntries([[key, data]]);
+            yield Object.fromEntries([[CfdiPackageReader.obtainUuidFromXmlCfdi(data), data]]);
         }
     }
 
@@ -44,9 +38,7 @@ export class CfdiPackageReader implements PackageReaderInterface {
     }
 
     public async *fileContents(): AsyncGenerator<Record<string, string>> {
-        for await (const iterator of this._packageReader.fileContents()) {
-            yield iterator;
-        }
+        yield* this._packageReader.fileContents();
     }
 
     public static obtainUuidFromXmlCfdi(xmlContent: string): string {

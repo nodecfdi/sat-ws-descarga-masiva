@@ -29,6 +29,15 @@ describe('cfdi package reader', () => {
         );
     });
 
+    test('read zip with other files', async () => {
+        const expectedNumberCfdis = 2;
+
+        const filename = TestCase.filePath('zip/cfdi.zip');
+        const cfdiPackageReader = await CfdiPackageReader.createFromFile(filename);
+
+        expect(await cfdiPackageReader.count()).toBe(expectedNumberCfdis);
+    });
+
     test('reader zip with other files and double xml extension', async () => {
         let expectedFileNames = [
             'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee.xml',
@@ -69,6 +78,7 @@ describe('cfdi package reader', () => {
 
     const providerObtainUuidFromXmlCfdi = [
         [
+            'common',
             `
             <cfdi:Complemento>
                     <tfd:TimbreFiscalDigital UUID="ff833b27-c8ab-4c44-a559-2c197bdd4067"/>
@@ -77,6 +87,7 @@ describe('cfdi package reader', () => {
             'ff833b27-c8ab-4c44-a559-2c197bdd4067'
         ],
         [
+            'upper case',
             `
             <cfdi:Complemento>
                 <tfd:TimbreFiscalDigital UUID="FF833B27-C8AB-4C44-A559-2C197BDD4067"/>
@@ -85,6 +96,7 @@ describe('cfdi package reader', () => {
             'ff833b27-c8ab-4c44-a559-2c197bdd4067'
         ],
         [
+            'middle vertical content',
             `
             <cfdi:Complemento>
                 <tfd:TimbreFiscalDigital a="a" UUID="ff833b27-c8ab-4c44-a559-2c197bdd4067" b="b"/>
@@ -93,6 +105,7 @@ describe('cfdi package reader', () => {
             'ff833b27-c8ab-4c44-a559-2c197bdd4067'
         ],
         [
+            'middle vertical space',
             `
             <cfdi:Complemento>
                 <tfd:TimbreFiscalDigital
@@ -103,6 +116,7 @@ describe('cfdi package reader', () => {
             'ff833b27-c8ab-4c44-a559-2c197bdd4067'
         ],
         [
+            'invalid uuid',
             `
             <cfdi:Complemento>
                 <tfd:TimbreFiscalDigital
@@ -112,10 +126,11 @@ describe('cfdi package reader', () => {
         `,
             ''
         ],
-        ['', ''],
-        ['invalid xml', ''],
-        ['<xml/>', ''],
+        ['empty content', '', ''],
+        ['invalid xml', 'invalid xml', ''],
+        ['xml without tfd', '<xml/>', ''],
         [
+            'with cfdi relacionado and xmlns:tfd',
             `
             <cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/3"
               xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital">
@@ -131,8 +146,8 @@ describe('cfdi package reader', () => {
         ]
     ];
     test.each(providerObtainUuidFromXmlCfdi)(
-        'provider obtain uuid from xml cfdi',
-        (source: string, expected: string) => {
+        'provider obtain uuid from xml cfdi %s',
+        (_name: string, source: string, expected: string) => {
             const uuid = CfdiPackageReader.obtainUuidFromXmlCfdi(source);
             expect(uuid).toBe(expected);
         }

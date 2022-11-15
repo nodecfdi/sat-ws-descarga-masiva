@@ -15,16 +15,18 @@
  * - property-read string efectoComprobante
  * - property-read string estatus
  * - property-read string fechaCancelacion
+ * - property-read string rfcACuentaTerceros
+ * - property-read string nombreACuentaTerceros
  */
 export class MetadataItem extends Map<string, unknown> {
-    private _data: Map<string, unknown>;
+    private _data: Map<string, string>;
 
-    constructor(data: Record<string, unknown>) {
+    constructor(data: Record<string, string>) {
         super();
         this._data = new Map(Object.entries(data));
     }
 
-    public override get(key: string): unknown {
+    public override get(key: string): string {
         return this._data.get(key) || '';
     }
 
@@ -32,7 +34,7 @@ export class MetadataItem extends Map<string, unknown> {
      *
      * returns all keys and values in a record form.
      */
-    public all(): Record<string, unknown> {
+    public all(): Record<string, string> {
         return Object.fromEntries(this._data);
     }
 }
