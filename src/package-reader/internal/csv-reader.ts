@@ -35,7 +35,7 @@ export class CsvReader {
         const headers: string[] = [];
         for await (const line of this._iterator) {
             const clean = line
-                .split('~')
+                .split(/(?:~|\|)+/g)
                 .map((item) => item.trim())
                 .filter((item) => item.length > 0);
             if (clean.length == 0) {
