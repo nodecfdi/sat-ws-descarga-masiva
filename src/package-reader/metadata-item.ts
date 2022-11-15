@@ -17,14 +17,14 @@
  * - property-read string fechaCancelacion
  */
 export class MetadataItem extends Map<string, unknown> {
-    private _data: Map<string, string>;
+    private _data: Map<string, unknown>;
 
-    constructor(data: Record<string, string>) {
+    constructor(data: Record<string, unknown>) {
         super();
         this._data = new Map(Object.entries(data));
     }
 
-    public override get(key: string): string {
+    public override get(key: string): unknown {
         return this._data.get(key) || '';
     }
 
@@ -32,7 +32,7 @@ export class MetadataItem extends Map<string, unknown> {
      *
      * returns all keys and values in a record form.
      */
-    public all(): Record<string, string> {
+    public all(): Record<string, unknown> {
         return Object.fromEntries(this._data);
     }
 }

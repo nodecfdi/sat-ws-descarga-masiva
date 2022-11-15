@@ -68,7 +68,6 @@ export class CsvReader {
         for (let index = 0; index < values.length; index++) {
             map.set(keys[index], values[index]);
         }
-        console.log(map);
 
         return Object.fromEntries(map);
     }
