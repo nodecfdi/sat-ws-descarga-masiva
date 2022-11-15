@@ -17,7 +17,7 @@ export class FilteredPackageReader implements PackageReaderInterface {
 
     private _removeOnDestruct = false;
 
-    private _filter?: FileFilterInterface;
+    private _filter!: FileFilterInterface;
 
     /**
      *
@@ -112,12 +112,19 @@ export class FilteredPackageReader implements PackageReaderInterface {
         return this._archive;
     }
 
-    public getFilter(): FileFilterInterface | undefined {
+    public getFilter(): FileFilterInterface {
         return this._filter;
     }
 
     public setFilter(filter?: FileFilterInterface): void {
         this._filter = filter ?? new NullFileFilter();
+    }
+
+    public changeFilter(filter: FileFilterInterface): FileFilterInterface {
+        const previous = this.getFilter();
+        this.setFilter(filter);
+
+        return previous;
     }
 
     public async jsonSerialize(): Promise<{ source: string; files: Record<string, string> }> {
