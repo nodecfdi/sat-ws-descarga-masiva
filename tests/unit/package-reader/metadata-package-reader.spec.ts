@@ -71,29 +71,18 @@ describe('metadata package reader', () => {
 
         values.forEach((item) => {
             extracted.push({
-                uuid: item.get('uuid'),
-                rfcAcuentaTerceros: item.get('rfcACuentaTerceros'),
+                uuid: item.get('uuid').toLowerCase(),
+                rfcACuentaTerceros: item.get('rfcACuentaTerceros'),
                 nombreACuentaTerceros: item.get('nombreACuentaTerceros')
             });
         });
-
-        console.log(extracted);
+        extracted.reverse();
 
         const expectedRecords = [
             {
-                nombreACuentaTerceros: '',
-                uuid: '11111111-aaaa-bbbb-0000-000000000005',
-                rfcACuentaTerceros: ''
-            },
-            {
-                uuid: '11111111-aaaa-bbbb-0000-000000000004',
-                rfcACuentaTerceros: 'AAAA010101AA3',
-                nombreACuentaTerceros: 'PERSONA FISICA TRES'
-            },
-            {
-                uuid: '11111111-aaaa-bbbb-0000-000000000003',
-                rfcACuentaTerceros: 'AAAA010101AA2',
-                nombreACuentaTerceros: 'PERSONA FISICA DOS'
+                uuid: '11111111-aaaa-bbbb-0000-000000000001',
+                rfcACuentaTerceros: '',
+                nombreACuentaTerceros: ''
             },
             {
                 uuid: '11111111-aaaa-bbbb-0000-000000000002',
@@ -101,15 +90,22 @@ describe('metadata package reader', () => {
                 nombreACuentaTerceros: 'PERSONA FISICA UNO'
             },
             {
-                uuid: '11111111-aaaa-bbbb-0000-000000000001',
+                uuid: '11111111-aaaa-bbbb-0000-000000000003',
+                rfcACuentaTerceros: 'AAAA010101AA2',
+                nombreACuentaTerceros: 'PERSONA FISICA DOS'
+            },
+            {
+                uuid: '11111111-aaaa-bbbb-0000-000000000004',
+                rfcACuentaTerceros: 'AAAA010101AA3',
+                nombreACuentaTerceros: 'PERSONA FISICA TRES'
+            },
+            {
+                uuid: '11111111-aaaa-bbbb-0000-000000000005',
                 rfcACuentaTerceros: '',
                 nombreACuentaTerceros: ''
             }
         ];
         expect(extracted).toStrictEqual(expectedRecords);
-        for (const expectedRecord of expectedRecords) {
-            expect(extracted).toContain(expectedRecord);
-        }
     });
 
     test('json', async () => {
@@ -129,5 +125,22 @@ describe('metadata package reader', () => {
         const expectedMetadata = ['E7215E3B-2DC5-4A40-AB10-C902FF9258DF', '129C4D12-1415-4ACE-BE12-34E71C4EAB4E'];
         const jsonDataMetadata = jsonData.metadata;
         expect(Object.keys(jsonDataMetadata).sort()).toStrictEqual(expectedMetadata.sort());
+    });
+
+    test('metadata json', async () => {
+        const zipFilename = TestCase.filePath('zip/metadata.zip');
+        const packageReader = await MetadataPackageReader.createFromFile(zipFilename);
+
+        const expectedFile = JSON.parse(TestCase.fileContents('zip/metadata.json'));
+
+        const map = Object.entries(expectedFile).reverse();
+        const metadata = await Helpers.iteratorToMap(packageReader.metadata());
+
+        let i = 0;
+        for (const [key, values] of metadata) {
+            expect(map[i][0]).toBe(key);
+            expect(map[i][1]).toStrictEqual(values.all());
+            i++;
+        }
     });
 });

@@ -40,9 +40,8 @@ export class MetadataPackageReader implements PackageReaderInterface {
         let reader: MetadataContent;
         const fileContents = await Helpers.iteratorToMap(this._packageReader.fileContents());
         for (const content of fileContents.values()) {
-            reader = MetadataContent.createFromContents(content, this._thirdParties);
-            const items = reader.eachItem();
-            for await (const item of items) {
+            reader = MetadataContent.createFromContents(content, await this.getThirdParties());
+            for await (const item of reader.eachItem()) {
                 yield Object.fromEntries([[item.get('uuid'), item]]);
             }
         }
