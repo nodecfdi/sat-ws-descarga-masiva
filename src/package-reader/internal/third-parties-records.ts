@@ -17,8 +17,9 @@ class ThirdPartiesRecords {
         const thirdPartiesBuilder = await ThirdPartiesExtractor.createFromPackageReader(packageReader);
         const records: Record<string, ThirdPartiesInterface> = {};
         for await (const iterator of thirdPartiesBuilder.eachRecord()) {
-            const key = ThirdPartiesRecords.formatUuid(Object.keys(iterator)[0]);
-            records[key] = Object.values(iterator)[0] as ThirdPartiesInterface;
+            for (const [key, value] of iterator) {
+                records[ThirdPartiesRecords.formatUuid(key)] = value as ThirdPartiesInterface;
+            }
         }
 
         return new ThirdPartiesRecords(records);

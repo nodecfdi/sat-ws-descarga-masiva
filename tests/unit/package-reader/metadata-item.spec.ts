@@ -1,4 +1,3 @@
-import { Helpers } from '~/internal/helpers';
 import { MetadataItem } from '~/package-reader/metadata-item';
 import { MetadataPackageReader } from '~/package-reader/metadata-package-reader';
 import { TestCase } from '../../test-case';
@@ -22,10 +21,13 @@ describe('metadata item', () => {
         let expectedContent = TestCase.fileContents('zip/metadata.txt');
         const zipFileName = TestCase.filePath('zip/metadata.zip');
         const packageReader = await MetadataPackageReader.createFromFile(zipFileName);
-        const content = await Helpers.iteratorToMap(packageReader.fileContents());
-        const [key] = content.keys();
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        let extracted = content.get(key)!;
+        let extracted = '';
+        for await (const item of packageReader.fileContents()) {
+            for (const map of item) {
+                extracted = map[1];
+                break;
+            }
+        }
 
         // normalize line endings
         expectedContent = expectedContent.replace(new RegExp(/\r\n/, 'g'), '\n');

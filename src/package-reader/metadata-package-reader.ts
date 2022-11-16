@@ -1,4 +1,3 @@
-import { Helpers } from '../internal/helpers';
 import { MetadataFileFilter } from './internal/file-filters/metadata-file-filter';
 import { FilteredPackageReader } from './internal/filtered-package-reader';
 import { MetadataContent } from './internal/metadata-content';
@@ -38,11 +37,12 @@ export class MetadataPackageReader implements PackageReaderInterface {
 
     public async *metadata(): AsyncGenerator<MetadataItem> {
         let reader: MetadataContent;
-        const fileContents = await Helpers.iteratorToMap(this._packageReader.fileContents());
-        for (const content of fileContents.values()) {
-            reader = MetadataContent.createFromContents(content, await this.getThirdParties());
-            for await (const item of reader.eachItem()) {
-                yield item;
+        for await (const content of this._packageReader.fileContents()) {
+            for (const [_key, value] of content) {
+                reader = MetadataContent.createFromContents(value, await this.getThirdParties());
+                for await (const item of reader.eachItem()) {
+                    yield item;
+                }
             }
         }
     }
@@ -52,10 +52,15 @@ export class MetadataPackageReader implements PackageReaderInterface {
     }
 
     public async count(): Promise<number> {
-        return (await Helpers.iteratorToMap(this.fileContents())).size;
+        let count = 0;
+        for await (const _item of this.fileContents()) {
+            count++;
+        }
+
+        return count;
     }
 
-    public async *fileContents(): AsyncGenerator<Record<string, string>> {
+    public async *fileContents(): AsyncGenerator<Map<string, string>> {
         yield* this._packageReader.fileContents();
     }
 

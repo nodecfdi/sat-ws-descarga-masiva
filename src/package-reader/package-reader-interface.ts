@@ -5,7 +5,7 @@ export interface PackageReaderInterface {
     /**
      * Traverse each file inside the package, with the filename as key and file content as value
      */
-    fileContents(): AsyncGenerator<Record<string, string>>;
+    fileContents(): AsyncGenerator<Map<string, string>>;
     /**
      * Return the number of elements on the package
      */

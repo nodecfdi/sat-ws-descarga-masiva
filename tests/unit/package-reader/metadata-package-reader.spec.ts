@@ -63,6 +63,7 @@ describe('metadata package reader', () => {
          * with 3 references, unsorted, with different upper and lower cases.
          */
         const zipFilename = TestCase.filePath('zip/metadata-terceros.zip');
+
         const packageReader = await MetadataPackageReader.createFromFile(zipFilename);
         const extracted: Record<string, string>[] = [];
 

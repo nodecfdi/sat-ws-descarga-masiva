@@ -20,7 +20,9 @@ export class ThirdPartiesExtractor {
         let contents = '';
 
         for await (const fileContents of packageReader.fileContents()) {
-            contents = Object.values(fileContents)[0];
+            for (const item of fileContents) {
+                contents = item[1];
+            }
             break;
         }
         (packageReader as FilteredPackageReader).setFilter(previousFilter);
@@ -28,7 +30,7 @@ export class ThirdPartiesExtractor {
         return new ThirdPartiesExtractor(CsvReader.createFromContents(contents));
     }
 
-    public async *eachRecord(): AsyncGenerator<Record<string, ThirdPartiesInterface>> {
+    public async *eachRecord(): AsyncGenerator<Map<string, ThirdPartiesInterface>> {
         let uuid: string;
         for await (const data of this._csvReader.records()) {
             uuid = data['Uuid']?.toUpperCase() ?? '';
@@ -39,7 +41,7 @@ export class ThirdPartiesExtractor {
                 RfcACuentaTerceros: data['RfcACuentaTerceros'] ?? '',
                 NombreACuentaTerceros: data['NombreACuentaTerceros'] ?? ''
             };
-            yield Object.fromEntries([[uuid, value]]);
+            yield new Map().set(uuid, value);
         }
     }
 }

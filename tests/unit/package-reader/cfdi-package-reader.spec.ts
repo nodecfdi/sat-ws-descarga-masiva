@@ -1,5 +1,4 @@
 import { readFileSync } from 'fs';
-import { Helpers } from '~/internal/helpers';
 import { CfdiPackageReader } from '~/package-reader/cfdi-package-reader';
 import { OpenZipFileException } from '~/package-reader/exceptions/open-zip-file-exception';
 import { TestCase } from '../../test-case';
@@ -39,18 +38,17 @@ describe('cfdi package reader', () => {
     });
 
     test('reader zip with other files and double xml extension', async () => {
-        let expectedFileNames = [
+        const expectedFileNames = [
             'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee.xml',
             'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee.xml.xml'
         ];
-        expectedFileNames = expectedFileNames.sort();
 
         const filename = TestCase.filePath('zip/cfdi.zip');
         const cfdiPackageReader = await CfdiPackageReader.createFromFile(filename);
 
-        const objects = await Helpers.iteratorToObject(cfdiPackageReader.fileContents());
-        const filenames = Object.keys(objects).sort();
-        expect(filenames).toStrictEqual(expectedFileNames);
+        const fileNames = (await cfdiPackageReader.fileContentsToArray()).map((item) => item.name);
+
+        expect(fileNames).toStrictEqual(expectedFileNames);
     });
 
     test('cfdi reader obtain first file as expected', async () => {
@@ -59,8 +57,8 @@ describe('cfdi package reader', () => {
         const zipFileName = TestCase.filePath('zip/cfdi.zip');
         const cfdiPackageReader = await CfdiPackageReader.createFromFile(zipFileName);
 
-        const cfdi = await Helpers.iteratorToObject(cfdiPackageReader.fileContents());
-        expect(Object.values(cfdi)[0]).toBe(expectedCfdi);
+        const cfdis = (await cfdiPackageReader.fileContentsToArray()).map((item) => item.content);
+        expect(cfdis[0]).toBe(expectedCfdi);
     });
 
     test('create from file and contents', async () => {
@@ -68,12 +66,13 @@ describe('cfdi package reader', () => {
         const first = await CfdiPackageReader.createFromFile(filename);
         expect(first.getFilename()).toBe(filename);
 
+        const firsts = first.fileContentsToArray();
+
         const contents = TestCase.fileContents('zip/cfdi.zip');
         const second = await CfdiPackageReader.createFromContents(contents);
+        const seconds = second.fileContentsToArray();
 
-        expect(await Helpers.iteratorToObject(first.fileContents())).toStrictEqual(
-            await Helpers.iteratorToObject(second.fileContents())
-        );
+        expect(firsts).toStrictEqual(seconds);
     });
 
     const providerObtainUuidFromXmlCfdi = [
@@ -163,9 +162,9 @@ describe('cfdi package reader', () => {
         const expectedFiles = [
             'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee.xml',
             'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee.xml.xml'
-        ].sort();
+        ];
         const jsonDataFiles = jsonData.files;
-        expect(Object.keys(jsonDataFiles).sort()).toStrictEqual(expectedFiles);
+        expect(Object.keys(jsonDataFiles)).toStrictEqual(expectedFiles);
 
         const expectedCfdis = ['11111111-2222-3333-4444-000000000001'];
         const jsonDataCfdis = jsonData.cfdis;

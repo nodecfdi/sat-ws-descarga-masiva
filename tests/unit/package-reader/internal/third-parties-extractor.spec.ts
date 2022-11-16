@@ -5,7 +5,6 @@ import { CsvReader } from '~/package-reader/internal/csv-reader';
 import { ThirdPartiesExtractor } from '~/package-reader/internal/third-parties-extractor';
 import { mock } from 'jest-mock-extended';
 import { PackageReaderInterface } from '~/package-reader/package-reader-interface';
-import { Helpers } from '~/index';
 import { FilteredPackageReader } from '~/package-reader/internal/filtered-package-reader';
 import { NullFileFilter } from '~/package-reader/internal/file-filters/null-file-filter';
 
@@ -38,8 +37,10 @@ describe('Third parties extractor', () => {
         });
         const extractor = new ThirdPartiesExtractor(new CsvReader(iterator));
         const resultArray = [];
-        for await (const item of extractor.eachRecord()) {
-            resultArray.push(item);
+        for await (const iterator of extractor.eachRecord()) {
+            for (const [key, value] of iterator) {
+                resultArray.push({ [key]: value });
+            }
         }
         expect(resultArray).toStrictEqual(expected);
     });
@@ -52,8 +53,13 @@ describe('Third parties extractor', () => {
             crlfDelay: Infinity
         });
         const extractor = new ThirdPartiesExtractor(new CsvReader(iterator));
-        const result = await Helpers.iteratorToObject(extractor.eachRecord());
-        expect(result).toStrictEqual(expected);
+        const result = new Map();
+        for await (const iterator of extractor.eachRecord()) {
+            for (const item of iterator) {
+                result.set(...item);
+            }
+        }
+        expect(Object.fromEntries(result)).toStrictEqual(expected);
     });
 
     test('create from package reader not filtered package reader', async () => {

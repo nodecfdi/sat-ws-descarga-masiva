@@ -7,7 +7,6 @@ import os from 'os';
 import { join } from 'path/posix';
 import { randomUUID } from 'crypto';
 import { NullFileFilter } from '~/package-reader/internal/file-filters/null-file-filter';
-import { Helpers } from '~/internal/helpers';
 describe('filtered package reader', () => {
     test('create from file with invalid file', async () => {
         const filename = __dirname;
@@ -47,9 +46,14 @@ describe('filtered package reader', () => {
         ]);
         const packageReader = await FilteredPackageReader.createFromFile(tmpfile);
         packageReader.setFilter(new NullFileFilter());
-        const fileContents = await Helpers.iteratorToMap(packageReader.fileContents());
+        const result = new Map();
+        for await (const iterator of packageReader.fileContents()) {
+            for (const item of iterator) {
+                result.set(...item);
+            }
+        }
 
-        expect(fileContents).toStrictEqual(expected);
+        expect(result).toStrictEqual(expected);
         // zip excludes "empty dir/""
         expect(3).toBe(await packageReader.count());
         unlinkSync(tmpfile);
