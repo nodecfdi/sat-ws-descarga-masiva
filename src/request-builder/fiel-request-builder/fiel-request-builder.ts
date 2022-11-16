@@ -10,35 +10,30 @@ import { RequestTypeInvalidException } from '../exceptions/request-type-invalid-
 import { RfcIssuerAndReceiverAreEmptyException } from '../exceptions/rfc-issuer-and-receiver-are-empty-exception';
 import { hextob64 } from 'jsrsasign';
 import { createHash, randomUUID } from 'crypto';
+import { DateTime } from '~/shared/date-time';
 
 export class FielRequestBuilder implements RequestBuilderInterface {
-    private _fiel: Fiel;
-
-    public readonly USE_SIGNER = '*';
-
-    constructor(fiel: Fiel) {
-        this._fiel = fiel;
-    }
+    constructor(private _fiel: Fiel) {}
 
     public getFiel(): Fiel {
         return this._fiel;
     }
 
-    public authorization(created: string, expires: string, securityTokenId?: string): string {
+    public authorization(created: DateTime, expires: DateTime, securityTokenId = ''): string {
         const uuid = securityTokenId || FielRequestBuilder.createXmlSecurityToken();
         const certificate = Helpers.cleanPemContents(this.getFiel().getCertificatePemContents());
 
         const keyInfoData = `
             <KeyInfo>
-                    <o:SecurityTokenReference>
-                        <o:Reference URI="#${uuid}" ValueType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3"/>
-                    </o:SecurityTokenReference>
+                <o:SecurityTokenReference>
+                    <o:Reference URI="#${uuid}" ValueType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3"/>
+                </o:SecurityTokenReference>
             </KeyInfo>
         `;
         const toDigestXml = `
             <u:Timestamp xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" u:Id="_0">
-                <u:Created>${created}</u:Created>
-                <u:Expires>${expires}</u:Expires>
+                <u:Created>${created.formatSat()}</u:Created>
+                <u:Expires>${expires.formatSat()}</u:Expires>
             </u:Timestamp>
         `;
         const signatureData = this.createSignature(toDigestXml, '#_0', keyInfoData);
@@ -48,8 +43,8 @@ export class FielRequestBuilder implements RequestBuilderInterface {
                 <s:Header>
                     <o:Security xmlns:o="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" s:mustUnderstand="1">
                         <u:Timestamp u:Id="_0">
-                            <u:Created>${created}</u:Created>
-                            <u:Expires>${expires}</u:Expires>
+                            <u:Created>${created.formatSat()}</u:Created>
+                            <u:Expires>${expires.formatSat()}</u:Expires>
                         </u:Timestamp>
                         <o:BinarySecurityToken u:Id="${uuid}" ValueType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3" EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">
                             ${certificate}
