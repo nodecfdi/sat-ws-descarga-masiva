@@ -74,7 +74,7 @@ export class CodeRequest {
         return this.index;
     }
 
-    public jsonSerialize(): { value: number | undefined; message: string } {
+    public toJSON(): { value: number | undefined; message: string } {
         return {
             value: this.value.code,
             message: this.value.message

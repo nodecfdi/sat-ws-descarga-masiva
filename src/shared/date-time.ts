@@ -99,7 +99,7 @@ export class DateTime {
         return this.formatSat() == expectedExpires.formatSat();
     }
 
-    public jsonSerialize(): number {
+    public toJSON(): number {
         return this._value.toSeconds();
     }
 }
