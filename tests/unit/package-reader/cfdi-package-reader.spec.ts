@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
-import { Helpers } from '../../../src/internal/helpers';
-import { CfdiPackageReader } from '../../../src/package-reader/cfdi-package-reader';
-import { OpenZipFileException } from '../../../src/package-reader/exceptions/open-zip-file-exception';
+import { Helpers } from '~/internal/helpers';
+import { CfdiPackageReader } from '~/package-reader/cfdi-package-reader';
+import { OpenZipFileException } from '~/package-reader/exceptions/open-zip-file-exception';
 import { TestCase } from '../../test-case';
 /**
  * This tests uses the Zip file located at tests/_files/zip/cfdi.zip that contains:

@@ -1,12 +1,12 @@
-import { Helpers } from '../../../src/internal/helpers';
-import { MetadataItem } from '../../../src/package-reader/metadata-item';
-import { MetadataPackageReader } from '../../../src/package-reader/metadata-package-reader';
+import { Helpers } from '~/internal/helpers';
+import { MetadataItem } from '~/package-reader/metadata-item';
+import { MetadataPackageReader } from '~/package-reader/metadata-package-reader';
 import { TestCase } from '../../test-case';
 describe('metadata item', () => {
     test('with empty data', () => {
         const metadata = new MetadataItem({});
         expect(metadata.get('uuid')).toBe('');
-        expect(Array.from(metadata.values())).toEqual([]);
+        expect([...metadata]).toEqual([]);
         expect(metadata.all()).toStrictEqual({});
     });
 

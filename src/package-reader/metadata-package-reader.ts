@@ -36,13 +36,13 @@ export class MetadataPackageReader implements PackageReaderInterface {
         return this._thirdParties;
     }
 
-    public async *metadata(): AsyncGenerator<Record<string, MetadataItem>> {
+    public async *metadata(): AsyncGenerator<MetadataItem> {
         let reader: MetadataContent;
         const fileContents = await Helpers.iteratorToMap(this._packageReader.fileContents());
         for (const content of fileContents.values()) {
             reader = MetadataContent.createFromContents(content, await this.getThirdParties());
             for await (const item of reader.eachItem()) {
-                yield Object.fromEntries([[item.get('uuid'), item]]);
+                yield item;
             }
         }
     }
@@ -62,14 +62,29 @@ export class MetadataPackageReader implements PackageReaderInterface {
     public async jsonSerialize(): Promise<{
         source: string;
         files: Record<string, string>;
-        metadata: Record<string, MetadataItem>;
+        metadata: Record<string, Record<string, string>>;
     }> {
         const filtered = await (this._packageReader as FilteredPackageReader).jsonSerialize();
+
+        let metadata: Record<string, Record<string, string>> = {};
+
+        for await (const iterator of this.metadata()) {
+            metadata = { ...metadata, [iterator.get('uuid')]: iterator.all() };
+        }
 
         return {
             source: filtered.source,
             files: filtered.files,
-            metadata: await Helpers.iteratorToObject(this.metadata())
+            metadata
         };
+    }
+
+    public async metadataToArray(): Promise<MetadataItem[]> {
+        const content = [];
+        for await (const iterator of this.metadata()) {
+            content.push(iterator);
+        }
+
+        return content;
     }
 }
