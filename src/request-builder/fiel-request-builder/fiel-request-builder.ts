@@ -2,15 +2,11 @@ import { RequestBuilderInterface } from '../request-builder-interface';
 import { Fiel } from './fiel';
 import { Helpers } from '../../internal/helpers';
 import { SignatureAlgorithm } from '@nodecfdi/credentials';
-import { PeriodStartInvalidDateFormatException } from '../exceptions/period-start-invalid-date-format-exception';
-import { PeriodEndInvalidDateFormatException } from '../exceptions/period-end-invalid-date-format-exception';
-import { PeriodStartGreaterThanEndException } from '../exceptions/period-start-greater-than-end-exception';
-import { RfcIsNotIssuerOrReceiverException } from '../exceptions/rfc-is-not-issuer-or-recevier-exception';
-import { RequestTypeInvalidException } from '../exceptions/request-type-invalid-exception';
-import { RfcIssuerAndReceiverAreEmptyException } from '../exceptions/rfc-issuer-and-receiver-are-empty-exception';
 import { hextob64 } from 'jsrsasign';
 import { createHash, randomUUID } from 'crypto';
 import { DateTime } from '~/shared/date-time';
+import { QueryParameters } from '~/services/query/query-parameters';
+import { RfcMatches } from '~/shared/rfc-matches';
 
 export class FielRequestBuilder implements RequestBuilderInterface {
     constructor(private _fiel: Fiel) {}
@@ -61,55 +57,59 @@ export class FielRequestBuilder implements RequestBuilderInterface {
         return Helpers.nospaces(xml);
     }
 
-    public query(start: string, end: string, rfcIssuer: string, rfcReceiver: string, requestType: string): string {
-        //normalize input
+    public query(queryParameters: QueryParameters): string {
+        const queryByUuid = !queryParameters.getUuid().isEmpty();
+        let xmlRfcReceived = '';
+        const requestType = queryParameters.getRequestType().getQueryAttributeValue(queryParameters.getServiceType());
         const rfcSigner = this.getFiel().getRfc().toUpperCase();
-        rfcIssuer = (this.USE_SIGNER == rfcIssuer ? rfcSigner : rfcIssuer).toUpperCase();
-        rfcReceiver = (this.USE_SIGNER == rfcReceiver ? rfcSigner : rfcReceiver).toUpperCase();
 
-        //check inputs
-        if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(start)) {
-            throw new PeriodStartInvalidDateFormatException(start);
-        }
-        if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(end)) {
-            throw new PeriodEndInvalidDateFormatException(end);
-        }
-        if (start > end) {
-            throw new PeriodStartGreaterThanEndException(start, end);
-        }
-        if ('' == rfcReceiver && '' == rfcIssuer) {
-            throw new RfcIssuerAndReceiverAreEmptyException();
-        }
-        if (![rfcIssuer, rfcReceiver].includes(rfcSigner)) {
-            throw new RfcIsNotIssuerOrReceiverException(rfcSigner, rfcIssuer, rfcReceiver);
-        }
+        const solicitudAttributes = new Map<string, string>();
+        solicitudAttributes.set('RfcSolicitante', rfcSigner);
+        solicitudAttributes.set('TipoSolicitud', requestType);
 
-        if (!['CFDI', 'Metadata'].includes(requestType)) {
-            throw new RequestTypeInvalidException(requestType);
+        if (queryByUuid) {
+            solicitudAttributes.set('Folio', queryParameters.getUuid().getValue());
+        } else {
+            const start = queryParameters.getPeriod().getStart().format('Y-m-dTH:i:s');
+            const end = queryParameters.getPeriod().getEnd().format('Y-m-dTH:i:s');
+            let rfcIssuer: string;
+            let rfcReceivers: RfcMatches;
+            if (queryParameters.getDownloadType().isTypeOf('issued')) {
+                // issued documents, counterparts are receivers
+                rfcIssuer = rfcSigner;
+                rfcReceivers = queryParameters.getRfcMatches();
+            } else {
+                // received documents, counterpart is issuer
+                rfcIssuer = queryParameters.getRfcMatches().getFirst().getValue();
+                rfcReceivers = RfcMatches.createFromValues(rfcSigner);
+            }
+            solicitudAttributes.set('FechaInicial', start);
+            solicitudAttributes.set('FechaFinal', end);
+            solicitudAttributes.set('RfcEmisor', rfcIssuer);
+            solicitudAttributes.set('TipoComprobante', queryParameters.getDocumentType().value());
+            solicitudAttributes.set('EstadoComprobante', queryParameters.getDocumentStatus().value());
+            solicitudAttributes.set('RfcACuentaTerceros', queryParameters.getRfcOnBehalf().getValue());
+            solicitudAttributes.set('Complemento', queryParameters.getComplement().value());
+            if (!rfcReceivers.isEmpty()) {
+                xmlRfcReceived = rfcReceivers
+                    .itemsToArray()
+                    .map((rfcMatch) => {
+                        return `<des:RfcReceptor>${this.parseXml(rfcMatch.getValue())}</des:RfcReceptor>`;
+                    })
+                    .join('');
+            }
         }
-        const solicitudAttributes: Record<string, string> = {
-            FechaFinal: end,
-            FechaInicial: start,
-            RfcEmisor: rfcIssuer,
-            RfcSolicitante: rfcSigner,
-            TipoSolicitud: requestType
-        };
-        const solicitudAttributesAsText = Object.entries(solicitudAttributes)
-            .filter((value) => {
-                if (value[1] != '') {
-                    return true;
-                }
+        const cleanedSolicitudAttributes = new Map();
+        for (const [key, value] of solicitudAttributes) {
+            if (value !== '') cleanedSolicitudAttributes.set(key, value);
+        }
+        const sortedValues = new Map([...cleanedSolicitudAttributes].sort((a, b) => String(a[0]).localeCompare(b[0])));
 
-                return false;
-            })
-            .map((value) => {
-                return `${Helpers.htmlspecialchars(value[0])}="${Helpers.htmlspecialchars(value[1])}"`;
+        const solicitudAttributesAsText = [...sortedValues]
+            .map(([name, value]) => {
+                return `${this.parseXml(name)}="${this.parseXml(value)}"`;
             })
             .join(' ');
-        let xmlRfcReceived = '';
-        if ('' != rfcReceiver) {
-            xmlRfcReceived = `<des:RfcReceptores><des:RfcReceptor>${rfcReceiver}</des:RfcReceptor></des:RfcReceptores>`;
-        }
 
         const toDigestXml = `
             <des:SolicitaDescarga xmlns:des="http://DescargaMasivaTerceros.sat.gob.mx">
@@ -119,7 +119,6 @@ export class FielRequestBuilder implements RequestBuilderInterface {
             </des:SolicitaDescarga>
            `;
         const signatureData = this.createSignature(toDigestXml);
-
         const xml = `
             <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" xmlns:des="http://DescargaMasivaTerceros.sat.gob.mx" xmlns:xd="http://www.w3.org/2000/09/xmldsig#">
                 <s:Header/>
@@ -138,11 +137,12 @@ export class FielRequestBuilder implements RequestBuilderInterface {
     }
 
     public verify(requestId: string): string {
-        const rfc = this.getFiel().getRfc();
+        const xmlRequestId = this.parseXml(requestId);
+        const xmlRfc = this.parseXml(this.getFiel().getRfc());
 
         const toDigestXml = `
             <des:VerificaSolicitudDescarga xmlns:des="http://DescargaMasivaTerceros.sat.gob.mx">
-                <des:solicitud IdSolicitud="${requestId}" RfcSolicitante="${rfc}"></des:solicitud>
+                <des:solicitud IdSolicitud="${xmlRequestId}" RfcSolicitante="${xmlRfc}"></des:solicitud>
             </des:VerificaSolicitudDescarga>
         `;
         const signatureData = this.createSignature(toDigestXml);
@@ -152,7 +152,7 @@ export class FielRequestBuilder implements RequestBuilderInterface {
                 <s:Header/>
                 <s:Body>
                     <des:VerificaSolicitudDescarga>
-                        <des:solicitud IdSolicitud="${requestId}" RfcSolicitante="${rfc}">
+                        <des:solicitud IdSolicitud="${requestId}" RfcSolicitante="${xmlRfc}">
                             ${signatureData}
                         </des:solicitud>
                     </des:VerificaSolicitudDescarga>
@@ -164,11 +164,12 @@ export class FielRequestBuilder implements RequestBuilderInterface {
     }
 
     public download(packageId: string): string {
-        const rfcOwner = this.getFiel().getRfc();
+        const xmlPackageId = this.parseXml(packageId);
+        const xmlRfcOwner = this.parseXml(this.getFiel().getRfc());
 
         const toDigestXml = `
             <des:PeticionDescargaMasivaTercerosEntrada xmlns:des="http://DescargaMasivaTerceros.sat.gob.mx">
-                <des:peticionDescarga IdPaquete="${packageId}" RfcSolicitante="${rfcOwner}"></des:peticionDescarga>
+                <des:peticionDescarga IdPaquete="${xmlPackageId}" RfcSolicitante="${xmlRfcOwner}"></des:peticionDescarga>
             </des:PeticionDescargaMasivaTercerosEntrada>
         `;
         const signatureData = this.createSignature(toDigestXml);
@@ -178,7 +179,7 @@ export class FielRequestBuilder implements RequestBuilderInterface {
                 <s:Header/>
                 <s:Body>
                     <des:PeticionDescargaMasivaTercerosEntrada>
-                        <des:peticionDescarga IdPaquete="${packageId}" RfcSolicitante="${rfcOwner}">
+                        <des:peticionDescarga IdPaquete="${xmlPackageId}" RfcSolicitante="${xmlRfcOwner}">
                             ${signatureData}
                         </des:peticionDescarga>
                     </des:PeticionDescargaMasivaTercerosEntrada>
@@ -203,7 +204,6 @@ export class FielRequestBuilder implements RequestBuilderInterface {
         const digested = createHash('sha1').update(toDigest).digest('base64');
         let signedInfo = this.createSignedInfoCanonicalExclusive(digested, signedInfoUri);
         const signatureValue = hextob64(this.getFiel().sign(signedInfo, SignatureAlgorithm.SHA1));
-
         signedInfo = signedInfo.replace('<SignedInfo xmlns="http://www.w3.org/2000/09/xmldsig#">', '<SignedInfo>');
 
         if ('' === keyInfo) {
@@ -256,5 +256,9 @@ export class FielRequestBuilder implements RequestBuilderInterface {
                 </X509Data>
             </KeyInfo>
         `;
+    }
+
+    private parseXml(text: string): string {
+        return Helpers.htmlspecialchars(text);
     }
 }

@@ -1,7 +1,7 @@
 import { use } from 'typescript-mix';
-import { InteractsXmlTrait } from '../../internal/interacts-xml-trait';
-import { RequestBuilderInterface } from '../../request-builder/request-builder-interface';
-import { StatusCode } from '../../shared/status-code';
+import { InteractsXmlTrait } from '~/internal/interacts-xml-trait';
+import { RequestBuilderInterface } from '~/request-builder/request-builder-interface';
+import { StatusCode } from '~/shared/status-code';
 import { DownloadResult } from './download-result';
 
 export class DownloadTranslator extends InteractsXmlTrait {

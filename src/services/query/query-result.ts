@@ -1,4 +1,4 @@
-import { StatusCode } from '../../shared/status-code';
+import { StatusCode } from '~/shared/status-code';
 
 export class QueryResult {
     private _status: StatusCode;
@@ -24,9 +24,9 @@ export class QueryResult {
         return this._requestId;
     }
 
-    public jsonSerialize(): { status: { code: number; message: string }; requestId: string } {
+    public toJSON(): { status: StatusCode; requestId: string } {
         return {
-            status: this._status.jsonSerialize(),
+            status: this._status,
             requestId: this._requestId
         };
     }
