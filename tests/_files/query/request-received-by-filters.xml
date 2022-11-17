@@ -3,7 +3,10 @@
   <s:Header/>
   <s:Body>
     <des:SolicitaDescarga>
-      <des:solicitud FechaFinal="2019-01-01T00:04:00" FechaInicial="2019-01-01T00:00:00" RfcEmisor="EKU9003173C9" RfcSolicitante="EKU9003173C9" TipoSolicitud="Metadata">
+      <des:solicitud Complemento="nomina12" EstadoComprobante="1" FechaFinal="2019-01-01T00:04:00" FechaInicial="2019-01-01T00:00:00" RfcACuentaTerceros="XXX01010199A" RfcEmisor="AAA010101AAA" RfcSolicitante="EKU9003173C9" TipoComprobante="N" TipoSolicitud="CFDI">
+        <des:RfcReceptores>
+          <des:RfcReceptor>EKU9003173C9</des:RfcReceptor>
+        </des:RfcReceptores>
         <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
           <SignedInfo>
             <CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
@@ -13,10 +16,10 @@
                 <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
               </Transforms>
               <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
-              <DigestValue>d6h7Fcn0bVGiSGPNK39LEkMfI/M=</DigestValue>
+              <DigestValue>urJ4pg32vV2oozJcBBKRcxoAydo=</DigestValue>
             </Reference>
           </SignedInfo>
-          <SignatureValue>EIs1HpcCNOD1FIKTT34BoOKWsrqniIQl2JSAVzYoqPINxrDsw8SxsgvrlLaYyruxKeD9V/r/4LFMKU72vll7/coxCkLIvid/XkohWrOwQIjChNomQZtiSKqum6WClnA5vCdszZ3NQxaiV1S9UyeFMaJtd4qDFPIHCPtjMbTVLr5GkKHVys/I4nT59Xo/ugHqv8T9IzJ1PMC6wmacNKuOvlu64oXxxs0yGdKJXYnDC4TiiVYB/7gRBTRrCIFlWdUiHu77ZuuVQwa+Gi7rqsgCu/XKWUxQUHaWrtxeCGsSpl3Y0c4By8PSY6o3NkM2zO+o7Dk9sYONXH2NC/kPDx4KiA==</SignatureValue>
+          <SignatureValue>U0+zQI1YH5DGtlULhm01lGwoBd1vdbIv/myz/gPshujerNvRzzw9mhGCCq8E7BMsLKefbl4TTOOkL5wvFqczzcKrHS8lFTkw7073CIPVrUyhbajCaqDGRtTvHx84xpi83vknZJhuOu+Pl6gyNIu/g4/MSFtSZ9CKqIu62VBAuepGggY2jsceyMIqNhtLOuR9yGSPR2kTABypkIjvyK9NqM/JivCmHV3FXv6280eHcf40gAtHpTw++ERSRuhW/rkimyJrHLIeMvZpfT9JpORsUCbUHmdEOQae0zXHp0mcGV0woWiRKSBcA2yogl+rrqLc1cbsX5I6jfYTdaegcoe0eQ==</SignatureValue>
           <KeyInfo>
             <X509Data>
               <X509IssuerSerial>

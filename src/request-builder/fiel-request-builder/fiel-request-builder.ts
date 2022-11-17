@@ -70,8 +70,8 @@ export class FielRequestBuilder implements RequestBuilderInterface {
         if (queryByUuid) {
             solicitudAttributes.set('Folio', queryParameters.getUuid().getValue());
         } else {
-            const start = queryParameters.getPeriod().getStart().format('Y-m-dTH:i:s');
-            const end = queryParameters.getPeriod().getEnd().format('Y-m-dTH:i:s');
+            const start = queryParameters.getPeriod().getStart().format("yyyy-MM-dd'T'HH:mm:ss");
+            const end = queryParameters.getPeriod().getEnd().format("yyyy-MM-dd'T'HH:mm:ss");
             let rfcIssuer: string;
             let rfcReceivers: RfcMatches;
             if (queryParameters.getDownloadType().isTypeOf('issued')) {
@@ -97,6 +97,7 @@ export class FielRequestBuilder implements RequestBuilderInterface {
                         return `<des:RfcReceptor>${this.parseXml(rfcMatch.getValue())}</des:RfcReceptor>`;
                     })
                     .join('');
+                xmlRfcReceived = `<des:RfcReceptores>${xmlRfcReceived}</des:RfcReceptores>`;
             }
         }
         const cleanedSolicitudAttributes = new Map();

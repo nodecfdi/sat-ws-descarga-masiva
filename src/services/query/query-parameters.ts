@@ -12,30 +12,6 @@ import { DateTimePeriod } from '~/shared/date-time-period';
 import { DownloadType } from '~/shared/download-type';
 import { RequestType } from '~/shared/request-type';
 
-type Properties =
-    | '_serviceType'
-    | '_period'
-    | '_downloadType'
-    | '_requestType'
-    | '_documentType'
-    | '_complement'
-    | '_documentStatus'
-    | '_uuid'
-    | '_rfcOnBehalf'
-    | '_rfcMatches'
-    | '_rfcMatches';
-
-type Values =
-    | DateTimePeriod
-    | ServiceType
-    | DownloadType
-    | RequestType
-    | DocumentType
-    | ComplementoInterface
-    | DocumentStatus
-    | Uuid
-    | RfcOnBehalf
-    | RfcMatches;
 /**
  * This class contains all the information required to perform a query on the SAT Web Service
  */
@@ -129,53 +105,69 @@ export class QueryParameters {
     }
 
     public withServiceType(serviceType: ServiceType): QueryParameters {
-        return this.with('_serviceType', serviceType);
+        this._serviceType = serviceType;
+
+        return this;
     }
 
     public withPeriod(period: DateTimePeriod): QueryParameters {
-        return this.with('_period', period);
+        this._period = period;
+
+        return this;
     }
 
     public withDownloadType(downloadType: DownloadType): QueryParameters {
-        return this.with('_downloadType', downloadType);
+        this._downloadType = downloadType;
+
+        return this;
     }
 
     public withRequestType(requestType: RequestType): QueryParameters {
-        return this.with('_requestType', requestType);
+        this._requestType = requestType;
+
+        return this;
     }
 
     public withDocumentType(documentType: DocumentType): QueryParameters {
-        return this.with('_documentType', documentType);
+        this._documentType = documentType;
+
+        return this;
     }
 
     public withComplement(complement: ComplementoInterface): QueryParameters {
-        return this.with('_complement', complement);
+        this._complement = complement;
+
+        return this;
     }
 
     public withDocumentStatus(documentStatus: DocumentStatus): QueryParameters {
-        return this.with('_documentStatus', documentStatus);
+        this._documentStatus = documentStatus;
+
+        return this;
     }
 
     public withUuid(uuid: Uuid): QueryParameters {
-        return this.with('_uuid', uuid);
+        this._uuid = uuid;
+
+        return this;
     }
 
     public withRfcOnBehalf(rfcOnBehalf: RfcOnBehalf): QueryParameters {
-        return this.with('_rfcOnBehalf', rfcOnBehalf);
+        this._rfcOnBehalf = rfcOnBehalf;
+
+        return this;
     }
 
     public withRfcMatches(rfcMatches: RfcMatches): QueryParameters {
-        return this.with('_rfcMatches', rfcMatches);
+        this._rfcMatches = rfcMatches;
+
+        return this;
     }
 
     public withRfcMatch(rfcMatch: RfcMatch): QueryParameters {
-        return this.with('_rfcMatches', RfcMatches.create(rfcMatch));
-    }
+        this._rfcMatches = RfcMatches.create(rfcMatch);
 
-    private with(property: Properties, value: Values): QueryParameters {
-        const clone = { ...this, [property]: value };
-
-        return clone;
+        return this;
     }
 
     public toJSON(): {

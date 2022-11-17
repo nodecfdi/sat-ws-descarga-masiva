@@ -3,7 +3,7 @@
   <s:Header/>
   <s:Body>
     <des:SolicitaDescarga>
-      <des:solicitud FechaFinal="2019-01-01T00:04:00" FechaInicial="2019-01-01T00:00:00" RfcEmisor="EKU9003173C9" RfcSolicitante="EKU9003173C9" TipoSolicitud="Metadata">
+      <des:solicitud Folio="96623061-61fe-49de-b298-c7156476aa8b" RfcSolicitante="EKU9003173C9" TipoSolicitud="Metadata">
         <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
           <SignedInfo>
             <CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
@@ -13,10 +13,10 @@
                 <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
               </Transforms>
               <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
-              <DigestValue>d6h7Fcn0bVGiSGPNK39LEkMfI/M=</DigestValue>
+              <DigestValue>A0teWlShxOD/65O111KTBA+TOSk=</DigestValue>
             </Reference>
           </SignedInfo>
-          <SignatureValue>EIs1HpcCNOD1FIKTT34BoOKWsrqniIQl2JSAVzYoqPINxrDsw8SxsgvrlLaYyruxKeD9V/r/4LFMKU72vll7/coxCkLIvid/XkohWrOwQIjChNomQZtiSKqum6WClnA5vCdszZ3NQxaiV1S9UyeFMaJtd4qDFPIHCPtjMbTVLr5GkKHVys/I4nT59Xo/ugHqv8T9IzJ1PMC6wmacNKuOvlu64oXxxs0yGdKJXYnDC4TiiVYB/7gRBTRrCIFlWdUiHu77ZuuVQwa+Gi7rqsgCu/XKWUxQUHaWrtxeCGsSpl3Y0c4By8PSY6o3NkM2zO+o7Dk9sYONXH2NC/kPDx4KiA==</SignatureValue>
+          <SignatureValue>d0KaOIjhmXRKuSmbqP/tFoyEqBiNwab5rd8L9mCnjg0TxtbRgJz9+5I7LP0JwJiVWlzcPFoOwth68vSmFqr+hEtvpYlYPmUrPMMiheIv+6D28DLErBlZSRmnXuu3EJuI7D29JAMB2MYML8N8n8Y/NOLGhO3qQIJDAa8AjQCIxgokipU9iZsHtDcHcHZOocCFMWNOBTDLdd8TOsi6HNgWEDeUL18nJ7W1QOamQAU3fmKSPF3I37pISu/MHExPayqDZEaDkbKl0u9j8GGSlFyOreLjvkyfZWj9azlu/jyMIy/DwlEeIviPrccc/nnDQ1T3wYrB2QNeSeP7Xb8QCOx+ug==</SignatureValue>
           <KeyInfo>
             <X509Data>
               <X509IssuerSerial>
