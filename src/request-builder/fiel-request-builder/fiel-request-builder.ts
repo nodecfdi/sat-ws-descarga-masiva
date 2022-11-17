@@ -153,7 +153,7 @@ export class FielRequestBuilder implements RequestBuilderInterface {
                 <s:Header/>
                 <s:Body>
                     <des:VerificaSolicitudDescarga>
-                        <des:solicitud IdSolicitud="${requestId}" RfcSolicitante="${xmlRfc}">
+                        <des:solicitud IdSolicitud="${xmlRequestId}" RfcSolicitante="${xmlRfc}">
                             ${signatureData}
                         </des:solicitud>
                     </des:VerificaSolicitudDescarga>
@@ -244,7 +244,7 @@ export class FielRequestBuilder implements RequestBuilderInterface {
         const fiel = this.getFiel();
         const certificate = Helpers.cleanPemContents(fiel.getCertificatePemContents());
         const serial = fiel.getCertificateSerial();
-        const issuerName = fiel.getCertificateIssuerName();
+        const issuerName = this.parseXml(fiel.getCertificateIssuerName());
 
         return `
             <KeyInfo>

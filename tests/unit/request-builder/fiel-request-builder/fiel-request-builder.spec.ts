@@ -1,6 +1,5 @@
 import { TestCase } from '../../../test-case';
 import { FielRequestBuilder } from '~/request-builder/fiel-request-builder/fiel-request-builder';
-import { EnvelopSignatureVerifier } from './envelop-signature-verifier';
 import { Helpers } from '~/internal/helpers';
 import { DateTime, DateTimePeriod, DownloadType, Fiel, QueryParameters, RequestType } from '~/index';
 import { ServiceType } from '~/shared/service-type';
@@ -10,8 +9,10 @@ import { DocumentStatus } from '~/shared/document-status';
 import { RfcOnBehalf } from '~/shared/rfc-on-behalf';
 import { RfcMatch } from '~/shared/rfc-match';
 import { Uuid } from '~/shared/uuid';
-import { Certificate, Credential, PrivateKey } from '@nodecfdi/credentials';
+import { Certificate, Credential, PrivateKey, SerialNumber } from '@nodecfdi/credentials';
 import { mock } from 'jest-mock-extended';
+import { DOMParser } from '@xmldom/xmldom';
+import { useNamespaces } from 'xpath';
 describe('Fiel request builder', () => {
     test('fiel request contains given fiel', () => {
         const fiel = TestCase.createFielUsingTestingFiles();
@@ -165,26 +166,35 @@ describe('Fiel request builder', () => {
         const issuerName = 'O=Compañía "Tú & Yo", Inc.';
 
         const certificate = mock<Certificate>();
-        certificate.rfc.mockReturnValue(rfc);
-        certificate.issuerAsRfc4514.mockReturnValue(issuerName);
+
+        certificate.rfc.mockReturnValueOnce(rfc);
+        certificate.issuerAsRfc4514.mockReturnValueOnce(issuerName);
+        certificate.pem.mockReturnValueOnce('');
+        const serialNumber = mock<SerialNumber>();
+        serialNumber.decimal.mockReturnValue('');
+        certificate.serialNumber.mockReturnValueOnce(serialNumber);
         const privateKey = mock<PrivateKey>();
-        privateKey.belongsTo.mockReturnValue(true);
+        privateKey.belongsTo.mockReturnValueOnce(true);
+        privateKey.sign.mockReturnValueOnce('');
         const credential = new Credential(certificate, privateKey);
         const fiel = new Fiel(credential);
 
         const requestBuilder = new FielRequestBuilder(fiel);
         const requestBody = requestBuilder.verify(requestId);
-        console.log(requestBody);
 
-        expect(requestBody).not.toBeUndefined();
+        const parser = new DOMParser();
 
-        // const xmlSecVeritifaction = await new EnvelopSignatureVerifier().verify(
-        //     requestBody,
-        //     'http://DescargaMasivaTerceros.sat.gob.mx',
-        //     'VerificaSolicitudDescarga'
-        // );
-        // // TODO: check this verification.
-        // expect(xmlSecVeritifaction).toBeTruthy();
+        const document = parser.parseFromString(requestBody, 'application/xml');
+
+        const selectVal = useNamespaces({
+            des: 'http://DescargaMasivaTerceros.sat.gob.mx',
+            xd: 'http://www.w3.org/2000/09/xmldsig#'
+        });
+        expect((selectVal('//des:solicitud/@IdSolicitud', document.documentElement)[0] as Attr).value).toBe(requestId);
+        expect((selectVal('//des:solicitud/@RfcSolicitante', document.documentElement)[0] as Attr).value).toBe(rfc);
+        expect((selectVal('//xd:X509IssuerName/text()', document.documentElement)[0] as Element).nodeValue).toBe(
+            issuerName
+        );
     });
 
     test('download', async () => {
@@ -202,12 +212,55 @@ describe('Fiel request builder', () => {
             Helpers.nospaces(TestCase.fileContents('download/request.xml'))
         );
 
-        const xmlSecVeritifaction = await new EnvelopSignatureVerifier().verify(
-            requestBody,
-            'http://DescargaMasivaTerceros.sat.gob.mx',
-            'PeticionDescargaMasivaTercerosEntrada'
+        // const xmlSecVeritifaction = await new EnvelopSignatureVerifier().verify(
+        //     requestBody,
+        //     'http://DescargaMasivaTerceros.sat.gob.mx',
+        //     'PeticionDescargaMasivaTercerosEntrada'
+        // );
+        // // TODO: check this verification.
+        // expect(xmlSecVeritifaction).toBeTruthy();
+    });
+
+    test('download using special invalid xml characters', async () => {
+        const packageId = '"&"';
+        const rfc = 'E&E010101AAA';
+        const issuerName = 'O=Compañía "Tú & Yo", Inc.';
+
+        const certificate = mock<Certificate>();
+
+        certificate.rfc.mockReturnValueOnce(rfc);
+        certificate.issuerAsRfc4514.mockReturnValueOnce(issuerName);
+        certificate.pem.mockReturnValueOnce('');
+        const serialNumber = mock<SerialNumber>();
+        serialNumber.decimal.mockReturnValue('');
+        certificate.serialNumber.mockReturnValueOnce(serialNumber);
+        const privateKey = mock<PrivateKey>();
+        privateKey.belongsTo.mockReturnValueOnce(true);
+        privateKey.sign.mockReturnValueOnce('');
+        const credential = new Credential(certificate, privateKey);
+        const fiel = new Fiel(credential);
+
+        const requestBuilder = new FielRequestBuilder(fiel);
+        const requestBody = requestBuilder.download(packageId);
+
+        const parser = new DOMParser();
+
+        console.log(requestBody);
+
+        const document = parser.parseFromString(requestBody, 'application/xml');
+
+        const selectVal = useNamespaces({
+            des: 'http://DescargaMasivaTerceros.sat.gob.mx',
+            xd: 'http://www.w3.org/2000/09/xmldsig#'
+        });
+        expect((selectVal('//des:peticionDescarga/@idPaquete', document.documentElement)[0] as Attr).value).toBe(
+            packageId
         );
-        // TODO: check this verification.
-        expect(xmlSecVeritifaction).toBeTruthy();
+        expect((selectVal('//des:peticionDescarga/@RfcSolicitante', document.documentElement)[0] as Attr).value).toBe(
+            rfc
+        );
+        expect((selectVal('//xd:X509IssuerName/text()', document.documentElement)[0] as Element).nodeValue).toBe(
+            issuerName
+        );
     });
 });
