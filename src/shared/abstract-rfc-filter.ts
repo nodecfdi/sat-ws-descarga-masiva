@@ -1,5 +1,4 @@
 import { Rfc } from '@nodecfdi/rfc';
-import { InvalidExpressionToParseException } from '@nodecfdi/rfc';
 export class AbstractRfcFilter {
     protected constructor(private _value?: Rfc) {}
 
@@ -7,7 +6,7 @@ export class AbstractRfcFilter {
         try {
             return new AbstractRfcFilter(Rfc.parse(value));
         } catch (error) {
-            throw error instanceof InvalidExpressionToParseException ? new Error('Rfc is invalid.') : error;
+            throw new Error('RFC is invalid');
         }
     }
 

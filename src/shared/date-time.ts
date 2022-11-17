@@ -1,4 +1,4 @@
-import { DateTime as DateTimeImmutable } from 'luxon';
+import { DateTime as DateTimeImmutable, DurationLike } from 'luxon';
 /**
  * Defines a date and time
  */
@@ -82,13 +82,13 @@ export class DateTime {
     }
 
     /**
-     * add or sub in minutes
+     * add or sub in given DurationLike
      *
      */
-    public modify(quantity: number): DateTime {
+    public modify(time: DurationLike): DateTime {
         const temp = this._value;
 
-        return new DateTime(temp.plus({ minutes: quantity }));
+        return new DateTime(temp.plus(time));
     }
 
     public compareTo(otherDate: DateTime): number {

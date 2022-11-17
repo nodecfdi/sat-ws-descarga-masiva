@@ -1,17 +1,18 @@
+import { BaseEnum } from './enum/base-enum';
+
 export type ServiceTypeValues = 'cfdi' | 'retenciones';
 
-export class ServiceType {
-    constructor(public readonly _id: ServiceTypeValues) {}
+enum ServiceTypeEnum {
+    cfdi = 'cfdi',
+    retenciones = 'retenciones'
+}
 
+export class ServiceType extends BaseEnum<ServiceTypeValues> {
     public equalTo(serviceType: ServiceType): boolean {
         return this._id === serviceType._id;
     }
 
-    public isTypeOf(type: ServiceTypeValues): boolean {
-        return this._id === type;
-    }
-
-    public toJSON(): string {
-        return this._id.toString();
+    public value(): string {
+        return ServiceTypeEnum[this._id];
     }
 }

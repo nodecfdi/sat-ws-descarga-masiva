@@ -46,6 +46,15 @@ export class RfcMatches {
         return this._items;
     }
 
+    public itemsToArray(): RfcMatch[] {
+        const values: RfcMatch[] = [];
+        for (const iterator of this._items) {
+            values.push(iterator);
+        }
+
+        return values;
+    }
+
     public toJSON(): RfcMatch[] {
         return this._items;
     }
