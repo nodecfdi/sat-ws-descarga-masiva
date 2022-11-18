@@ -1,6 +1,6 @@
-import { CRequest } from '../../../../src/web-client/crequest';
-import { CResponse } from '../../../../src/web-client/cresponse';
-import { WebClientException } from '../../../../src/web-client/exceptions/web-client-exception';
+import { CRequest } from '~/web-client/crequest';
+import { CResponse } from '~/web-client/cresponse';
+import { WebClientException } from '~/web-client/exceptions/web-client-exception';
 
 describe('web client exception', () => {
     test('properties', () => {
