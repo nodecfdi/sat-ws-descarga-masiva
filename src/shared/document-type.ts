@@ -15,4 +15,8 @@ export class DocumentType extends BaseEnum<DocumentTypeTypes> {
     public value(): string {
         return DocumentTypeEnum[this._id];
     }
+
+    public override toJSON(): string {
+        return DocumentTypeEnum[this._id];
+    }
 }

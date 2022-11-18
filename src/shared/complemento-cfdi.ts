@@ -41,7 +41,10 @@ export type ComplementoCfdiTypes =
     | 'vehiculoUsado10'
     | 'ventaVehiculos11';
 
-export class ComplementoCfdi extends BaseEnum<ComplementoCfdiTypes> implements ComplementoInterface {
+export class ComplementoCfdi
+    extends BaseEnum<ComplementoCfdiTypes>
+    implements ComplementoInterface<ComplementoCfdiTypes>
+{
     private readonly Map = {
         undefined: {
             satCode: '',
@@ -197,11 +200,11 @@ export class ComplementoCfdi extends BaseEnum<ComplementoCfdiTypes> implements C
         }
     };
 
-    public static create(id: ComplementoCfdiTypes): ComplementoInterface {
+    public static create(id: ComplementoCfdiTypes): ComplementoCfdi {
         return new ComplementoCfdi(id);
     }
 
-    public static undefined(): ComplementoInterface {
+    public static undefined(): ComplementoCfdi {
         return new ComplementoCfdi('undefined');
     }
 

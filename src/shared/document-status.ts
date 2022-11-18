@@ -12,4 +12,8 @@ export class DocumentStatus extends BaseEnum<DocumentStatusTypes> {
     public value(): string {
         return DocumentStatusEnum[this._id];
     }
+
+    public override toJSON(): string {
+        return DocumentStatusEnum[this._id];
+    }
 }

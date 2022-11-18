@@ -1,3 +1,5 @@
+type CodeRequestTypes = 'Accepted' | 'Exhausted' | 'MaximumLimitReaded' | 'EmptyResult' | 'Duplicated';
+
 export class CodeRequest {
     private index?: number;
 
@@ -72,6 +74,10 @@ export class CodeRequest {
 
     public getValue(): number | undefined {
         return this.index;
+    }
+
+    public isTypeOf(type: CodeRequestTypes): boolean {
+        return this.getEntryId() === type;
     }
 
     public toJSON(): { value: number | undefined; message: string } {

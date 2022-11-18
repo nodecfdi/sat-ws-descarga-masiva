@@ -1,9 +1,16 @@
-import { DateTime } from '../../../../src/shared/date-time';
-import { DateTimePeriod } from '../../../../src/shared/date-time-period';
-import { DownloadType } from '../../../../src/shared/download-type';
-import { RequestType } from '../../../../src/shared/request-type';
-import { QueryParameters } from '../../../../src/services/query/query-parameters';
+import { DateTime } from '~/shared/date-time';
+import { DateTimePeriod } from '~/shared/date-time-period';
+import { DownloadType } from '~/shared/download-type';
+import { RequestType } from '~/shared/request-type';
+import { QueryParameters } from '~/services/query/query-parameters';
 import { TestCase } from '../../../test-case';
+import { DocumentStatus } from '~/shared/document-status';
+import { DocumentType } from '~/shared/document-type';
+import { Uuid } from '~/shared/uuid';
+import { RfcOnBehalf } from '~/shared/rfc-on-behalf';
+import { RfcMatches } from '~/shared/rfc-matches';
+import { ComplementoCfdi } from '~/shared/complemento-cfdi';
+import { RfcMatch } from '~/shared/rfc-match';
 
 describe('query parameters', () => {
     test('all properties', () => {
@@ -11,16 +18,40 @@ describe('query parameters', () => {
             DateTime.create('2019-01-01 00:00:00'),
             DateTime.create('2019-01-01 00:04:00')
         );
-        const downloadType = DownloadType.received;
-        const requestType = RequestType.cfdi;
-        const rfcMatch = 'AAA010101AAA';
+        const downloadType = new DownloadType('received');
+        const requestType = new RequestType('xml');
+        const documentType = new DocumentType('ingreso');
+        const documentStatus = new DocumentStatus('active');
+        const uuid = Uuid.create('96623061-61fe-49de-b298-c7156476aa8b');
+        const rfcOnBehalf = RfcOnBehalf.create('XXX01010199A');
+        const rfcMatches = RfcMatches.createFromValues('ABA991231XX0');
+        const complement = new ComplementoCfdi('leyendasFiscales10');
 
-        const query = QueryParameters.create(period, downloadType, requestType, rfcMatch);
+        let query = QueryParameters.create()
+            .withPeriod(period)
+            .withDownloadType(downloadType)
+            .withRequestType(requestType)
+            .withDocumentType(documentType)
+            .withComplement(complement)
+            .withDocumentStatus(documentStatus)
+            .withUuid(uuid)
+            .withRfcOnBehalf(rfcOnBehalf)
+            .withRfcMatches(rfcMatches);
 
         expect(query.getPeriod()).toBe(period);
         expect(query.getDownloadType()).toBe(downloadType);
         expect(query.getRequestType()).toBe(requestType);
+        expect(query.getDocumentType()).toBe(documentType);
+        expect(query.getComplement()).toBe(complement);
+        expect(query.getDocumentStatus()).toBe(documentStatus);
+        expect(query.getUuid()).toBe(uuid);
+        expect(query.getRfcOnBehalf()).toBe(rfcOnBehalf);
+        expect(query.getRfcMatches()).toBe(rfcMatches);
+
+        const rfcMatch = RfcMatch.create('AAAA010101AAA');
+        query = query.withRfcMatch(rfcMatch);
         expect(query.getRfcMatch()).toBe(rfcMatch);
+        expect(query.getRfcMatches().getFirst()).toBe(rfcMatch);
     });
 
     test('minimal create', () => {
@@ -31,21 +62,31 @@ describe('query parameters', () => {
 
         const query = QueryParameters.create(period);
 
-        expect(query.getRequestType() == RequestType.metadata).toBeTruthy();
-        expect(query.getDownloadType() == DownloadType.issued).toBeTruthy();
-        expect(query.getRfcMatch()).toBe('');
+        expect(query.getPeriod()).toBe(period);
+        expect(query.getRequestType().isTypeOf('metadata')).toBeTruthy();
+        expect(query.getDownloadType().isTypeOf('issued')).toBeTruthy();
+        expect(query.getDocumentType().isTypeOf('undefined')).toBeTruthy();
+        expect(query.getComplement().isTypeOf('undefined')).toBeTruthy();
+        expect(query.getDocumentStatus().isTypeOf('undefined')).toBeTruthy();
+        expect(query.getUuid().isEmpty()).toBeTruthy();
+        expect(query.getRfcOnBehalf().isEmpty()).toBeTruthy();
+        expect(query.getRfcMatch().isEmpty()).toBeTruthy();
     });
 
     test('json', () => {
-        const period = DateTimePeriod.createFromValues('2019-01-01T00:00:00-06:00', '2019-01-01T00:04:00-06:00');
-        const downloadType = DownloadType.received;
-        const requestType = RequestType.cfdi;
-        const rfcMatch = 'AAAA010101AAA';
-
-        const query = QueryParameters.create(period, downloadType, requestType, rfcMatch);
+        const query = QueryParameters.create()
+            .withPeriod(DateTimePeriod.createFromValues('2019-01-01T00:00:00-06:00', '2019-01-01T00:04:00-06:00'))
+            .withDownloadType(new DownloadType('received'))
+            .withRequestType(new RequestType('xml'))
+            .withDocumentType(new DocumentType('ingreso'))
+            .withComplement(new ComplementoCfdi('leyendasFiscales10'))
+            .withDocumentStatus(new DocumentStatus('cancelled'))
+            .withUuid(Uuid.create('96623061-61fe-49de-b298-c7156476aa8b'))
+            .withRfcOnBehalf(RfcOnBehalf.create('XXX01010199A'))
+            .withRfcMatch(RfcMatch.create('AAAA010101AAA'));
 
         const expectedFile = TestCase.fileContents('json/query-parameters.json');
 
-        expect(JSON.stringify(query.jsonSerialize())).toBe(JSON.stringify(JSON.parse(expectedFile)));
+        expect(JSON.stringify(query)).toBe(JSON.stringify(JSON.parse(expectedFile)));
     });
 });

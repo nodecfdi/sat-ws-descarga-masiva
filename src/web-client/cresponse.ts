@@ -35,7 +35,7 @@ export class CResponse {
         return this._statusCode < 600 && this._statusCode >= 500;
     }
 
-    public jsonSerialize(): {
+    public toJSON(): {
         statusCode: number;
         body: string;
         headers: Record<string, string>;

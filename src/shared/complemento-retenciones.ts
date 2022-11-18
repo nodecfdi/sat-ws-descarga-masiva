@@ -17,7 +17,10 @@ type ComplementoRetencionesTypes =
     | 'sectorFinanciero'
     | 'serviciosPlataformasTecnologicas';
 
-export class ComplementoRetenciones extends BaseEnum<ComplementoRetencionesTypes> implements ComplementoInterface {
+export class ComplementoRetenciones
+    extends BaseEnum<ComplementoRetencionesTypes>
+    implements ComplementoInterface<ComplementoRetencionesTypes>
+{
     private readonly Map = {
         undefined: {
             satCode: '',
@@ -77,11 +80,11 @@ export class ComplementoRetenciones extends BaseEnum<ComplementoRetencionesTypes
         }
     };
 
-    public static create(id: ComplementoRetencionesTypes): ComplementoInterface {
+    public static create(id: ComplementoRetencionesTypes): ComplementoRetenciones {
         return new ComplementoRetenciones(id);
     }
 
-    public static undefined(): ComplementoInterface {
+    public static undefined(): ComplementoRetenciones {
         return new ComplementoRetenciones('undefined');
     }
 
