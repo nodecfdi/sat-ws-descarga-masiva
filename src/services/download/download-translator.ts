@@ -1,7 +1,7 @@
 import { use } from 'typescript-mix';
-import { InteractsXmlTrait } from '../../internal/interacts-xml-trait';
-import { RequestBuilderInterface } from '../../request-builder/request-builder-interface';
-import { StatusCode } from '../../shared/status-code';
+import { InteractsXmlTrait } from '~/internal/interacts-xml-trait';
+import { RequestBuilderInterface } from '~/request-builder/request-builder-interface';
+import { StatusCode } from '~/shared/status-code';
 import { DownloadResult } from './download-result';
 
 export class DownloadTranslator extends InteractsXmlTrait {
@@ -14,7 +14,7 @@ export class DownloadTranslator extends InteractsXmlTrait {
         const status = new StatusCode(Number(values['codestatus']) ?? 0, values['mensaje'] ?? '');
         const cpackage = this.findContent(env, 'body', 'RespuestaDescargaMasivaTercerosSalida', 'Paquete');
 
-        return new DownloadResult(status, Buffer.from(cpackage).toString('base64') || '');
+        return new DownloadResult(status, Buffer.from(cpackage).toString() || '');
     }
 
     public createSoapRequest(requestBuilder: RequestBuilderInterface, packageId: string): string {

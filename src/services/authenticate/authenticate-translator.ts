@@ -1,8 +1,8 @@
 import { use } from 'typescript-mix';
-import { InteractsXmlTrait } from '../../internal/interacts-xml-trait';
-import { RequestBuilderInterface } from '../../request-builder/request-builder-interface';
-import { DateTime } from '../../shared/date-time';
-import { Token } from '../../shared/token';
+import { InteractsXmlTrait } from '~/internal/interacts-xml-trait';
+import { RequestBuilderInterface } from '~/request-builder/request-builder-interface';
+import { DateTime } from '~/shared/date-time';
+import { Token } from '~/shared/token';
 
 /** @internal */
 export class AuthenticateTranslator extends InteractsXmlTrait {
@@ -21,7 +21,7 @@ export class AuthenticateTranslator extends InteractsXmlTrait {
 
     public createSoapRequest(requestBuilder: RequestBuilderInterface): string {
         const since = DateTime.now();
-        const until = since.modify(5);
+        const until = since.modify({ minutes: 5 });
 
         return this.createSoapRequestWithData(requestBuilder, since, until);
     }
@@ -32,6 +32,6 @@ export class AuthenticateTranslator extends InteractsXmlTrait {
         until: DateTime,
         securityToken = ''
     ): string {
-        return requestBuilder.authorization(since.formatSat(), until.formatSat(), securityToken);
+        return requestBuilder.authorization(since, until, securityToken);
     }
 }

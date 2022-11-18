@@ -1,6 +1,6 @@
 import { TestCase } from '../../../test-case';
-import { Helpers } from '../../../../src/internal/helpers';
-import { DownloadTranslator } from '../../../../src/services/download/download-translator';
+import { Helpers } from '~/internal/helpers';
+import { DownloadTranslator } from '~/services/download/download-translator';
 describe('download translator', () => {
     test('create download result from soap response with package', () => {
         const expectedStatusCode = 5000;
@@ -12,7 +12,7 @@ describe('download translator', () => {
         const result = translator.createDownloadResultFromSoapResponse(responseBody);
         const status = result.getStatus();
 
-        expect(result.getPackageLenght()).toBeGreaterThan(0);
+        expect(result.getPackageSize()).toBeGreaterThan(0);
         expect(result.getPackageContent()).not.toBe('');
         expect(status.getCode()).toBe(expectedStatusCode);
         expect(status.getMessage()).toBe(expectedMessage);

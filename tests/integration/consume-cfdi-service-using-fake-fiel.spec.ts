@@ -1,48 +1,73 @@
 import { TestCase } from '../test-case';
-import { RequestBuilderInterface } from '../../src/request-builder/request-builder-interface';
-import { Service } from '../../src/service';
-import { AxiosWebClient } from '../../src/web-client/axios-web-client';
-import { DateTimePeriod } from '../../src/shared/date-time-period';
-import { DateTime } from '../../src/shared/date-time';
-import { QueryParameters } from '../../src/services/query/query-parameters';
-import { DownloadType } from '../../src/shared/download-type';
-import { RequestType } from '../../src/shared/request-type';
+import { RequestBuilderInterface } from '~/request-builder/request-builder-interface';
+import { Service } from '~/service';
+import { AxiosWebClient } from '~/web-client/axios-web-client';
+import { QueryParameters } from '~/services/query/query-parameters';
+import { ServiceEndpoints } from '~/shared/service-endpoints';
+import { DateTimePeriod, DownloadType, RequestType } from '~/index';
+import { DocumentType } from '~/shared/document-type';
+import { ComplementoCfdi } from '~/shared/complemento-cfdi';
+import { DocumentStatus } from '~/shared/document-status';
+import { RfcOnBehalf } from '~/shared/rfc-on-behalf';
+import { RfcMatch } from '~/shared/rfc-match';
+import { Uuid } from '~/shared/uuid';
+import { ServiceType } from '~/shared/service-type';
+import { QueryResult } from '~/services/query/query-result';
 
 describe('consume cfdi service using fake fiel', () => {
     let requestBuilder: RequestBuilderInterface;
     let webClient: AxiosWebClient;
     let service: Service;
 
+    function getServiceEndpoints(): ServiceEndpoints {
+        return ServiceEndpoints.cfdi();
+    }
+
     beforeEach(() => {
         requestBuilder = TestCase.createFielRequestBuilderUsingTestingFiles();
         webClient = new AxiosWebClient();
-        service = new Service(requestBuilder, webClient);
+        service = new Service(requestBuilder, webClient, undefined, getServiceEndpoints());
     });
 
     test('authentication', async () => {
         const token = await service.authenticate();
         expect(token.isValid()).toBeTruthy();
     });
-    test('query issued', async () => {
-        const since = DateTime.create('2019-01-01 00:00:00');
-        const until = DateTime.create('2019-01-01 00:04:00');
-        const dateTimePeriod = DateTimePeriod.create(since, until);
-        const parameters = QueryParameters.create(dateTimePeriod, DownloadType.issued, RequestType.cfdi);
+
+    test('query default parameters', async () => {
+        const parameters = QueryParameters.create();
 
         const result = await service.query(parameters);
-
         expect(result.getStatus().getCode()).toBe(305);
     });
 
-    test('query received', async () => {
-        const since = DateTime.create('2019-01-01 00:00:00');
-        const until = DateTime.create('2019-01-01 00:04:00');
-        const dateTimePeriod = DateTimePeriod.create(since, until);
-        const parameters = QueryParameters.create(dateTimePeriod, DownloadType.received, RequestType.cfdi);
+    test('query change all parameteres', async () => {
+        const parameters = QueryParameters.create()
+            .withPeriod(DateTimePeriod.createFromValues('2019-01-01 00:00:00', '2019-01-01 00:04:00'))
+            .withDownloadType(new DownloadType('received'))
+            .withRequestType(new RequestType('xml'))
+            .withDocumentType(new DocumentType('nomina'))
+            .withComplement(new ComplementoCfdi('nomina12'))
+            .withDocumentStatus(new DocumentStatus('active'))
+            .withRfcOnBehalf(RfcOnBehalf.create('XXX01010199A'))
+            .withRfcMatch(RfcMatch.create('AAA010101AAA'));
 
         const result = await service.query(parameters);
-
         expect(result.getStatus().getCode()).toBe(305);
+    }, 10000);
+
+    test('query uuid', async () => {
+        const parameters = QueryParameters.create().withUuid(Uuid.create('96623061-61fe-49de-b298-c7156476aa8b'));
+
+        const result = await service.query(parameters);
+        expect(result.getStatus().getCode()).toBe(305);
+    });
+
+    test('service endpoints different than query endpoints throws error', async () => {
+        const otherServiceType = new ServiceType('retenciones');
+        const parameters = QueryParameters.create().withServiceType(otherServiceType);
+        const result = async (): Promise<QueryResult> => await service.query(parameters);
+        await expect(result).rejects.toThrow(Error);
     });
 
     test('verify', async () => {
@@ -59,5 +84,5 @@ describe('consume cfdi service using fake fiel', () => {
         const result = await service.download(requestId);
 
         expect(result.getStatus().getCode()).toBe(305);
-    });
+    }, 10000);
 });

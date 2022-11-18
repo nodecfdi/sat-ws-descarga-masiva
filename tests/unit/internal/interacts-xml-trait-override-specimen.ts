@@ -1,5 +1,5 @@
 import { use } from 'typescript-mix';
-import { InteractsXmlTrait } from '../../../src/internal/interacts-xml-trait';
+import { InteractsXmlTrait } from '~/internal/interacts-xml-trait';
 import { DOMParser } from '@xmldom/xmldom';
 
 interface InteractsXmlOverrideTraitSpecimen extends InteractsXmlTrait {}

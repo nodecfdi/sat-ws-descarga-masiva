@@ -1,5 +1,5 @@
 import { TestCase } from '../../test-case';
-import { CResponse } from '../../../src/web-client/cresponse';
+import { CResponse } from '~/web-client/cresponse';
 
 describe('cresponse', () => {
     test('properties', () => {
@@ -60,6 +60,6 @@ describe('cresponse', () => {
 
         const expectedFile = TestCase.fileContents('json/webclient-response.json');
 
-        expect(JSON.stringify(response.jsonSerialize())).toBe(JSON.stringify(JSON.parse(expectedFile)));
+        expect(JSON.stringify(response)).toBe(JSON.stringify(JSON.parse(expectedFile)));
     });
 });

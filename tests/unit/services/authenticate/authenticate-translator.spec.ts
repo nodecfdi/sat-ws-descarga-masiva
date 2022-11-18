@@ -1,7 +1,7 @@
 import { TestCase } from '../../../test-case';
-import { Helpers } from '../../../../src/internal/helpers';
-import { AuthenticateTranslator } from '../../../../src/services/authenticate/authenticate-translator';
-import { DateTime } from '../../../../src/shared/date-time';
+import { Helpers } from '~/internal/helpers';
+import { AuthenticateTranslator } from '~/services/authenticate/authenticate-translator';
+import { DateTime } from '~/shared/date-time';
 describe('Authenticate translator', () => {
     test('create soap request', () => {
         const translator = new AuthenticateTranslator();

@@ -1,7 +1,6 @@
 import { readFileSync } from 'fs';
-import { Helpers } from '../../../src/internal/helpers';
-import { CfdiPackageReader } from '../../../src/package-reader/cfdi-package-reader';
-import { OpenZipFileException } from '../../../src/package-reader/exceptions/open-zip-file-exception';
+import { CfdiPackageReader } from '~/package-reader/cfdi-package-reader';
+import { OpenZipFileException } from '~/package-reader/exceptions/open-zip-file-exception';
 import { TestCase } from '../../test-case';
 /**
  * This tests uses the Zip file located at tests/_files/zip/cfdi.zip that contains:
@@ -24,24 +23,34 @@ describe('cfdi package reader', () => {
         const zipContents = TestCase.fileContents('zip/cfdi.zip');
         const cfdiPackageReader = await CfdiPackageReader.createFromContents(zipContents);
         const temporaryFileName = cfdiPackageReader.getFilename();
+        const cfdiArray = await cfdiPackageReader.cfdisToArray();
+        expect(cfdiArray.length).toBe(2);
         expect(() => readFileSync(temporaryFileName)).toThrow(
             `ENOENT: no such file or directory, open '${temporaryFileName}'`
         );
     });
 
-    test('reader zip with other files', async () => {
-        let expectedFileNames = [
-            'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee.xml',
-            'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee.xml.xml'
-        ];
-        expectedFileNames = expectedFileNames.sort();
+    test('read zip with other files', async () => {
+        const expectedNumberCfdis = 2;
 
         const filename = TestCase.filePath('zip/cfdi.zip');
         const cfdiPackageReader = await CfdiPackageReader.createFromFile(filename);
 
-        const objects = await Helpers.iteratorToObject(cfdiPackageReader.fileContents());
-        const filenames = Object.keys(objects).sort();
-        expect(filenames).toStrictEqual(expectedFileNames);
+        expect(await cfdiPackageReader.count()).toBe(expectedNumberCfdis);
+    });
+
+    test('reader zip with other files and double xml extension', async () => {
+        const expectedFileNames = [
+            'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee.xml',
+            'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee.xml.xml'
+        ];
+
+        const filename = TestCase.filePath('zip/cfdi.zip');
+        const cfdiPackageReader = await CfdiPackageReader.createFromFile(filename);
+
+        const fileNames = (await cfdiPackageReader.fileContentsToArray()).map((item) => item.name);
+
+        expect(fileNames).toStrictEqual(expectedFileNames);
     });
 
     test('cfdi reader obtain first file as expected', async () => {
@@ -50,8 +59,8 @@ describe('cfdi package reader', () => {
         const zipFileName = TestCase.filePath('zip/cfdi.zip');
         const cfdiPackageReader = await CfdiPackageReader.createFromFile(zipFileName);
 
-        const cfdi = await Helpers.iteratorToObject(cfdiPackageReader.fileContents());
-        expect(Object.values(cfdi)[0]).toBe(expectedCfdi);
+        const cfdis = (await cfdiPackageReader.fileContentsToArray()).map((item) => item.content);
+        expect(cfdis[0]).toBe(expectedCfdi);
     });
 
     test('create from file and contents', async () => {
@@ -59,16 +68,18 @@ describe('cfdi package reader', () => {
         const first = await CfdiPackageReader.createFromFile(filename);
         expect(first.getFilename()).toBe(filename);
 
+        const firsts = first.fileContentsToArray();
+
         const contents = TestCase.fileContents('zip/cfdi.zip');
         const second = await CfdiPackageReader.createFromContents(contents);
+        const seconds = second.fileContentsToArray();
 
-        expect(await Helpers.iteratorToObject(first.fileContents())).toStrictEqual(
-            await Helpers.iteratorToObject(second.fileContents())
-        );
+        expect(firsts).toStrictEqual(seconds);
     });
 
     const providerObtainUuidFromXmlCfdi = [
         [
+            'common',
             `
             <cfdi:Complemento>
                     <tfd:TimbreFiscalDigital UUID="ff833b27-c8ab-4c44-a559-2c197bdd4067"/>
@@ -77,6 +88,7 @@ describe('cfdi package reader', () => {
             'ff833b27-c8ab-4c44-a559-2c197bdd4067'
         ],
         [
+            'upper case',
             `
             <cfdi:Complemento>
                 <tfd:TimbreFiscalDigital UUID="FF833B27-C8AB-4C44-A559-2C197BDD4067"/>
@@ -85,6 +97,7 @@ describe('cfdi package reader', () => {
             'ff833b27-c8ab-4c44-a559-2c197bdd4067'
         ],
         [
+            'middle vertical content',
             `
             <cfdi:Complemento>
                 <tfd:TimbreFiscalDigital a="a" UUID="ff833b27-c8ab-4c44-a559-2c197bdd4067" b="b"/>
@@ -93,6 +106,7 @@ describe('cfdi package reader', () => {
             'ff833b27-c8ab-4c44-a559-2c197bdd4067'
         ],
         [
+            'middle vertical space',
             `
             <cfdi:Complemento>
                 <tfd:TimbreFiscalDigital
@@ -103,6 +117,7 @@ describe('cfdi package reader', () => {
             'ff833b27-c8ab-4c44-a559-2c197bdd4067'
         ],
         [
+            'invalid uuid',
             `
             <cfdi:Complemento>
                 <tfd:TimbreFiscalDigital
@@ -112,10 +127,11 @@ describe('cfdi package reader', () => {
         `,
             ''
         ],
-        ['', ''],
-        ['invalid xml', ''],
-        ['<xml/>', ''],
+        ['empty content', '', ''],
+        ['invalid xml', 'invalid xml', ''],
+        ['xml without tfd', '<xml/>', ''],
         [
+            'with cfdi relacionado and xmlns:tfd',
             `
             <cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/3"
               xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital">
@@ -131,8 +147,8 @@ describe('cfdi package reader', () => {
         ]
     ];
     test.each(providerObtainUuidFromXmlCfdi)(
-        'provider obtain uuid from xml cfdi',
-        (source: string, expected: string) => {
+        'provider obtain uuid from xml cfdi %s',
+        (_name: string, source: string, expected: string) => {
             const uuid = CfdiPackageReader.obtainUuidFromXmlCfdi(source);
             expect(uuid).toBe(expected);
         }
@@ -148,9 +164,9 @@ describe('cfdi package reader', () => {
         const expectedFiles = [
             'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee.xml',
             'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee.xml.xml'
-        ].sort();
+        ];
         const jsonDataFiles = jsonData.files;
-        expect(Object.keys(jsonDataFiles).sort()).toStrictEqual(expectedFiles);
+        expect(Object.keys(jsonDataFiles)).toStrictEqual(expectedFiles);
 
         const expectedCfdis = ['11111111-2222-3333-4444-000000000001'];
         const jsonDataCfdis = jsonData.cfdis;

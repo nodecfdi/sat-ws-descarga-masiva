@@ -1,6 +1,6 @@
 import { TestCase } from '../../../test-case';
-import { Helpers } from '../../../../src/internal/helpers';
-import { VerifyTranslator } from '../../../../src/services/verify/verify-translator';
+import { Helpers } from '~/internal/helpers';
+import { VerifyTranslator } from '~/services/verify/verify-translator';
 describe('verify translator', () => {
     test('create verify result from soap response with zero packages', () => {
         const expectedStatusCode = 5000;
@@ -22,9 +22,9 @@ describe('verify translator', () => {
         expect(status.getCode()).toBe(expectedStatusCode);
         expect(status.getMessage()).toBe(expectedMessage);
         expect(statusRequest.getValue()).toBe(expectedStatusRequest);
-        expect(statusRequest.getEntryId() == 'Rejected').toBeTruthy();
+        expect(statusRequest.isTypeOf('Rejected')).toBeTruthy();
         expect(codeRequest.getValue()).toBe(expectedCodeRequest);
-        expect(codeRequest.getEntryId() == 'EmptyResult').toBeTruthy();
+        expect(codeRequest.isTypeOf('EmptyResult')).toBeTruthy();
         expect(result.getNumberCfdis()).toBe(expectedNumberCfdis);
         expect(result.getPackageIds()).toStrictEqual(expectedPackagesIds);
     });

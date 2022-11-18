@@ -16,7 +16,7 @@ export class SoapFaultInfo {
         return this._message;
     }
 
-    public jsonSerialize(): { code: string; message: string } {
+    public toJSON(): { code: string; message: string } {
         return {
             code: this._code,
             message: this._message

@@ -66,7 +66,7 @@ export class VerifyResult {
         return this._packagesIds.length;
     }
 
-    public jsonSerialize(): {
+    public toJSON(): {
         status: { code: number; message: string };
         codeRequest: { value: number | undefined; message: string };
         statusRequest: { value: number | undefined; message: string };
@@ -74,9 +74,9 @@ export class VerifyResult {
         packagesIds: string[];
     } {
         return {
-            status: this._status.jsonSerialize(),
-            codeRequest: this._codeRequest.jsonSerialize(),
-            statusRequest: this._statusRequest.jsonSerialize(),
+            status: this._status.toJSON(),
+            codeRequest: this._codeRequest.toJSON(),
+            statusRequest: this._statusRequest.toJSON(),
             numberCfdis: this._numberCfdis,
             packagesIds: this._packagesIds
         };

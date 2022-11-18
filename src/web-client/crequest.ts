@@ -48,7 +48,7 @@ export class CRequest {
         };
     }
 
-    public jsonSerialize(): {
+    public toJSON(): {
         method: string;
         uri: string;
         body: string;

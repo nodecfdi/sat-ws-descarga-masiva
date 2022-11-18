@@ -1,4 +1,4 @@
-import { SoapFaultInfo } from '../../../src/web-client/soap-fault-info';
+import { SoapFaultInfo } from '~/web-client/soap-fault-info';
 describe('soap fault info', () => {
     test('data transfer object', () => {
         const code = 'x-code';
@@ -8,6 +8,6 @@ describe('soap fault info', () => {
 
         expect(fault.getCode()).toBe(code);
         expect(fault.getMessage()).toBe(message);
-        expect(fault.jsonSerialize()).toStrictEqual({ code, message });
+        expect(JSON.stringify(fault)).toStrictEqual(JSON.stringify({ code, message }));
     });
 });

@@ -20,7 +20,7 @@
 
 :mexico: La documentación del proyecto está en español porque ese es el lenguaje principal de los usuarios.
 
-# Instalación
+## Instalación
 
 ```shell
 npm i @nodecfdi/sat-ws-descarga-masiva --save
@@ -32,7 +32,9 @@ o
 yarn add @nodecfdi/sat-ws-descarga-masiva
 ```
 
-# Uso básico
+## Ejemplos de uso
+
+Todos los objetos de entrada y salida se pueden exportar como JSON para su fácil depuración.
 
 ## Creación del servicio
 
@@ -61,14 +63,16 @@ const requestBuilder = new FielRequestBuilder(fiel);
 const service = new Service(requestBuilder, webClient);
 ```
 
-# Cliente para consumir los servicios de CFDI de Retenciones
+## Cliente para consumir los servicios de CFDI de Retenciones
 
 Existen dos tipos de Comprobantes Fiscales Digitales, los regulares (ingresos, egresos, traslados, nóminas y pagos), y los CFDI de retenciones e información de pagos (retenciones).
 
-Puede utilizar esta librería para consumir los CFDI de Retenciones. Para lograrlo construya el servicio con la especificación de `ServiceEndpoints.retenciones()`
+Puede utilizar esta librería para consumir los CFDI de Retenciones. Para lograrlo construya el servicio con la especificación de `ServiceEndpoints.retenciones()`.
+
+Los constructores `ServiceEndpoints.cfdi()` y `ServiceEndpoints.retenciones()` agregan automáticamente la propiedad `ServiceType` al objeto. Esta propiedad será después utilizada el servicio para especificar el valor en la consulta antes de consumirla.
 
 ```ts
-import { AxiosWebClient, RequestBuilderInterface, ServiceEndpoints } from '@nodecfdi/sat-ws-descarga-masiva';
+import { AxiosWebClient, RequestBuilderInterface, ServiceEndpoints, Service } from '@nodecfdi/sat-ws-descarga-masiva';
 /**
  * @var webClient: AxiosWebClient
  * @var requestBuilder: RequestBuilderInterface
@@ -77,35 +81,31 @@ import { AxiosWebClient, RequestBuilderInterface, ServiceEndpoints } from '@node
 const service = new Service(requestBuilder, webClient, undefined, ServiceEndpoints.retenciones());
 ```
 
-# Realiza una consulta
+Aunque no es recomendado, también puedes construir el objeto ServiceEndpoints con direcciones URL del servicio personalizadas utilizando el constructor del objeto en lugar de los métodos estáticos.
 
-Una vez creado el servicio, se puede presentar la consulta que tiene estos cuatro parámetros:
+## Realiza una consulta
 
--   Periodo: Fecha y hora de inicio y fin de la consulta.
--   Tipo de descarga: CFDI emitidos `DownloadType.issued` o recibidos `DownloadType.received`.
--   Tipo de solicitud: De metadatos `RequestType.metadata` o de archivos CFDI `RequestType.cfdi`.
--   Filtrado por RFC: Si se establece, se filtran para obtener únicamente donde la contraparte tenga el RFC indicado.
+Una vez creado el servicio, se puede presentar la consulta, si se pudo presentar devolverá el identificador de la solicitud, y con este identificador se podrá continuar al servicio de verificación.
+
+- Periodo: Fecha y hora de inicio y fin de la consulta.
+- Tipo de descarga: CFDI emitidos `DownloadType.issued` o recibidos `DownloadType.received`.
+- Tipo de solicitud: De metadatos `RequestType.metadata` o de archivos CFDI `RequestType.cfdi`.
+- Filtrado por RFC: Si se establece, se filtran para obtener únicamente donde la contraparte tenga el RFC indicado.
 
 ```ts
-import { QueryParameters, DownloadType, RequestType, DateTimePeriod } from '@nodecfdi/sat-ws-descarga-masiva';
+import { QueryParameters, DateTimePeriod } from '@nodecfdi/sat-ws-descarga-masiva';
 /**
  * El servicio ya existe
  * @var service: Service
  */
 
-// Explicación de la consulta:
-// - Del 13/ene/2019 00:00:00 al 13/ene/2019 23:59:59 (inclusive)
-// - Todos los emitidos por el dueño de la FIEL
-// - Solicitando la información de Metadata
-// - Filtrando los CFDI emitidos para RFC MAG041126GT8
 const request = QueryParameters.create(
-    DateTimePeriod.createFromValues('2022-01-01 00:00:00', '2022-02-28 23:59:59'),
-    DownloadType.issued,
-    RequestType.metadata,
-    'MAG041126GT8'
-);
+    DateTimePeriod.createFromValues('2022-01-01 00:00:00', '2022-02-28 23:59:59'));
+
 // presentar la consulta
 const query = await service.query(request);
+
+// verificar que el proceso de consulta fue correcto
 if (!query.getStatus().isAccepted()) {
     console.log(`Fallo al presentar la consulta: ${query.getStatus().getMessage()}`);
     return;
@@ -113,21 +113,188 @@ if (!query.getStatus().isAccepted()) {
 console.log(`Se generó la solicitud ${query.getRequestId()}`);
 ```
 
-# Consulta con valores predeterminados
+## Parámetros de la consulta
+
+### Periodo (`DateTimePeriod`)
+
+Fecha y hora de inicio y fin de la consulta. Si no se especifica crea un periodo del segundo exacto de la creación del objeto.
+
+### Tipo de descarga (`DownloadType`)
+
+Especifica si la solicitud es de documentos emitidos DownloadType::issued() o recibidos DownloadType::received(). Si no se especifica utiliza el valor de emitidos.
+
+### Tipo de solicitud (`RequestType`)
+
+Especifica si la solicitud es de Metadatos RequestType::metadata() o archivos XML RequestType::xml(). Si no se especifica utiliza el valor de Metadatos.
+
+### Tipo de comprobante (`DocumentType`)
+
+Filtra la solicitud por tipo de comprobante. Si no se especifica utiliza no utiliza el filtro.
+
+- Cualquiera: `new DocumentType('undefined')` (predeterminado).
+- Ingreso: `new DocumentType('ingreso')`.
+- Egreso: `new DocumentType('egreso')`.
+- Traslado: `new DocumentType('traslado')`.
+- Nómina: `new DocumentType('nomina')`.
+- Pago: `new DocumentType('pago')`.
+
+### Tipo de complemento (ComplementoCfdi o ComplementoRetenciones)
+
+Filtra la solicitud por la existencia de un tipo de complemento dentro del comprobante.
+Si no se especifica utiliza `new ComplementoUndefined('undefined')` que excluye el filtro.
+
+Hay dos tipos de objetos que satisfacen este parámetro, depende del tipo de comprobante que se está solicitando.
+Si se trata de comprobantes de CFDI Regulares entonces se usa la clase `ComplementoCfdi`.
+Si se trata de CFDI de retenciones e información de pagos entonces se usa la clase `ComplementoRetenciones`.
+
+Estos objetos se pueden crear nombrados (`new ComplementoCfdi('leyendasFiscales10')`),
+por constructor (`new ComplementoCfdi('leyendasfiscales10')`), o bien,
+por el método estático `create` (`ComplementoCfdi::create('leyendasfiscales10')`).
+
+Además, se puede acceder al nombre del complemento utilizando el método `label()`, por ejemplo,
+`ComplementoCfdi::create('leyendasfiscales10').label(); // Leyendas Fiscales 1.0`.
+
+### Estado del comprobante (`DocumentStatus`)
+
+Filtra la solicitud por el estado de comprobante: Vigente (`new DocumentStatus('active')`) y Cancelado (`new DocumentStatus('cancelled')`).
+Si no se especifica utiliza `new DocumentStatus('undefined')` que excluye el filtro.
+
+### UUID (`Uuid`)
+
+Filtra la solicitud por UUID.
+Para crear el objeto del filtro hay que usar `Uuid.create('96623061-61fe-49de-b298-c7156476aa8b')`.
+Si no se especifica utiliza `Uuid.empty()` que excluye el filtro.
+
+#### Filtrado a cuenta de terceros (`RfcOnBehalf`)
+
+Filtra la solicitud por el RFC utilizado a cuenta de terceros.
+Para crear el objeto del filtro hay que usar `RfcOnBehalf.create('XXX01010199A')`.
+Si no se especifica utiliza `RfcOnBehalf.empty()` que excluye el filtro.
+
+#### Filtrado por RFC contraparte (`RfcMatch`/`RfcMatches`)
+
+Filtra la solicitud por el RFC en contraparte, es decir, que
+si la consulta es de emitidos entonces filtrará donde el RFC especificado sea el receptor,
+si la consulta es de recibidos entonces filtrará donde el RFC especificado sea el emisor.
+
+Para crear el objeto del filtro hay que usar `RfcMatch.create('XXX01010199A')`.
+Si no se especifica utiliza una lista vacía `RfcMatches.create()` que excluye el filtro.
+
+## Consulta con valores predeterminados
 
 Valores predeterminados de una consulta:
 
--   Consultar comprobantes emitidos `DownloadType.issued`.
--   Solicitar información de metadata `RequestType.metadata`.
--   Sin filtro de RFC.
+- Consultar comprobantes emitidos `new DownloadType('issued')`.
+- Solicitar información de metadata `new RequestType('metadata')`.
+- Sin filtro de RFC.
 
 ```ts
-import { QueryParameters, DateTimePeriod } from '@nodecfdi/sat-ws-descarga-masiva';
-// Consulta del día 2019-01-13, solo los emitidos, información de tipo metadata, sin filtro de RFC.
-const request = QueryParameters.create(DateTimePeriod.createFromValues('2019-01-13 00:00:00', '2019-01-13 23:59:59'));
+import { RfcMatch } from '@nodecfdi/sat-ws-descarga-masiva';
+
+const rfcMatch = RfcMatch.create('XXX01010199A');
+parameters = parameters->withRfcMatch(rfcMatch);
+console.log(rfcMatch === parameters.getRfcMatch()); // bool(true)
 ```
 
-# Verificar una consulta
+El servicio del SAT permite especificar hasta 5 RFC Receptores, al menos así lo establecen en su documentación.
+Sin embargo, al tratarse de receptores, solo se puede utilizar en una consulta de documentos emitidos.
+En el caso de una consulta de documentos recibidos, solo se utilizará el primero de la lista.
+
+Por lo regular utilizará solamente los métodos `QueryParameter.getRfcMatch(): RfcMatch`
+y `QueryParameter.withRfcMatch(rfcMatch: RfcMatch)`.
+
+Sin embargo, si fuera necesario especificar el listado de RFC, se puede realizar de la siguiente manera:
+
+```ts
+parameters = parameters.withRfcMatches(
+    RfcMatches.create(
+        RfcMatch.create('AAA010101000'),
+        RfcMatch.create('AAA010101001'),
+        RfcMatch.create('AAA010101002')
+    )
+);
+```
+
+O bien, utilizar una lista de RFC como cadenas de texto:
+
+```ts
+parameters = parameters.withRfcMatches(
+    RfcMatches.createFromValues('AAA010101000', 'AAA010101001', 'AAA010101002')
+);
+```
+
+### Acerca de `RfcMatches`
+
+Este objeto mantiene una lista de `RfcMatches`, pero con características especiales:
+
+- Los objetos `RfcMatch` *vacíos* o *repetidos* son ignorados, solo se mantienen valores no vacíos únicos.
+- El método `RfcMatch.getFirst()` devuelve siempre el primer elemento, si no existe entonces devuelve uno vacío.
+- La clase `RfcMatch` es *iterable*, se puede hacer `forof()` sobre los elementos.
+- La clase `RfcMatch` es *contable*, se puede usar el método `count()` sobre los elementos.
+
+### Tipo de servicio (`ServiceType`)
+
+Esta es una propiedad que bien se podría considerar interna y no necesitas especificarla en la consulta.
+Por defecto está no definida y con el valor `undefined`. Se puede conocer si la propiedad ha sido definida
+con la propiedad `hasServiceType(): bool` y cambiar con `withServiceType(ServiceType): ServiceType`.
+
+No se recomienda definir esta propiedad y dejar que el servicio establezca el valor correcto
+según a donde esté apuntando el servicio.
+
+Cuando se ejecuta una consulta, el servicio (`Service`) automáticamente define esta propiedad si es que
+no está definida estableciéndole el mismo valor que está definido en el objeto `ServiceEndpoints`.
+Si esta propiedad ya estaba definida, y su valor no es el mismo que el definido en el objeto `ServiceEndpoints`
+entonces se genera una `Error`.
+
+### Ejemplo de especificación de parámetros
+
+En el siguiente ejemplo, se crea una consulta sin parámetros y posteriormente se van modificando.
+
+Puede que los cambios del ejemplo no sean lógicos, es solo para ilustrar cómo se establecen los valores:
+
+- Un periodo específico de `2019-01-13 00:00:00` a `2019-01-13 23:59:59` (inclusive).
+- Sobre los documentos recibidos.
+- Solicitando los archivos XML.
+- Filtrando por documentos de tipo ingreso.
+- Filtrando por los que tengan el complemento de leyendas fiscales.
+- Filtrando por únicamente documentos vigentes (excluye cancelados).
+- Filtrando por el RFC a cuenta de terceros `XXX01010199A`.
+- Filtrando por el RFC contraparte `MAG041126GT8`. Como se solicitan recibidos, entonces son los emidos por ese RFC.
+- Filtrando por el UUID `96623061-61fe-49de-b298-c7156476aa8b`.
+
+```ts
+import { QueryParameters, DateTimePeriod, DownloadType, RequestType,
+DocumentType, ComplementoCfdi, DocumentStatus, RfcOnBehalf, RfcMatch, Uuid
+ } from '@nodecfdi/sat-ws-descarga-masiva';
+
+const query = QueryParameters.create()
+    .withPeriod(DateTimePeriod.createFromValues('2019-01-13 00:00:00', '2019-01-13 23:59:59'))
+    .withDownloadType(DownloadType.received())
+    .withRequestType(RequestType.xml())
+    .withDocumentType(DocumentType.ingreso())
+    .withComplement(ComplementoCfdi.leyendasFiscales10())
+    .withDocumentStatus(DocumentStatus.active())
+    .withRfcOnBehalf(RfcOnBehalf.create('XXX01010199A'))
+    .withRfcMatch(RfcMatch.create('MAG041126GT8'))
+    .withUuid(Uuid.create('96623061-61fe-49de-b298-c7156476aa8b'))
+;
+```
+
+### Ejemplo de consulta por UUID
+
+En este caso se especifica solamente el UUID a consultar, en el ejemplo es `96623061-61fe-49de-b298-c7156476aa8b`.
+
+Nota: **Todos los demás argumentos de la consulta son ignorados**.
+
+```ts
+import { QueryParameters, Uuid } from '@nodecfdi/sat-ws-descarga-masiva';
+
+$query = QueryParameters.create()
+    .withUuid(Uuid.create('96623061-61fe-49de-b298-c7156476aa8b'))
+;
+```
+
+## Verificar una consulta
 
 La verificación depende de que la consulta haya sido aceptada.
 
@@ -135,7 +302,7 @@ La verificación depende de que la consulta haya sido aceptada.
 import { Service } from '@nodecfdi/sat-ws-descarga-masiva';
 /**
  * @var service: Service
- * @var requestId: string es el identificador generado al presentar la consulta
+ * @var requestId: Identificador generado al presentar la consulta, previamente fabricado
  */
 // consultar el servicio de verificación
 const verify = await service.verify(requestId);
@@ -146,39 +313,28 @@ if (!verify.getStatus().isAccepted()) {
     return;
 }
 
-// revisar que la consulta no haya sido rechazada: los valores conocidos son: Accepted, Exhausted, MaximumLimitReaded, EmptyResult, Duplicated
-if (verify.getCodeRequest().getEntryId() != 'Accepted') {
-    console.log(`La solicitud ${requestId} fue rechazada: ${verify.getCodeRequest().getMessage()}`);
-    return;
-}
-
-// revisar el progreso de la generación de los paquetes los valores conocidos son: Accepted, InProgress, Finished, Failure, Rejected, Expired
+// revisar el progreso de la generación de los paquetes
 const statusRequest = verify.getStatusRequest();
-if (
-    statusRequest.getEntryId() == 'Expired' ||
-    statusRequest.getEntryId() == 'Failure' ||
-    statusRequest.getEntryId() == 'Rejected'
-) {
+if (statusRequest.isTypeOf('Expired') || statusRequest.isTypeOf('Failure') || statusRequest.isTypeOf('Rejected')) {
     console.log(`La solicitud ${requestId} no se puede completar`);
     return;
 }
 
-if (statusRequest.getEntryId() == 'Accepted' || statusRequest.getEntryId() == 'InProgress') {
+if (statusRequest.isTypeOf('InProgress') || statusRequest.isTypeOf('Accepted')) {
     console.log(`La solicitud ${requestId} se está procesando`);
     return;
 }
-
-if (statusRequest.getEntryId() == 'Finished') {
+if (statusRequest.isTypeOf('Finished')) {
     console.log(`La solicitud ${requestId} está lista`);
 }
 
-console.log(`se encontraron ${verify.countPackages()} paquetes`);
-verify.getPackageIds().forEach((packageId) => {
-    console.log(packageId);
-});
+console.log(`Se encontraron ${verify.countPackages()} paquetes`);
+for (const packageId of verify.getPackageIds()) {
+    console.log(` > ${packageId}`)
+}
 ```
 
-# Descarga los paquetes de la consulta
+## Descarga los paquetes de la consulta
 
 La descarga de los paquetes depende de que la consulta haya sido correctamente verificada.
 
@@ -198,12 +354,12 @@ for (const packageId of packagesIds) {
         continue;
     }
     const filezip = 'package.zip';
-    writeFileSync(filezip, download.getPackageContent(), { encoding: 'binary' });
+    writeFileSync(`${packageId}.zip`, Buffer.from(download.getPackageContent(), 'base64'));
     console.log(`el paquete ${packageId} se ha almacenado`);
 }
 ```
 
-# Lectura de paquetes
+## Lectura de paquetes
 
 Los paquetes de Metadata y CFDI se pueden leer con las clases MetadataPackageReader y CfdiPackageReader respectivamente. Para fabricar los objetos, se pueden usar sus métodos createFromFile para crearlo a partir de un archivo existente o createFromContents para crearlo a partir del contenido del archivo en memoria.
 
@@ -212,23 +368,23 @@ Cada paquete puede contener uno o más archivos internos. Cada paquete se lee in
 ## Lectura de paquetes de tipo Metadata
 
 ```ts
-import { MetadaPackageReader, OpenZipFileException, Helpers } from '@nodecfdi/sat-ws-descarga-masiva';
+import { MetadataPackageReader, OpenZipFileException } from '@nodecfdi/sat-ws-descarga-masiva';
 /**
  * @var zipfile: string contiene la ruta al archivo de paquete de Metadata
  */
-let metadataReader: MetadaPackageReader;
+let metadataReader: MetadataPackageReader;
 // abrir el archivo de Metadata
 try {
-    metadataReader = await MetadaPackageReader.createFromFile(zipFile);
+    metadataReader = await MetadataPackageReader.createFromFile(zipFile);
 } catch (error) {
     const zipError = error as OpenZipFileException;
     console.log(zipError.message);
     return;
 }
-const metadata = await Helpers.iteratorToMap(metadataReader.metadata());
-metadata.forEach((data) => {
-    console.log(`${data.get('uuid')} : ${data.get('fechaEmision')}`);
-});
+
+for await (const item of metadataReader.metadata()) {
+    console.log(`${item.get('uuid')}   ${item.get('fechaEmision')}`);
+}
 ```
 
 ## Lectura de paquetes de tipo CFDI
@@ -249,16 +405,18 @@ try {
     return;
 }
 
-const cfdis = cfdiReader.cfdis();
-for await (const cfdi of cfdis) {
-    writeFileSync(`cfdis/${Object.keys(cfdi)[0]}`, Object.values(cfdi)[0]);
+for await (const map of cfdiPackageReader.cfdis()) {
+    for (const [name, content] of map) {
+        writeFileSync(`cfdis/${name}.xml`, Buffer.from(download.getPackageContent(), 'base64'));
+    }
 }
 ```
 
-# Información técnica
+## Información técnica
 
 La información técnica puede ser leida del siguiente link: [CfdiPackageReader](https://github.com/phpcfdi/sat-ws-descarga-masiva#informaci%C3%B3n-t%C3%A9cnica) facilitada por la librería que inspiró a ésta.
 
-# Copyright and License
+## Copyright and License
+
 The `nodecfdi/sat-ws-descarga-masiva` library is copyright © NodeCfdi and [OcelotlStudio](https://ocelotlstudio.com)
 and licensed for use under the MIT License (MIT). Please see [LICENSE][] for more information.

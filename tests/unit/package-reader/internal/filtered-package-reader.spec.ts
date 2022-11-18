@@ -1,13 +1,12 @@
 import { realpathSync, unlinkSync, writeFileSync } from 'fs';
 import JSZip from 'jszip';
-import { OpenZipFileException } from '../../../../src/package-reader/exceptions/open-zip-file-exception';
-import { FilteredPackageReader } from '../../../../src/package-reader/internal/filtered-package-reader';
+import { OpenZipFileException } from '~/package-reader/exceptions/open-zip-file-exception';
+import { FilteredPackageReader } from '~/package-reader/internal/filtered-package-reader';
 import { TestCase } from '../../../test-case';
 import os from 'os';
 import { join } from 'path/posix';
 import { randomUUID } from 'crypto';
-import { NullFileFilter } from '../../../../src/package-reader/internal/file-filters/null-file-filter';
-import { Helpers } from '../../../../src/internal/helpers';
+import { NullFileFilter } from '~/package-reader/internal/file-filters/null-file-filter';
 describe('filtered package reader', () => {
     test('create from file with invalid file', async () => {
         const filename = __dirname;
@@ -39,6 +38,7 @@ describe('filtered package reader', () => {
             compression: 'DEFLATE'
         });
         writeFileSync(tmpfile, data);
+        // zip excludes "empty dir/""
         const expected = new Map([
             ['empty file.txt', ''],
             ['foo.txt', 'foo'],
@@ -46,8 +46,15 @@ describe('filtered package reader', () => {
         ]);
         const packageReader = await FilteredPackageReader.createFromFile(tmpfile);
         packageReader.setFilter(new NullFileFilter());
-        const fileContents = await Helpers.iteratorToMap(packageReader.fileContents());
-        expect(fileContents).toStrictEqual(expected);
+        const result = new Map();
+        for await (const iterator of packageReader.fileContents()) {
+            for (const item of iterator) {
+                result.set(...item);
+            }
+        }
+
+        expect(result).toStrictEqual(expected);
+        // zip excludes "empty dir/""
         expect(3).toBe(await packageReader.count());
         unlinkSync(tmpfile);
         packageReader.destruct();

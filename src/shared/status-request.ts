@@ -1,3 +1,5 @@
+type StatusRequestTypes = 'Accepted' | 'InProgress' | 'Finished' | 'Failure' | 'Rejected' | 'Expired';
+
 export class StatusRequest {
     private index?: number;
 
@@ -57,7 +59,11 @@ export class StatusRequest {
         return this.index;
     }
 
-    public jsonSerialize(): { value: number | undefined; message: string } {
+    public isTypeOf(type: StatusRequestTypes): boolean {
+        return this.getEntryId() === type;
+    }
+
+    public toJSON(): { value: number | undefined; message: string } {
         return {
             value: this.index,
             message: this.value.message

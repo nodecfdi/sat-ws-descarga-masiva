@@ -1,7 +1,7 @@
-import { StatusCode } from '../../../../src/shared/status-code';
-import { StatusRequest } from '../../../../src/shared/status-request';
-import { CodeRequest } from '../../../../src/shared/code-request';
-import { VerifyResult } from '../../../../src/services/verify/verify-result';
+import { StatusCode } from '~/shared/status-code';
+import { StatusRequest } from '~/shared/status-request';
+import { CodeRequest } from '~/shared/code-request';
+import { VerifyResult } from '~/services/verify/verify-result';
 import { TestCase } from '../../../test-case';
 describe('verify result', () => {
     test('properties', () => {
@@ -32,6 +32,6 @@ describe('verify result', () => {
 
         const expectedFile = TestCase.fileContents('json/verify-result.json', 'utf8');
 
-        expect(JSON.stringify(result.jsonSerialize())).toBe(JSON.stringify(JSON.parse(expectedFile)));
+        expect(JSON.stringify(result)).toBe(JSON.stringify(JSON.parse(expectedFile)));
     });
 });

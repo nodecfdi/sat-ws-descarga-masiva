@@ -3,8 +3,10 @@
   <s:Header/>
   <s:Body>
     <des:SolicitaDescarga>
-      <des:solicitud FechaFinal="2019-01-01T00:04:00" FechaInicial="2019-01-01T00:00:00" RfcSolicitante="EKU9003173C9" TipoSolicitud="CFDI">
-        <des:RfcReceptores><des:RfcReceptor>EKU9003173C9</des:RfcReceptor></des:RfcReceptores>
+      <des:solicitud Complemento="nomina12" EstadoComprobante="1" FechaFinal="2019-01-01T00:04:00" FechaInicial="2019-01-01T00:00:00" RfcACuentaTerceros="XXX01010199A" RfcEmisor="AAA010101AAA" RfcSolicitante="EKU9003173C9" TipoComprobante="N" TipoSolicitud="CFDI">
+        <des:RfcReceptores>
+          <des:RfcReceptor>EKU9003173C9</des:RfcReceptor>
+        </des:RfcReceptores>
         <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
           <SignedInfo>
             <CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
@@ -14,10 +16,10 @@
                 <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
               </Transforms>
               <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
-              <DigestValue>Xni0ddqcMpbkuC4CgKua4IWtQ3U=</DigestValue>
+              <DigestValue>urJ4pg32vV2oozJcBBKRcxoAydo=</DigestValue>
             </Reference>
           </SignedInfo>
-          <SignatureValue>WTeQ/u5Od4saZHZEdRjf8LdabLtSl0M+a2rBatHIlgsJzeL2FrrWVdvlU7s8aWpWN31Jfm6U48OaOtr/rVhDV+b7ZbDOZ0xnWiWE0FqedTm63siuhAJx+zDPM1PaREfA1zlKbxdGdOdjN4NmGDvEuh4XCJzBr15ekjA5irTkE8hUyAyvaXzjzy6G/OPzkbBC7LEXE0IvdxzNsdxnNOWZmY16oh2bImrrRE5aeMzYyMPkepDLFkQ7N+8ssNO5pT3iFCCELa6TiHWPQLlK8vnXPHRS8SWAIkMe13tG2lUt/3Hyz3zJbyifL6TQQTiefJ+DauvwqXludmmxj1i2URSmEQ==</SignatureValue>
+          <SignatureValue>U0+zQI1YH5DGtlULhm01lGwoBd1vdbIv/myz/gPshujerNvRzzw9mhGCCq8E7BMsLKefbl4TTOOkL5wvFqczzcKrHS8lFTkw7073CIPVrUyhbajCaqDGRtTvHx84xpi83vknZJhuOu+Pl6gyNIu/g4/MSFtSZ9CKqIu62VBAuepGggY2jsceyMIqNhtLOuR9yGSPR2kTABypkIjvyK9NqM/JivCmHV3FXv6280eHcf40gAtHpTw++ERSRuhW/rkimyJrHLIeMvZpfT9JpORsUCbUHmdEOQae0zXHp0mcGV0woWiRKSBcA2yogl+rrqLc1cbsX5I6jfYTdaegcoe0eQ==</SignatureValue>
           <KeyInfo>
             <X509Data>
               <X509IssuerSerial>

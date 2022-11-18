@@ -1,5 +1,5 @@
-import { StatusCode } from '../../../../src/shared/status-code';
-import { QueryResult } from '../../../../src/services/query/query-result';
+import { StatusCode } from '~/shared/status-code';
+import { QueryResult } from '~/services/query/query-result';
 import { TestCase } from '../../../test-case';
 describe('query result', () => {
     test('properties', () => {
@@ -28,6 +28,6 @@ describe('query result', () => {
 
         const expectedFile = TestCase.fileContents('json/query-result.json');
 
-        expect(JSON.stringify(result.jsonSerialize())).toBe(JSON.stringify(JSON.parse(expectedFile)));
+        expect(JSON.stringify(result)).toBe(JSON.stringify(JSON.parse(expectedFile)));
     });
 });

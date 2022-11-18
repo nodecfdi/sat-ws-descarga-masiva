@@ -1,4 +1,4 @@
-import { DateTime } from '../../../src/shared/date-time';
+import { DateTime } from '~/shared/date-time';
 import { DateTime as DateTimeImmutable } from 'luxon';
 describe('date time', () => {
     const mexicoTimeZone = 'America/Mexico_City';

@@ -1,3 +1,4 @@
+import { HttpClientError } from '~/web-client/exceptions/http-client-error';
 import { Token } from '../shared/token';
 import { CRequest } from '../web-client/crequest';
 import { CResponse } from '../web-client/cresponse';
@@ -75,6 +76,10 @@ export class ServiceConsumer {
         // evaluate SoapFaultInfo
         if (fault) {
             throw new SoapFaultError(request, response, fault, exception);
+        }
+        if (response.statusCodeIsClientError()) {
+            const message = `Unexpected client error status code ${response.getStatusCode()}`;
+            throw new HttpClientError(message, request, response, exception);
         }
         if (response.statusCodeIsServerError()) {
             const message = `Unexpected server error status code ${response.getStatusCode()}`;

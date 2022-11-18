@@ -7,12 +7,11 @@ import { SignatureAlgorithm, Credential } from '@nodecfdi/credentials';
  * @see Credential
  */
 export class Fiel {
-    private _credential: Credential;
+    constructor(private _credential: Credential) {}
 
-    constructor(credential: Credential) {
-        this._credential = credential;
-    }
-
+    /**
+     * Create a Fiel based on certificate and private key contents
+     */
     public static create(certificateContents: string, privateKeyContents: string, passPhrase: string): Fiel {
         const credential = Credential.create(certificateContents, privateKeyContents, passPhrase);
 
