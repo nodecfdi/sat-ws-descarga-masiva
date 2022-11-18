@@ -23,6 +23,8 @@ describe('cfdi package reader', () => {
         const zipContents = TestCase.fileContents('zip/cfdi.zip');
         const cfdiPackageReader = await CfdiPackageReader.createFromContents(zipContents);
         const temporaryFileName = cfdiPackageReader.getFilename();
+        const cfdiArray = await cfdiPackageReader.cfdisToArray();
+        expect(cfdiArray.length).toBe(2);
         expect(() => readFileSync(temporaryFileName)).toThrow(
             `ENOENT: no such file or directory, open '${temporaryFileName}'`
         );

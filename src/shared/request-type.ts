@@ -14,7 +14,7 @@ export class RequestType extends BaseEnum<RequestTypeTypes> {
             return 'CFDI';
         }
         if (this.isTypeOf('xml') && serviceType.isTypeOf('retenciones')) {
-            return 'CFDI';
+            return 'Retencion';
         }
 
         return 'Metadata';

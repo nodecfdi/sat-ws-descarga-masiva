@@ -1,4 +1,3 @@
-/* eslint-disable jest/no-conditional-expect */
 import { CRequest } from '~/web-client/crequest';
 import { AxiosWebClient } from '~/web-client/axios-web-client';
 import { WebClientException } from '~/web-client/exceptions/web-client-exception';
@@ -12,10 +11,17 @@ describe('axios web client test', () => {
             await webClient.call(request);
         } catch (error) {
             exception = error as WebClientException;
+            // eslint-disable-next-line jest/no-conditional-expect
             expect(exception).toBeInstanceOf(WebClientException);
+            // eslint-disable-next-line jest/no-conditional-expect
             expect(exception.message).toBe('Unsupported protocol unknown:');
+            // eslint-disable-next-line jest/no-conditional-expect
             expect(exception.getRequest()).toBe(request);
+
+            return;
         }
+        // if doesn't throw errors fails.
+        expect(false).toBeTruthy();
     });
 
     test('fire request', () => {

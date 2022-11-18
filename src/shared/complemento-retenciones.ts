@@ -1,7 +1,7 @@
 import { ComplementoInterface } from './complemento-interface';
 import { BaseEnum } from './enum/base-enum';
 
-type ComplementoRetencionesTypes =
+export type ComplementoRetencionesTypes =
     | 'undefined'
     | 'arrendamientoEnFideicomiso'
     | 'dividendos'

@@ -11,6 +11,8 @@ import { Uuid } from '~/shared/uuid';
 import { DateTimePeriod } from '~/shared/date-time-period';
 import { DownloadType } from '~/shared/download-type';
 import { RequestType } from '~/shared/request-type';
+import { ComplementoCfdiTypes } from '~/shared/complemento-cfdi';
+import { ComplementoRetencionesTypes } from '~/shared/complemento-retenciones';
 
 /**
  * This class contains all the information required to perform a query on the SAT Web Service
@@ -23,7 +25,7 @@ export class QueryParameters {
         private _downloadType: DownloadType,
         private _requestType: RequestType,
         private _documentType: DocumentType,
-        private _complement: ComplementoInterface,
+        private _complement: ComplementoInterface<ComplementoCfdiTypes | ComplementoRetencionesTypes>,
         private _documentStatus: DocumentStatus,
         private _uuid: Uuid,
         private _rfcOnBehalf: RfcOnBehalf,
@@ -80,7 +82,7 @@ export class QueryParameters {
         return this._documentType;
     }
 
-    public getComplement(): ComplementoInterface {
+    public getComplement(): ComplementoInterface<ComplementoCfdiTypes | ComplementoRetencionesTypes> {
         return this._complement;
     }
 
@@ -134,7 +136,9 @@ export class QueryParameters {
         return this;
     }
 
-    public withComplement(complement: ComplementoInterface): QueryParameters {
+    public withComplement(
+        complement: ComplementoInterface<ComplementoCfdiTypes | ComplementoRetencionesTypes>
+    ): QueryParameters {
         this._complement = complement;
 
         return this;
@@ -176,7 +180,7 @@ export class QueryParameters {
         downloadType: DownloadType;
         requestType: RequestType;
         documentType: DocumentType;
-        complement: ComplementoInterface;
+        complement: ComplementoInterface<ComplementoCfdiTypes | ComplementoRetencionesTypes>;
         documentStatus: DocumentStatus;
         uuid: Uuid;
         rfcOnBehalf: RfcOnBehalf;

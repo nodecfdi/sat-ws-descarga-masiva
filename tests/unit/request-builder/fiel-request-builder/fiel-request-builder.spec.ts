@@ -245,8 +245,6 @@ describe('Fiel request builder', () => {
 
         const parser = new DOMParser();
 
-        console.log(requestBody);
-
         const document = parser.parseFromString(requestBody, 'application/xml');
 
         const selectVal = useNamespaces({
