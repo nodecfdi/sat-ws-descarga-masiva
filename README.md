@@ -329,7 +329,7 @@ if (statusRequest.isTypeOf('Finished')) {
 }
 
 console.log(`Se encontraron ${verify.countPackages()} paquetes`);
-for (const packageId of result.getPackageIds()) {
+for (const packageId of verify.getPackageIds()) {
     console.log(` > ${packageId}`)
 }
 ```
@@ -354,7 +354,7 @@ for (const packageId of packagesIds) {
         continue;
     }
     const filezip = 'package.zip';
-    writeFileSync(filezip, download.getPackageContent(), { encoding: 'binary' });
+    writeFileSync(`${packageId}.zip`, Buffer.from(download.getPackageContent(), 'base64'));
     console.log(`el paquete ${packageId} se ha almacenado`);
 }
 ```
@@ -407,7 +407,7 @@ try {
 
 for await (const map of cfdiPackageReader.cfdis()) {
     for (const [name, content] of map) {
-        writeFileSync(`cfdis/${name}`, content);
+        writeFileSync(`cfdis/${name}.xml`, Buffer.from(download.getPackageContent(), 'base64'));
     }
 }
 ```
