@@ -89,7 +89,6 @@
         "@nodecfdi/credentials": "^1.2.2",
         "@nodecfdi/rfc": "^1.2.2",
         "@xmldom/xmldom": "^0.8.2",
-        "axios": "^0.27.2",
         "jszip": "^3.10.0",
         "luxon": "^2.4.0",
         "typescript-mix": "^3.1.3"

@@ -1,7 +1,6 @@
 import { TestCase } from '../test-case';
 import { RequestBuilderInterface } from '~/request-builder/request-builder-interface';
 import { Service } from '~/service';
-import { AxiosWebClient } from '~/web-client/axios-web-client';
 import { DateTimePeriod } from '~/shared/date-time-period';
 import { QueryParameters } from '~/services/query/query-parameters';
 import { DownloadType } from '~/shared/download-type';
@@ -14,10 +13,11 @@ import { Uuid } from '~/shared/uuid';
 import { ServiceType } from '~/shared/service-type';
 import { QueryResult } from '~/services/query/query-result';
 import { ComplementoRetenciones } from '~/shared/complemento-retenciones';
+import { HttpsWebClient } from '~/web-client/https-web-client';
 
 describe('consume retenciones service using fake fiel', () => {
     let requestBuilder: RequestBuilderInterface;
-    let webClient: AxiosWebClient;
+    let webClient: HttpsWebClient;
     let service: Service;
 
     function getServiceEndpoints(): ServiceEndpoints {
@@ -26,14 +26,14 @@ describe('consume retenciones service using fake fiel', () => {
 
     beforeEach(() => {
         requestBuilder = TestCase.createFielRequestBuilderUsingTestingFiles();
-        webClient = new AxiosWebClient();
+        webClient = new HttpsWebClient();
         service = new Service(requestBuilder, webClient, undefined, getServiceEndpoints());
     });
 
     test('authentication', async () => {
         const token = await service.authenticate();
         expect(token.isValid()).toBeTruthy();
-    });
+    }, 10000);
 
     test('query default parameters', async () => {
         const parameters = QueryParameters.create();
@@ -76,7 +76,7 @@ describe('consume retenciones service using fake fiel', () => {
         const result = await service.verify(requestId);
 
         expect(result.getStatus().getCode()).toBe(305);
-    });
+    }, 10000);
 
     test('download', async () => {
         const requestId = '4e80345d-917f-40bb-a98f-4a73939343c5_01';
