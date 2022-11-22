@@ -1,4 +1,3 @@
-import { use } from 'typescript-mix';
 import { InteractsXmlTrait } from '../../internal/interacts-xml-trait';
 import { RequestBuilderInterface } from '../../request-builder/request-builder-interface';
 import { StatusCode } from '../../shared/status-code';
@@ -6,8 +5,6 @@ import { QueryParameters } from './query-parameters';
 import { QueryResult } from './query-result';
 
 export class QueryTranslator extends InteractsXmlTrait {
-    @use(InteractsXmlTrait) private this: unknown;
-
     public createQueryResultFromSoapResponse(content: string): QueryResult {
         const env = this.readXmlElement(content);
 

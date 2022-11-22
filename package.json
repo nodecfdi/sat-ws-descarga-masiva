@@ -30,7 +30,7 @@
         "lint": "eslint --fix \"src/**/\"",
         "lint:check": "eslint \"src/**/\"",
         "lint:ci": "pnpm lint:check",
-        "test": "jest --verbose --coverage",
+        "test": "jest --verbose --coverage --runInBand",
         "test:watch": "jest --watch",
         "test:ci": "jest --runInBand --ci --coverage --coverageDirectory=coverage",
         "build:prod": "cross-env NODE_ENV=production microbundle --tsconfig ./tsconfig.json  --format modern,cjs,umd  --output dist/prod/index.js",
@@ -55,11 +55,11 @@
         "@changesets/cli": "^2.23.0",
         "@peculiar/webcrypto": "^1.4.0",
         "@types/jest": "^28.1.2",
-        "@types/jsrsasign": "^10.5.1",
         "@types/luxon": "^2.3.2",
         "@types/node": "^18.0.0",
         "@typescript-eslint/eslint-plugin": "^5.28.0",
         "@typescript-eslint/parser": "^5.28.0",
+        "@xmldom/xmldom": "^0.8.2",
         "babel-plugin-dev-expression": "^0.2.3",
         "babel-plugin-transform-define": "^2.0.1",
         "cross-env": "^7.0.3",
@@ -89,11 +89,7 @@
         "@nodecfdi/cfdiutils-common": "^1.1.0",
         "@nodecfdi/credentials": "^1.2.2",
         "@nodecfdi/rfc": "^1.2.2",
-        "@xmldom/xmldom": "^0.8.2",
-        "axios": "^0.27.2",
-        "jsrsasign": "^10.5.24",
         "jszip": "^3.10.0",
-        "luxon": "^2.4.0",
-        "typescript-mix": "^3.1.3"
+        "luxon": "^2.4.0"
     }
 }

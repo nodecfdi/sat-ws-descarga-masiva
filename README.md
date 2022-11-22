@@ -40,7 +40,13 @@ Todos los objetos de entrada y salida se pueden exportar como JSON para su fáci
 
 ```ts
 import { readFileSync } from 'fs';
-import { Fiel, AxiosWebClient, FielRequestBuilder, Service } from '@nodecfdi/sat-ws-descarga-masiva';
+import { Fiel, HttpsWebClient, FielRequestBuilder, Service } from '@nodecfdi/sat-ws-descarga-masiva';
+import { install } from '@nodecfdi/cfdiutils-common';
+import { DOMParser, XMLSerializer, DOMImplementation } from '@xmldom/xmldom';
+
+//instala tu gestor de DOM preferido para este ejemplo se usa @xmldom/xmldom
+install(new DOMParser(), new XMLSerializer(), new DOMImplementation());
+
 // Creación de la FIEL, puede leer archivos DER (como los envía el SAT) o PEM (convertidos con openssl)
 const fiel = Fiel.create(
     readFileSync('fake-fiel/EKU9003173C9.cer', 'binary'),
@@ -54,7 +60,7 @@ if (!fiel.isValid()) {
 
 // creación del web client basado en Axios que implementa WebClientInterface
 // para usarlo necesitas instalar axios pues no es una dependencia directa
-const webClient = new AxiosWebClient();
+const webClient = new HttpsWebClient();
 
 // creación del objeto encargado de crear las solicitudes firmadas usando una FIEL
 const requestBuilder = new FielRequestBuilder(fiel);

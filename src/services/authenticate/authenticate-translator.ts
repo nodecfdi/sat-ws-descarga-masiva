@@ -1,4 +1,3 @@
-import { use } from 'typescript-mix';
 import { InteractsXmlTrait } from '~/internal/interacts-xml-trait';
 import { RequestBuilderInterface } from '~/request-builder/request-builder-interface';
 import { DateTime } from '~/shared/date-time';
@@ -6,8 +5,6 @@ import { Token } from '~/shared/token';
 
 /** @internal */
 export class AuthenticateTranslator extends InteractsXmlTrait {
-    @use(InteractsXmlTrait) private this: unknown;
-
     public createTokenFromSoapResponse(content: string): Token {
         const env = this.readXmlElement(content);
         let timeContent = this.findContent(env, 'header', 'security', 'timestamp', 'created');

@@ -11,7 +11,7 @@ import { RfcMatch } from '~/shared/rfc-match';
 import { Uuid } from '~/shared/uuid';
 import { Certificate, Credential, PrivateKey, SerialNumber } from '@nodecfdi/credentials';
 import { mock } from 'jest-mock-extended';
-import { DOMParser } from '@xmldom/xmldom';
+import { getParser } from '@nodecfdi/cfdiutils-common';
 import { useNamespaces } from 'xpath';
 describe('Fiel request builder', () => {
     test('fiel request contains given fiel', () => {
@@ -182,9 +182,9 @@ describe('Fiel request builder', () => {
         const requestBuilder = new FielRequestBuilder(fiel);
         const requestBody = requestBuilder.verify(requestId);
 
-        const parser = new DOMParser();
+        const parser = getParser();
 
-        const document = parser.parseFromString(requestBody, 'application/xml');
+        const document = parser.parseFromString(requestBody, 'text/xml');
 
         const selectVal = useNamespaces({
             des: 'http://DescargaMasivaTerceros.sat.gob.mx',
@@ -243,9 +243,9 @@ describe('Fiel request builder', () => {
         const requestBuilder = new FielRequestBuilder(fiel);
         const requestBody = requestBuilder.download(packageId);
 
-        const parser = new DOMParser();
+        const parser = getParser();
 
-        const document = parser.parseFromString(requestBody, 'application/xml');
+        const document = parser.parseFromString(requestBody, 'text/xml');
 
         const selectVal = useNamespaces({
             des: 'http://DescargaMasivaTerceros.sat.gob.mx',

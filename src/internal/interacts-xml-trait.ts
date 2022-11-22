@@ -1,4 +1,4 @@
-import { DOMParser } from '@xmldom/xmldom';
+import { getParser } from '@nodecfdi/cfdiutils-common';
 /**
  * Contain functions to interact with XML contents and XML DOM
  *
@@ -11,7 +11,7 @@ export class InteractsXmlTrait {
             throw new Error('Cannot load an xml with empty content');
         }
 
-        return new DOMParser().parseFromString(source);
+        return getParser().parseFromString(source, 'text/xml');
     }
 
     public readXmlElement(source: string): Element {

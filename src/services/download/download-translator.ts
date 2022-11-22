@@ -1,12 +1,9 @@
-import { use } from 'typescript-mix';
 import { InteractsXmlTrait } from '~/internal/interacts-xml-trait';
 import { RequestBuilderInterface } from '~/request-builder/request-builder-interface';
 import { StatusCode } from '~/shared/status-code';
 import { DownloadResult } from './download-result';
 
 export class DownloadTranslator extends InteractsXmlTrait {
-    @use(InteractsXmlTrait) private this: unknown;
-
     public createDownloadResultFromSoapResponse(content: string): DownloadResult {
         const env = this.readXmlElement(content);
         const values = this.findAtrributes(env, 'header', 'respuesta');
