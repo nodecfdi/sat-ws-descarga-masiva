@@ -2,7 +2,6 @@ import { RequestBuilderInterface } from '../request-builder-interface';
 import { Fiel } from './fiel';
 import { Helpers } from '../../internal/helpers';
 import { SignatureAlgorithm } from '@nodecfdi/credentials';
-import { hextob64 } from 'jsrsasign';
 import { createHash, randomUUID } from 'crypto';
 import { DateTime } from '~/shared/date-time';
 import { QueryParameters } from '~/services/query/query-parameters';
@@ -204,7 +203,9 @@ export class FielRequestBuilder implements RequestBuilderInterface {
         toDigest = Helpers.nospaces(toDigest);
         const digested = createHash('sha1').update(toDigest).digest('base64');
         let signedInfo = this.createSignedInfoCanonicalExclusive(digested, signedInfoUri);
-        const signatureValue = hextob64(this.getFiel().sign(signedInfo, SignatureAlgorithm.SHA1));
+        const signatureValue = Buffer.from(this.getFiel().sign(signedInfo, SignatureAlgorithm.SHA1), 'hex').toString(
+            'base64'
+        );
         signedInfo = signedInfo.replace('<SignedInfo xmlns="http://www.w3.org/2000/09/xmldsig#">', '<SignedInfo>');
 
         if ('' === keyInfo) {

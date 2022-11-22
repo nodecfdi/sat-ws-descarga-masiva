@@ -55,7 +55,6 @@
         "@changesets/cli": "^2.23.0",
         "@peculiar/webcrypto": "^1.4.0",
         "@types/jest": "^28.1.2",
-        "@types/jsrsasign": "^10.5.1",
         "@types/luxon": "^2.3.2",
         "@types/node": "^18.0.0",
         "@typescript-eslint/eslint-plugin": "^5.28.0",
@@ -91,7 +90,6 @@
         "@nodecfdi/rfc": "^1.2.2",
         "@xmldom/xmldom": "^0.8.2",
         "axios": "^0.27.2",
-        "jsrsasign": "^10.5.24",
         "jszip": "^3.10.0",
         "luxon": "^2.4.0",
         "typescript-mix": "^3.1.3"
