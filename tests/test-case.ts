@@ -1,4 +1,4 @@
-import { DOMParser, XMLSerializer } from '@xmldom/xmldom';
+import { getParser, getSerializer } from '@nodecfdi/cfdiutils-common';
 import { Credential } from '@nodecfdi/credentials';
 import { existsSync, readFileSync } from 'fs';
 import { Fiel } from '../src/index';
@@ -38,11 +38,10 @@ export class TestCase {
     }
 
     public static xmlFormat(content: string): string {
-        const document = new DOMParser().parseFromString(content);
+        const document = getParser().parseFromString(content, 'text/xml');
         const xml = document.createProcessingInstruction('xml', 'version="1.0"');
         document.insertBefore(xml, document.firstChild);
-        const serializer = new XMLSerializer();
 
-        return serializer.serializeToString(document);
+        return getSerializer().serializeToString(document);
     }
 }

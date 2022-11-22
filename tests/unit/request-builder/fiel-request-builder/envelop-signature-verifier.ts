@@ -1,4 +1,4 @@
-import { XMLSerializer, DOMParser } from '@xmldom/xmldom';
+import { getSerializer, getParser } from '@nodecfdi/cfdiutils-common';
 import { Crypto } from '@peculiar/webcrypto';
 import { Parse, Application, SignedXml } from 'xadesjs';
 
@@ -10,7 +10,7 @@ export class EnvelopSignatureVerifier {
         _includeNameSpaces: string[] = [],
         _certificateContents = ''
     ): Promise<boolean> {
-        const soapDocument = new DOMParser().parseFromString(soapMessage);
+        const soapDocument = getParser().parseFromString(soapMessage, 'text/xml');
 
         const mainNode = soapDocument.getElementsByTagNameNS(nameSpaceURI, mainNodeName).item(0);
         if (mainNode == null) {
@@ -25,7 +25,7 @@ export class EnvelopSignatureVerifier {
         soapDocument.appendChild(mainNode);
 
         // const document = Xml.newDocumentContent();
-        const document = new XMLSerializer().serializeToString(soapDocument);
+        const document = getSerializer().serializeToString(soapDocument);
 
         const crypto = new Crypto();
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

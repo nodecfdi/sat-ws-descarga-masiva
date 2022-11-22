@@ -59,6 +59,7 @@
         "@types/node": "^18.0.0",
         "@typescript-eslint/eslint-plugin": "^5.28.0",
         "@typescript-eslint/parser": "^5.28.0",
+        "@xmldom/xmldom": "^0.8.2",
         "babel-plugin-dev-expression": "^0.2.3",
         "babel-plugin-transform-define": "^2.0.1",
         "cross-env": "^7.0.3",
@@ -88,7 +89,6 @@
         "@nodecfdi/cfdiutils-common": "^1.1.0",
         "@nodecfdi/credentials": "^1.2.2",
         "@nodecfdi/rfc": "^1.2.2",
-        "@xmldom/xmldom": "^0.8.2",
         "jszip": "^3.10.0",
         "luxon": "^2.4.0"
     }
