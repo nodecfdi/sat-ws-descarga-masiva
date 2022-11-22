@@ -1,17 +1,10 @@
-import { use } from 'typescript-mix';
 import { InteractsXmlTrait } from '~/internal/interacts-xml-trait';
 import { DOMParser } from '@xmldom/xmldom';
 
-interface InteractsXmlOverrideTraitSpecimen extends InteractsXmlTrait {}
-
-class InteractsXmlOverrideTraitSpecimen {
-    @use(InteractsXmlTrait) private this: unknown;
-
+export class InteractsXmlOverrideTraitSpecimen extends InteractsXmlTrait {
     public readDocument(source: string): Document {
         source = '';
 
         return new DOMParser().parseFromString(source);
     }
 }
-
-export { InteractsXmlOverrideTraitSpecimen };

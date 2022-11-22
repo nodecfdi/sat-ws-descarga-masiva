@@ -1,10 +1,7 @@
-import { use } from 'typescript-mix';
 import { SoapFaultInfo } from '../web-client/soap-fault-info';
 import { InteractsXmlTrait } from './interacts-xml-trait';
 
 export class SoapFaultInfoExtractor extends InteractsXmlTrait {
-    @use(InteractsXmlTrait) private this: unknown;
-
     public static extract(source: string): SoapFaultInfo | undefined {
         return new SoapFaultInfoExtractor().obtainFault(source);
     }

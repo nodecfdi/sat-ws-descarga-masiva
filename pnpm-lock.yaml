@@ -40,7 +40,6 @@ specifiers:
   typedoc: ^0.22.17
   typedoc-plugin-markdown: ^3.12.1
   typescript: ^4.7.4
-  typescript-mix: ^3.1.3
   xadesjs: ^2.4.4
   xpath: ^0.0.32
   zx: ^7.0.0
@@ -52,7 +51,6 @@ dependencies:
   '@xmldom/xmldom': 0.8.6
   jszip: 3.10.1
   luxon: 2.5.0
-  typescript-mix: 3.1.3
 
 devDependencies:
   '@babel/core': 7.20.2
@@ -7194,10 +7192,6 @@ packages:
       shiki: 0.10.1
       typescript: 4.8.4
     dev: true
-
-  /typescript-mix/3.1.3:
-    resolution: {integrity: sha512-xmRmx4afyjk+tNd1QsPKppzUtmqNpf4vMwRw0S7BZD/5A+/NFWNA6EacIB1/hchgnkfhO8se9Pf1C3Nxfb0Q9A==}
-    dev: false
 
   /typescript/4.8.4:
     resolution: {integrity: sha512-QCh+85mCy+h0IGff8r5XWzOVSbBO+KfeYrMQh7NJ58QujwcE22u+NUSmUxqF+un70P9GXKxa2HCNiTTMJknyjQ==}

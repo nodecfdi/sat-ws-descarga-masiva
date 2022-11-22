@@ -1,4 +1,3 @@
-import { use } from 'typescript-mix';
 import { InteractsXmlTrait } from '../../internal/interacts-xml-trait';
 import { RequestBuilderInterface } from '../../request-builder/request-builder-interface';
 import { CodeRequest } from '../../shared/code-request';
@@ -7,8 +6,6 @@ import { StatusRequest } from '../../shared/status-request';
 import { VerifyResult } from './verify-result';
 
 export class VerifyTranslator extends InteractsXmlTrait {
-    @use(InteractsXmlTrait) private this: unknown;
-
     public createVerifyResultFromSoapResponse(content: string): VerifyResult {
         const env = this.readXmlElement(content);
 

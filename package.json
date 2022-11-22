@@ -30,7 +30,7 @@
         "lint": "eslint --fix \"src/**/\"",
         "lint:check": "eslint \"src/**/\"",
         "lint:ci": "pnpm lint:check",
-        "test": "jest --verbose --coverage",
+        "test": "jest --verbose --coverage --runInBand",
         "test:watch": "jest --watch",
         "test:ci": "jest --runInBand --ci --coverage --coverageDirectory=coverage",
         "build:prod": "cross-env NODE_ENV=production microbundle --tsconfig ./tsconfig.json  --format modern,cjs,umd  --output dist/prod/index.js",
@@ -90,7 +90,6 @@
         "@nodecfdi/rfc": "^1.2.2",
         "@xmldom/xmldom": "^0.8.2",
         "jszip": "^3.10.0",
-        "luxon": "^2.4.0",
-        "typescript-mix": "^3.1.3"
+        "luxon": "^2.4.0"
     }
 }
