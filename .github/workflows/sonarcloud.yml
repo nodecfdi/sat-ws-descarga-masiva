@@ -1,0 +1,102 @@
+name: sonarcloud
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  tests-coverage:
+    name: Build code coverage
+    runs-on: 'ubuntu-latest'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Cache .pnpm-store
+        uses: actions/cache@v3
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-node16-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+      - name: Install dependencies
+        uses: pnpm/action-setup@v2.2.4
+        with:
+          version: 6.23.6
+          run_install: true
+
+      - name: Create code coverage
+        run: |
+          pnpm test:ci:coverage
+        env:
+          CI: true
+
+      - name: Store code coverage
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage
+          path: coverage
+
+  sonarcloud-secrets:
+    name: SonarCloud check secrets are present
+    runs-on: ubuntu-latest
+    outputs:
+      github: ${{ steps.check-secrets.outputs.github }}
+      sonar: ${{ steps.check-secrets.outputs.sonar }}
+    steps:
+      - name: Check secrets are present
+        id: check-secrets
+        run: |
+          if [ -n "${{ secrets.GITHUB_TOKEN }}" ]; then
+            echo "::set-output name=github::yes"
+          else
+            echo "::set-output name=github::no"
+            echo "::warning ::GITHUB_TOKEN non set"
+          fi
+          if [ -n "${{ secrets.SONAR_TOKEN }}" ]; then
+            echo "::set-output name=sonar::yes"
+          else
+            echo "::set-output name=sonar::no"
+            echo "::warning ::SONAR_TOKEN non set"
+          fi
+
+  sonarcloud:
+    name: SonarCloud Scan and Report
+    needs: ['tests-coverage', 'sonarcloud-secrets']
+    if: ${{ needs.sonarcloud-secrets.outputs.github == 'yes' && needs.sonarcloud-secrets.outputs.sonar == 'yes' }}
+    runs-on: 'ubuntu-latest'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Unshallow clone to provide blame information
+        run: git fetch --unshallow
+
+      - name: Cache .pnpm-store
+        uses: actions/cache@v3
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-node16-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        uses: pnpm/action-setup@v2.2.4
+        with:
+          version: 6.23.6
+          run_install: true
+
+      - name: Obtain code coverage
+        uses: actions/download-artifact@v3
+        with:
+          name: code-coverage
+          path: coverage
+
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
