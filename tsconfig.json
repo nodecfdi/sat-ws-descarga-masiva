@@ -19,20 +19,8 @@
         "isolatedModules": true,
         "incremental": true,
         "jsx": "preserve",
-        "baseUrl": ".",
-        "paths": {
-            "~/*": [
-                "src/*"
-            ]
-        }
+        "baseUrl": "."
     },
-    "include": [
-        "src/**/*"
-    ],
-    "exclude": [
-        "**/node_modules",
-        "src/**/__tests__",
-        "src/**/*.test.ts",
-        "src/**/*.spec.ts"
-    ]
+    "include": ["src/**/*"],
+    "exclude": ["**/node_modules", "src/**/__tests__", "src/**/*.test.ts", "src/**/*.spec.ts"]
 }

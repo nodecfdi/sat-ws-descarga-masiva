@@ -20,12 +20,7 @@ const replacements = {
     'process.env.NODE_ENV': nodeEnv
 };
 
-const plugins = [
-    'dev-expression',
-    ['transform-define', replacements],
-    ['@babel/plugin-proposal-decorators', { legacy: true }],
-    ['@babel/plugin-proposal-class-properties', { loose: true }]
-];
+const plugins = ['dev-expression', ['transform-define', replacements]];
 
 //default babel config
 const config = { plugins };
