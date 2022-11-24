@@ -17,13 +17,13 @@ describe('interacts xml trait', () => {
     test('read xml document without content throws exception', () => {
         const specimen = new InteractsXmlTraitSpecimen();
 
-        expect(() => specimen.readXmlDocument('')).toThrowError('Cannot load an xml with empty content');
+        expect(() => specimen.readXmlDocument('')).toThrow('Cannot load an xml with empty content');
     });
 
     test('read xml element without document root element throws exception', () => {
         const specimen = new InteractsXmlOverrideTraitSpecimen();
 
-        expect(() => specimen.readXmlElement('')).toThrowError('Cannot load an xml with empty content');
+        expect(() => specimen.readXmlElement('')).toThrow('Cannot load an xml with empty content');
     });
 
     test('find element expecting none', () => {

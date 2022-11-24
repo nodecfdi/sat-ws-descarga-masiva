@@ -28,7 +28,7 @@ describe('uuid', () => {
     ];
 
     test.each(providerInvalidValues)('constructor with invalid value %s', (value: string) => {
-        expect((): Uuid => Uuid.create(value)).toThrowError('does not have the correct format');
+        expect((): Uuid => Uuid.create(value)).toThrow('does not have the correct format');
     });
 
     test.each(providerInvalidValues)('Check invalid value %s', (value: string) => {

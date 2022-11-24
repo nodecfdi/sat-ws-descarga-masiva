@@ -19,7 +19,7 @@ describe('abstract rfc filter', () => {
 
     test.each(providerInvalidValues)('construct with invalid value %s', (_name: string, value: string) => {
         const uuid = (): AbstractRfcFilter => RfcFilterImplementation.create(value);
-        expect(uuid).toThrowError('RFC is invalid');
+        expect(uuid).toThrow('RFC is invalid');
     });
 
     test.each(providerInvalidValues)('check invalid value', (_name: string, value: string) => {

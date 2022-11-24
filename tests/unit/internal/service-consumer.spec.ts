@@ -101,7 +101,7 @@ describe('service consumer test', () => {
         const response = new CResponse(200, responseBody);
         const consumer = new ServiceConsumer();
 
-        expect(() => consumer.checkErrors(request, response)).toThrowError(SoapFaultError);
+        expect(() => consumer.checkErrors(request, response)).toThrow(SoapFaultError);
     });
 
     test('check error on server side', () => {
@@ -110,7 +110,7 @@ describe('service consumer test', () => {
         const consumer = new ServiceConsumer();
 
         const result = (): void => consumer.checkErrors(request, response);
-        expect(result).toThrowError(HttpServerError);
+        expect(result).toThrow(HttpServerError);
         expect(result).toThrow('Unexpected server error status code');
     });
 
@@ -120,7 +120,7 @@ describe('service consumer test', () => {
         const consumer = new ServiceConsumer();
 
         const result = (): void => consumer.checkErrors(request, response);
-        expect(result).toThrowError(HttpServerError);
+        expect(result).toThrow(HttpServerError);
         expect(result).toThrow('Unexpected empty response from server');
     });
 });
