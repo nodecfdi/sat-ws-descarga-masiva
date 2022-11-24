@@ -25,7 +25,7 @@ export class DateTime {
             if (!this._value.isValid) {
                 throw new Error(`Unable to create a Datetime("${originalValue}")`);
             }
-            this._value.setZone(defaultTimeZone);
+            this._value = this._value.setZone(defaultTimeZone);
 
             return;
         }
@@ -44,7 +44,7 @@ export class DateTime {
             throw new Error('Unable to create a Datetime');
         }
         this._value = value;
-        this._value.setZone(defaultTimeZone);
+        this._value = this._value.setZone(defaultTimeZone);
     }
 
     /**
