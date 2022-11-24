@@ -10,8 +10,6 @@ describe('https web client test', () => {
         try {
             await webClient.call(request);
         } catch (error) {
-            console.log(error);
-
             exception = error as WebClientException;
             // eslint-disable-next-line jest/no-conditional-expect
             expect(exception).toBeInstanceOf(WebClientException);
