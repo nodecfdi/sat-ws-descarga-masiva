@@ -18,7 +18,7 @@ class ThirdPartiesRecords {
         const records: Record<string, ThirdPartiesInterface> = {};
         for await (const iterator of thirdPartiesBuilder.eachRecord()) {
             for (const [key, value] of iterator) {
-                records[ThirdPartiesRecords.formatUuid(key)] = value as ThirdPartiesInterface;
+                records[ThirdPartiesRecords.formatUuid(key)] = value;
             }
         }
 

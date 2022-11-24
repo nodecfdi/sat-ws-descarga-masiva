@@ -29,10 +29,8 @@ export class MetadataContent {
     }
 
     public async *eachItem(): AsyncGenerator<MetadataItem> {
-        for await (let data of this._csvReader.records()) {
-            data = this._thirdParties.addToData(data);
-            data = this.changeArrayKeysFirstLetterLoweCase(data);
-            yield new MetadataItem(data);
+        for await (const data of this._csvReader.records()) {
+            yield new MetadataItem(this.changeArrayKeysFirstLetterLoweCase(this._thirdParties.addToData(data)));
         }
     }
 

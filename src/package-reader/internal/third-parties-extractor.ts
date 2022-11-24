@@ -13,7 +13,7 @@ export class ThirdPartiesExtractor {
     constructor(private _csvReader: CsvReader) {}
 
     public static async createFromPackageReader(packageReader: PackageReaderInterface): Promise<ThirdPartiesExtractor> {
-        if (packageReader instanceof FilteredPackageReader == false) {
+        if (packageReader instanceof FilteredPackageReader === false) {
             throw new Error('PackageReader parameter must be a FilteredPackageReader');
         }
         const previousFilter = (packageReader as FilteredPackageReader).changeFilter(new ThirdPartiesFileFilter());

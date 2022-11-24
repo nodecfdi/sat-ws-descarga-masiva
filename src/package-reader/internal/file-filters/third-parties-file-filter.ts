@@ -6,7 +6,7 @@ import { FileFilterInterface } from './file-filter-interface';
  */
 export class ThirdPartiesFileFilter implements FileFilterInterface {
     public filterFilename(filename: string): boolean {
-        return /^[^/\\\\]+_tercero\.txt/i.test(filename);
+        return /^[^/\\]+_tercero\.txt/i.test(filename);
     }
 
     public filterContents(contents: string): boolean {
