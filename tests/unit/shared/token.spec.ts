@@ -7,7 +7,7 @@ describe('token', () => {
     test('create token with invalid dates', () => {
         const created = DateTime.create();
         const expires = created.modify({ minutes: -1 });
-        expect(() => new Token(created, expires, '')).toThrowError(
+        expect(() => new Token(created, expires, '')).toThrow(
             'Cannot create a token with expiration lower than creation'
         );
     });

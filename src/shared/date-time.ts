@@ -17,8 +17,9 @@ export class DateTime {
      */
     constructor(value?: number | string | DateTimeImmutable, defaultTimeZone?: string) {
         value = value ?? 'now';
+
         const originalValue = value;
-        this._defaultTimeZone = defaultTimeZone || 'America/Mexico_City';
+        this._defaultTimeZone = defaultTimeZone || DateTimeImmutable.now().zone.name;
         if (typeof value == 'number') {
             this._value = DateTimeImmutable.fromSeconds(value);
             if (!this._value.isValid) {
