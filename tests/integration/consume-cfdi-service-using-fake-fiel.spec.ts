@@ -39,7 +39,7 @@ describe('consume cfdi service using fake fiel', () => {
 
         const result = await service.query(parameters);
         expect(result.getStatus().getCode()).toBe(305);
-    });
+    }, 30000);
 
     test('query change all parameteres', async () => {
         const parameters = QueryParameters.create()
@@ -61,14 +61,14 @@ describe('consume cfdi service using fake fiel', () => {
 
         const result = await service.query(parameters);
         expect(result.getStatus().getCode()).toBe(305);
-    });
+    }, 30000);
 
     test('service endpoints different than query endpoints throws error', async () => {
         const otherServiceType = new ServiceType('retenciones');
         const parameters = QueryParameters.create().withServiceType(otherServiceType);
         const result = async (): Promise<QueryResult> => await service.query(parameters);
         await expect(result).rejects.toThrow(Error);
-    });
+    }, 30000);
 
     test('verify', async () => {
         const requestId = '3edbd462-9fa0-4363-b60f-bac332338028';

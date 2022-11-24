@@ -21,19 +21,18 @@ export class DateTime {
         const originalValue = value;
         this._defaultTimeZone = defaultTimeZone || DateTimeImmutable.now().zone.name;
         if (typeof value == 'number') {
-            this._value = DateTimeImmutable.fromSeconds(value);
+            this._value = DateTimeImmutable.fromSeconds(value, { zone: this._defaultTimeZone });
             if (!this._value.isValid) {
                 throw new Error(`Unable to create a Datetime("${originalValue}")`);
             }
-            this._value = this._value.setZone(defaultTimeZone);
 
             return;
         }
         if (typeof value == 'string') {
             if (value == 'now') {
-                value = DateTimeImmutable.now();
+                value = DateTimeImmutable.fromISO(DateTimeImmutable.now().toISO(), { zone: this._defaultTimeZone });
             } else {
-                const temp = DateTimeImmutable.fromSQL(value);
+                const temp = DateTimeImmutable.fromSQL(value, { zone: this._defaultTimeZone });
                 value = temp.isValid ? temp : DateTimeImmutable.fromISO(value);
             }
             if (!value.isValid) {
@@ -44,7 +43,6 @@ export class DateTime {
             throw new Error('Unable to create a Datetime');
         }
         this._value = value;
-        this._value = this._value.setZone(defaultTimeZone);
     }
 
     /**
