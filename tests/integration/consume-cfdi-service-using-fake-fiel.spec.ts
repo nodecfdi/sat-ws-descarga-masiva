@@ -32,7 +32,7 @@ describe('consume cfdi service using fake fiel', () => {
     test('authentication', async () => {
         const token = await service.authenticate();
         expect(token.isValid()).toBeTruthy();
-    }, 10000);
+    }, 30000);
 
     test('query default parameters', async () => {
         const parameters = QueryParameters.create();
@@ -54,7 +54,7 @@ describe('consume cfdi service using fake fiel', () => {
 
         const result = await service.query(parameters);
         expect(result.getStatus().getCode()).toBe(305);
-    }, 10000);
+    }, 30000);
 
     test('query uuid', async () => {
         const parameters = QueryParameters.create().withUuid(Uuid.create('96623061-61fe-49de-b298-c7156476aa8b'));
@@ -76,7 +76,7 @@ describe('consume cfdi service using fake fiel', () => {
         const result = await service.verify(requestId);
 
         expect(result.getStatus().getCode()).toBe(305);
-    }, 10000);
+    }, 30000);
 
     test('download', async () => {
         const requestId = '4e80345d-917f-40bb-a98f-4a73939343c5_01';
@@ -84,5 +84,5 @@ describe('consume cfdi service using fake fiel', () => {
         const result = await service.download(requestId);
 
         expect(result.getStatus().getCode()).toBe(305);
-    }, 10000);
+    }, 30000);
 });
