@@ -5,7 +5,7 @@
         // "lib": ["ESNext"],
         "strict": true,
         "noImplicitOverride": true,
-        "noUnusedLocals": false,
+        "noUnusedLocals": true,
         "noUnusedParameters": true,
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
