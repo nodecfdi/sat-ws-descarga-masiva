@@ -76,9 +76,9 @@ Puede utilizar esta librería para consumir los CFDI de Retenciones. Para lograr
 Los constructores `ServiceEndpoints.cfdi()` y `ServiceEndpoints.retenciones()` agregan automáticamente la propiedad `ServiceType` al objeto. Esta propiedad será después utilizada el servicio para especificar el valor en la consulta antes de consumirla.
 
 ```ts
-import { AxiosWebClient, RequestBuilderInterface, ServiceEndpoints, Service } from '@nodecfdi/sat-ws-descarga-masiva';
+import { HttpsWebClient, RequestBuilderInterface, ServiceEndpoints, Service } from '@nodecfdi/sat-ws-descarga-masiva';
 /**
- * @var webClient: AxiosWebClient
+ * @var webClient: HttpsWebClient
  * @var requestBuilder: RequestBuilderInterface
  */
 // Creación del servicio
@@ -357,7 +357,6 @@ for (const packageId of packagesIds) {
         console.log(`El paquete ${packageId} no se ha podido descargar: ${download.getStatus().getMessage()}`);
         continue;
     }
-    const filezip = 'package.zip';
     writeFileSync(`${packageId}.zip`, Buffer.from(download.getPackageContent(), 'base64'));
     console.log(`el paquete ${packageId} se ha almacenado`);
 }
