@@ -1,4 +1,5 @@
 import { readFileSync } from 'fs';
+import { CfdiFileFilter } from '~/index';
 import { CfdiPackageReader } from '~/package-reader/cfdi-package-reader';
 import { OpenZipFileException } from '~/package-reader/exceptions/open-zip-file-exception';
 import { TestCase } from '../../test-case';
@@ -149,7 +150,7 @@ describe('cfdi package reader', () => {
     test.each(providerObtainUuidFromXmlCfdi)(
         'provider obtain uuid from xml cfdi %s',
         (_name: string, source: string, expected: string) => {
-            const uuid = CfdiPackageReader.obtainUuidFromXmlCfdi(source);
+            const uuid = CfdiFileFilter.obtainUuidFromXmlCfdi(source);
             expect(uuid).toBe(expected);
         }
     );

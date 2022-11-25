@@ -2,7 +2,11 @@ import { PackageReaderInterface } from '../package-reader-interface';
 import { CsvReader } from './csv-reader';
 import { ThirdPartiesFileFilter } from './file-filters/third-parties-file-filter';
 import { FilteredPackageReader } from './filtered-package-reader';
-import { ThirdPartiesInterface } from './third-parties-records';
+
+export interface ThirdPartiesInterface {
+    RfcACuentaTerceros: string;
+    NombreACuentaTerceros: string;
+}
 
 /**
  * Class to extract the data from a "third parties" file.

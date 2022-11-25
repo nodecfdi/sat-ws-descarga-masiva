@@ -27,7 +27,7 @@ export class CfdiPackageReader implements PackageReaderInterface {
             for (const item of content) {
                 data = item[1];
             }
-            yield new Map().set(CfdiPackageReader.obtainUuidFromXmlCfdi(data), data);
+            yield new Map().set(CfdiFileFilter.obtainUuidFromXmlCfdi(data), data);
         }
     }
 
@@ -46,16 +46,6 @@ export class CfdiPackageReader implements PackageReaderInterface {
 
     public async *fileContents(): AsyncGenerator<Map<string, string>> {
         yield* this._packageReader.fileContents();
-    }
-
-    public static obtainUuidFromXmlCfdi(xmlContent: string): string {
-        const pattern = /:Complemento.*?:TimbreFiscalDigital.*?UUID="(?<uuid>[-a-zA-Z0-9]{36})"/s;
-        const found = xmlContent.match(pattern);
-        if (found && found.groups && found.groups['uuid']) {
-            return found.groups['uuid'].toLowerCase();
-        }
-
-        return '';
     }
 
     public async jsonSerialize(): Promise<{

@@ -1,12 +1,7 @@
 import { PackageReaderInterface } from '../package-reader-interface';
-import { ThirdPartiesExtractor } from './third-parties-extractor';
+import { ThirdPartiesExtractor, ThirdPartiesInterface } from './third-parties-extractor';
 
-interface ThirdPartiesInterface {
-    RfcACuentaTerceros: string;
-    NombreACuentaTerceros: string;
-}
-
-class ThirdPartiesRecords {
+export class ThirdPartiesRecords {
     constructor(private _records: Record<string, ThirdPartiesInterface>) {}
 
     public static createEmpty(): ThirdPartiesRecords {
@@ -45,6 +40,3 @@ class ThirdPartiesRecords {
         return this._records[ThirdPartiesRecords.formatUuid(uuid)] ?? defaultValue;
     }
 }
-
-export { ThirdPartiesRecords };
-export type { ThirdPartiesInterface };
