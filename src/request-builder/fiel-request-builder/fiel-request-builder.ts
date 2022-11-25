@@ -3,9 +3,9 @@ import { Fiel } from './fiel';
 import { Helpers } from '../../internal/helpers';
 import { SignatureAlgorithm } from '@nodecfdi/credentials';
 import { createHash, randomUUID } from 'crypto';
-import { DateTime } from '~/shared/date-time';
-import { QueryParameters } from '~/services/query/query-parameters';
-import { RfcMatches } from '~/shared/rfc-matches';
+import { DateTime } from '../../shared/date-time';
+import { QueryParameters } from '../../services/query/query-parameters';
+import { RfcMatches } from '../../shared/rfc-matches';
 
 export class FielRequestBuilder implements RequestBuilderInterface {
     constructor(private _fiel: Fiel) {}

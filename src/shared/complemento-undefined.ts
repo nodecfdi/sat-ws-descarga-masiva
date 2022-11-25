@@ -3,7 +3,10 @@ import { BaseEnum } from './enum/base-enum';
 
 type ComplementoUndefinedTypes = 'undefined';
 
-export class ComplementoUndefined extends BaseEnum<ComplementoUndefinedTypes> implements ComplementoInterface {
+export class ComplementoUndefined
+    extends BaseEnum<ComplementoUndefinedTypes>
+    implements ComplementoInterface<ComplementoUndefinedTypes>
+{
     private readonly Map = {
         undefined: {
             satCode: '',
@@ -11,11 +14,11 @@ export class ComplementoUndefined extends BaseEnum<ComplementoUndefinedTypes> im
         }
     };
 
-    public static create(id: ComplementoUndefinedTypes): ComplementoInterface {
+    public static create(id: ComplementoUndefinedTypes): ComplementoInterface<ComplementoUndefinedTypes> {
         return new ComplementoUndefined(id);
     }
 
-    public static undefined(): ComplementoInterface {
+    public static undefined(): ComplementoInterface<ComplementoUndefinedTypes> {
         return new ComplementoUndefined('undefined');
     }
 

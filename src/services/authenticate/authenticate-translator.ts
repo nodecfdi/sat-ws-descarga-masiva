@@ -1,7 +1,7 @@
-import { InteractsXmlTrait } from '~/internal/interacts-xml-trait';
-import { RequestBuilderInterface } from '~/request-builder/request-builder-interface';
-import { DateTime } from '~/shared/date-time';
-import { Token } from '~/shared/token';
+import { InteractsXmlTrait } from '../../internal/interacts-xml-trait';
+import { RequestBuilderInterface } from '../../request-builder/request-builder-interface';
+import { DateTime } from '../../shared/date-time';
+import { Token } from '../../shared/token';
 
 /** @internal */
 export class AuthenticateTranslator extends InteractsXmlTrait {

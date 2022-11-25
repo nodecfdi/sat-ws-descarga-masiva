@@ -1,4 +1,4 @@
-import { HttpClientError } from '~/web-client/exceptions/http-client-error';
+import { HttpClientError } from '../web-client/exceptions/http-client-error';
 import { Token } from '../shared/token';
 import { CRequest } from '../web-client/crequest';
 import { CResponse } from '../web-client/cresponse';

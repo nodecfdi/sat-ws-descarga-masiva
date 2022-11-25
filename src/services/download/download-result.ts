@@ -1,4 +1,4 @@
-import { StatusCode } from '~/shared/status-code';
+import { StatusCode } from '../../shared/status-code';
 
 export class DownloadResult {
     private _packageSize: number;

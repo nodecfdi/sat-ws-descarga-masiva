@@ -1,7 +1,5 @@
-import { Method } from 'axios';
-
 export class CRequest {
-    private _method: Method;
+    private _method: string;
 
     private _uri: string;
 
@@ -12,7 +10,7 @@ export class CRequest {
     /**
      *
      */
-    constructor(method: Method, uri: string, body: string, headers: Record<string, string>) {
+    constructor(method: string, uri: string, body: string, headers: Record<string, string>) {
         this._method = method;
         this._uri = uri;
         this._body = body;
@@ -20,7 +18,7 @@ export class CRequest {
         this._headers = Object.fromEntries(map);
     }
 
-    public getMethod(): Method {
+    public getMethod(): string {
         return this._method;
     }
 

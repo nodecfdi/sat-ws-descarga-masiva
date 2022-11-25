@@ -1,4 +1,4 @@
-import { DateTime } from '~/shared/date-time';
+import { DateTime } from '../shared/date-time';
 import { QueryParameters } from '..';
 /**
  * The implementors must create the request signed ready to send to the SAT Web Service Descarga Masiva

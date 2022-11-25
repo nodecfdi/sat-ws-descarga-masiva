@@ -1,18 +1,18 @@
-import { ComplementoInterface } from '~/shared/complemento-interface';
-import { ComplementoUndefined } from '~/shared/complemento-undefined';
-import { DateTime } from '~/shared/date-time';
-import { DocumentStatus } from '~/shared/document-status';
-import { DocumentType } from '~/shared/document-type';
-import { RfcMatch } from '~/shared/rfc-match';
-import { RfcMatches } from '~/shared/rfc-matches';
-import { RfcOnBehalf } from '~/shared/rfc-on-behalf';
-import { ServiceType } from '~/shared/service-type';
-import { Uuid } from '~/shared/uuid';
-import { DateTimePeriod } from '~/shared/date-time-period';
-import { DownloadType } from '~/shared/download-type';
-import { RequestType } from '~/shared/request-type';
-import { ComplementoCfdiTypes } from '~/shared/complemento-cfdi';
-import { ComplementoRetencionesTypes } from '~/shared/complemento-retenciones';
+import { ComplementoInterface } from '../../shared/complemento-interface';
+import { ComplementoUndefined } from '../../shared/complemento-undefined';
+import { DateTime } from '../../shared/date-time';
+import { DocumentStatus } from '../../shared/document-status';
+import { DocumentType } from '../../shared/document-type';
+import { RfcMatch } from '../../shared/rfc-match';
+import { RfcMatches } from '../../shared/rfc-matches';
+import { RfcOnBehalf } from '../../shared/rfc-on-behalf';
+import { ServiceType } from '../../shared/service-type';
+import { Uuid } from '../../shared/uuid';
+import { DateTimePeriod } from '../../shared/date-time-period';
+import { DownloadType } from '../../shared/download-type';
+import { RequestType } from '../../shared/request-type';
+import { ComplementoCfdiTypes } from '../../shared/complemento-cfdi';
+import { ComplementoRetencionesTypes } from '../../shared/complemento-retenciones';
 
 /**
  * This class contains all the information required to perform a query on the SAT Web Service
