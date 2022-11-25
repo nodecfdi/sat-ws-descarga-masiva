@@ -25,3 +25,4 @@ export * from './package-reader/cfdi-package-reader';
 export * from './package-reader/exceptions/open-zip-file-exception';
 export * from './package-reader/exceptions/create-temporary-file-zip-exception';
 export * from './package-reader/exceptions/package-reader-exception';
+export * from './package-reader/internal/file-filters/cfdi-file-filter';

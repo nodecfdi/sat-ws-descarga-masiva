@@ -13,8 +13,14 @@ module.exports = {
         __COMMIT_SHA__: true,
         __BUILD_DATE__: true
     },
-    plugins: ['@typescript-eslint/eslint-plugin', 'eslint-plugin-tsdoc', 'prettier'],
-    extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'plugin:jest/recommended', 'prettier'],
+    plugins: ['@typescript-eslint/eslint-plugin', 'eslint-plugin-tsdoc', 'prettier', 'eslint-plugin-import'],
+    extends: [
+        'eslint:recommended',
+        'plugin:@typescript-eslint/recommended',
+        'plugin:jest/recommended',
+        'prettier',
+        'plugin:import/typescript'
+    ],
     parser: '@typescript-eslint/parser',
     reportUnusedDisableDirectives: true,
     parserOptions: {
@@ -25,6 +31,7 @@ module.exports = {
     },
     rules: {
         'indent': 'off',
+        'import/no-cycle': ['error', { maxDepth: Infinity }],
         'tsdoc/syntax': 'warn',
         '@typescript-eslint/no-unused-vars': [2, { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
         'semi': 'error',
