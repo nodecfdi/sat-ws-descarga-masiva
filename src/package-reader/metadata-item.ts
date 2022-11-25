@@ -19,7 +19,7 @@
  * - property-read string nombreACuentaTerceros
  */
 
-interface MetadataItemInterface {
+export interface MetadataItemInterface {
     key: string;
     value: string;
 }

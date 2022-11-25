@@ -1,6 +1,6 @@
 import { BaseEnum } from './enum/base-enum';
 
-type DocumentStatusTypes = 'undefined' | 'active' | 'cancelled';
+export type DocumentStatusTypes = 'undefined' | 'active' | 'cancelled';
 
 enum DocumentStatusEnum {
     undefined = '',

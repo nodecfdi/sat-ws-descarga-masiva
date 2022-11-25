@@ -1,6 +1,6 @@
 import { BaseEnum } from './enum/base-enum';
 
-type DownloadTypeTypes = 'issued' | 'received';
+export type DownloadTypeTypes = 'issued' | 'received';
 
 enum DownloadTypeEnum {
     issued = 'RfcEmisor',

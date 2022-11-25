@@ -1,4 +1,4 @@
-type CodeRequestTypes = 'Accepted' | 'Exhausted' | 'MaximumLimitReaded' | 'EmptyResult' | 'Duplicated';
+export type CodeRequestTypes = 'Accepted' | 'Exhausted' | 'MaximumLimitReaded' | 'EmptyResult' | 'Duplicated';
 
 export class CodeRequest {
     private index?: number;

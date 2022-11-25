@@ -1,7 +1,7 @@
 import { ComplementoInterface } from './complemento-interface';
 import { BaseEnum } from './enum/base-enum';
 
-type ComplementoUndefinedTypes = 'undefined';
+export type ComplementoUndefinedTypes = 'undefined';
 
 export class ComplementoUndefined
     extends BaseEnum<ComplementoUndefinedTypes>

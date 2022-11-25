@@ -1,7 +1,7 @@
 import { BaseEnum } from './enum/base-enum';
 import { ServiceType } from './service-type';
 
-type RequestTypeTypes = 'xml' | 'metadata';
+export type RequestTypeTypes = 'xml' | 'metadata';
 
 enum RequestTypeEnum {
     xml = 'xml',

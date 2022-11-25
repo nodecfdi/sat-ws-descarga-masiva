@@ -1,4 +1,4 @@
-type StatusRequestTypes = 'Accepted' | 'InProgress' | 'Finished' | 'Failure' | 'Rejected' | 'Expired';
+export type StatusRequestTypes = 'Accepted' | 'InProgress' | 'Finished' | 'Failure' | 'Rejected' | 'Expired';
 
 export class StatusRequest {
     private index?: number;
