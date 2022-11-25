@@ -12,6 +12,7 @@ specifiers:
   '@nodecfdi/rfc': ^1.2.2
   '@peculiar/webcrypto': ^1.4.1
   '@types/jest': ^29.2.3
+  '@types/jsrsasign': ^10.5.4
   '@types/luxon': ^3.1.0
   '@types/node': ^18.11.9
   '@typescript-eslint/eslint-plugin': ^5.44.0
@@ -58,6 +59,7 @@ devDependencies:
   '@commitlint/config-conventional': 17.3.0
   '@peculiar/webcrypto': 1.4.1
   '@types/jest': 29.2.3
+  '@types/jsrsasign': 10.5.4
   '@types/luxon': 3.1.0
   '@types/node': 18.11.9
   '@typescript-eslint/eslint-plugin': 5.44.0_fnsv2sbzcckq65bwfk7a5xwslu
@@ -2398,6 +2400,10 @@ packages:
 
   /@types/json-schema/7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
+    dev: true
+
+  /@types/jsrsasign/10.5.4:
+    resolution: {integrity: sha512-05S2f4lGaWgCwFHsa3OEirc4VJf/sJRfhofzxUbuFbmm6NbffPXZrnJqquQAtS3g4C8Z0L9NHgW0znmtDxNoTQ==}
     dev: true
 
   /@types/luxon/3.1.0:
