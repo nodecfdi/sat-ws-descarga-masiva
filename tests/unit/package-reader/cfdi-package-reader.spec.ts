@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { CfdiFileFilter } from '~/index';
+import { CfdiFileFilter } from '~/package-reader/internal/file-filters/cfdi-file-filter';
 import { CfdiPackageReader } from '~/package-reader/cfdi-package-reader';
 import { OpenZipFileException } from '~/package-reader/exceptions/open-zip-file-exception';
 import { TestCase } from '../../test-case';
