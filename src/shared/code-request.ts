@@ -47,8 +47,6 @@ export class CodeRequest {
             }
             this.value = value;
             this.index = value.code;
-
-            return;
         }
     }
 

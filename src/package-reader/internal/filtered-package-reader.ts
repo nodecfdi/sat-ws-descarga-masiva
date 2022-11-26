@@ -33,7 +33,7 @@ export class FilteredPackageReader implements PackageReaderInterface {
     }
 
     public static async createFromFile(filename: string): Promise<FilteredPackageReader> {
-        let archive = new JSZip();
+        let archive: JSZip;
         let data: Buffer;
         try {
             // if is directory fails in windows, linux and mac, not fails in BSD

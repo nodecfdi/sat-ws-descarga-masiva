@@ -150,14 +150,6 @@ describe('Fiel request builder', () => {
         expect(Helpers.nospaces(TestCase.xmlFormat(requestBody))).toBe(
             Helpers.nospaces(TestCase.fileContents('verify/request.xml'))
         );
-
-        // const xmlSecVeritifaction = await new EnvelopSignatureVerifier().verify(
-        //     requestBody,
-        //     'http://DescargaMasivaTerceros.sat.gob.mx',
-        //     'VerificaSolicitudDescarga'
-        // );
-        // // TODO: check this verification.
-        // expect(xmlSecVeritifaction).toBeTruthy();
     });
 
     test('verify using special invalid xml characters', async () => {
@@ -211,14 +203,6 @@ describe('Fiel request builder', () => {
         expect(Helpers.nospaces(TestCase.xmlFormat(requestBody))).toBe(
             Helpers.nospaces(TestCase.fileContents('download/request.xml'))
         );
-
-        // const xmlSecVeritifaction = await new EnvelopSignatureVerifier().verify(
-        //     requestBody,
-        //     'http://DescargaMasivaTerceros.sat.gob.mx',
-        //     'PeticionDescargaMasivaTercerosEntrada'
-        // );
-        // // TODO: check this verification.
-        // expect(xmlSecVeritifaction).toBeTruthy();
     });
 
     test('download using special invalid xml characters', async () => {

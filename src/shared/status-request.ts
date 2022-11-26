@@ -38,8 +38,6 @@ export class StatusRequest {
             }
             this.value = value;
             this.index = value.code;
-
-            return;
         }
     }
 

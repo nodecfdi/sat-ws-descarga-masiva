@@ -40,7 +40,7 @@ export class InteractsXmlTrait {
             }
         }
 
-        return;
+        return undefined;
     }
 
     public findContent(element: Element, ...names: string[]): string {
@@ -59,7 +59,9 @@ export class InteractsXmlTrait {
             // TODO find constant for Node.TEXT_NODE
             if ((children[index] as Element).nodeType == 3) {
                 const child = children[index] as Element;
-                child?.textContent ? buffer.push(child.textContent) : null;
+                if (child?.textContent !== null) {
+                    buffer.push(child.textContent);
+                }
             }
         }
 

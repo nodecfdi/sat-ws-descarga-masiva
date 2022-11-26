@@ -26,3 +26,7 @@ export * from './package-reader/exceptions/open-zip-file-exception';
 export * from './package-reader/exceptions/create-temporary-file-zip-exception';
 export * from './package-reader/exceptions/package-reader-exception';
 export * from './package-reader/internal/file-filters/cfdi-file-filter';
+export * from './internal/interacts-xml-trait';
+export * from './internal/service-consumer';
+export * from './internal/soap-fault-info-extractor';
+export * from './services/authenticate/authenticate-translator';
