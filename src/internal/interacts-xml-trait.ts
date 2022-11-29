@@ -27,14 +27,16 @@ export class InteractsXmlTrait {
 
         const children = element.childNodes;
 
-        for (let index = 0; index < children.length; index++) {
-            if (children[index].ELEMENT_NODE == 1) {
-                const localName = (children[index] as Element).localName?.toLowerCase();
+        let index = 0;
+        for (index; index < children.length; index++) {
+            const child = children[index];
+            if (child.ELEMENT_NODE == 1) {
+                const localName = (child as Element).localName?.toLowerCase();
                 if (localName == current) {
                     if (names.length > 0) {
-                        return this.findElement(children[index] as Element, ...names);
+                        return this.findElement(child as Element, ...names);
                     } else {
-                        return children[index] as Element;
+                        return child as Element;
                     }
                 }
             }
@@ -55,12 +57,13 @@ export class InteractsXmlTrait {
     public extractElementContent(element: Element): string {
         const buffer: string[] = [];
         const children = element.childNodes;
-        for (let index = 0; index < children.length; index++) {
-            // TODO find constant for Node.TEXT_NODE
-            if ((children[index] as Element).nodeType == 3) {
-                const child = children[index] as Element;
-                if (child?.textContent !== null) {
-                    buffer.push(child.textContent);
+        let index = 0;
+        for (index; index < children.length; index++) {
+            const child = children[index];
+            if ((child as Element).nodeType == 3) {
+                const c = child;
+                if (c?.textContent !== null) {
+                    buffer.push(c.textContent);
                 }
             }
         }
@@ -79,11 +82,13 @@ export class InteractsXmlTrait {
 
         const found: Element[] = [];
         const children = element.childNodes;
-        for (let index = 0; index < children.length; index++) {
-            if (children[index].ELEMENT_NODE == 1) {
-                const localName = (children[index] as Element).localName?.toLowerCase();
+        let index = 0;
+        for (index; index < children.length; index++) {
+            const child = children[index];
+            if (child.ELEMENT_NODE == 1) {
+                const localName = (child as Element).localName?.toLowerCase();
                 if (localName == current) {
-                    found.push(children[index] as Element);
+                    found.push(child as Element);
                 }
             }
         }
@@ -102,7 +107,8 @@ export class InteractsXmlTrait {
         }
         const attributes = new Map();
         const elementAttributes = found.attributes;
-        for (let index = 0; index < elementAttributes.length; index++) {
+        let index = 0;
+        for (index; index < elementAttributes.length; index++) {
             attributes.set(elementAttributes[index].localName.toLowerCase(), elementAttributes[index].value);
         }
 
