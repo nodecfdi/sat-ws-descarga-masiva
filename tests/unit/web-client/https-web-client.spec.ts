@@ -14,8 +14,6 @@ describe('https web client test', () => {
             // eslint-disable-next-line jest/no-conditional-expect
             expect(exception).toBeInstanceOf(WebClientException);
             // eslint-disable-next-line jest/no-conditional-expect
-            expect(exception.message).toBe('Invalid URL');
-            // eslint-disable-next-line jest/no-conditional-expect
             expect(exception.getRequest()).toBe(request);
 
             return;

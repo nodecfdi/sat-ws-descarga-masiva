@@ -4,7 +4,7 @@ import { OpenZipFileException } from '~/package-reader/exceptions/open-zip-file-
 import { FilteredPackageReader } from '~/package-reader/internal/filtered-package-reader';
 import { TestCase } from '../../../test-case';
 import os from 'os';
-import { join } from 'path/posix';
+import { join } from 'path';
 import { randomUUID } from 'crypto';
 import { NullFileFilter } from '~/package-reader/internal/file-filters/null-file-filter';
 describe('filtered package reader', () => {
