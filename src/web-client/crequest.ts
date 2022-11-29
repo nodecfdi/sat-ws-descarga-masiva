@@ -1,15 +1,16 @@
-import { Method } from 'axios';
-
 export class CRequest {
-    private _method: Method;
+    private _method: string;
+
     private _uri: string;
+
     private _body: string;
+
     private _headers: Record<string, string>;
 
     /**
      *
      */
-    constructor(method: Method, uri: string, body: string, headers: Record<string, string>) {
+    constructor(method: string, uri: string, body: string, headers: Record<string, string>) {
         this._method = method;
         this._uri = uri;
         this._body = body;
@@ -17,7 +18,7 @@ export class CRequest {
         this._headers = Object.fromEntries(map);
     }
 
-    public getMethod(): Method {
+    public getMethod(): string {
         return this._method;
     }
 
@@ -34,22 +35,22 @@ export class CRequest {
     }
 
     public defaultHeaders(): {
-        'Content-type': string,
-        'Accept': string,
-        'Cache-Control': string,
+        'Content-type': string;
+        'Accept': string;
+        'Cache-Control': string;
     } {
         return {
             'Content-type': 'text/xml; charset="utf-8"',
             'Accept': 'text/xml',
-            'Cache-Control': 'no-cache',
+            'Cache-Control': 'no-cache'
         };
     }
 
-    public jsonSerialize(): {
-        method: string,
-        uri: string,
-        body: string,
-        headers: Record<string, string>
+    public toJSON(): {
+        method: string;
+        uri: string;
+        body: string;
+        headers: Record<string, string>;
     } {
         return {
             method: this._method,

@@ -1,6 +1,6 @@
 import { TestCase } from '../../../test-case';
-import { Helpers } from '../../../../src/internal/helpers';
-import { VerifyTranslator } from '../../../../src/services/verify/verify-translator';
+import { Helpers } from '~/internal/helpers';
+import { VerifyTranslator } from '~/services/verify/verify-translator';
 describe('verify translator', () => {
     test('create verify result from soap response with zero packages', () => {
         const expectedStatusCode = 5000;
@@ -12,7 +12,7 @@ describe('verify translator', () => {
 
         const translator = new VerifyTranslator();
         const responseBody = Helpers.nospaces(TestCase.fileContents('verify/response-0-packages.xml'));
-        
+
         const result = translator.createVerifyResultFromSoapResponse(responseBody);
         const status = result.getStatus();
         const statusRequest = result.getStatusRequest();
@@ -22,9 +22,9 @@ describe('verify translator', () => {
         expect(status.getCode()).toBe(expectedStatusCode);
         expect(status.getMessage()).toBe(expectedMessage);
         expect(statusRequest.getValue()).toBe(expectedStatusRequest);
-        expect(statusRequest.getEntryId() == 'Rejected').toBeTruthy();
+        expect(statusRequest.isTypeOf('Rejected')).toBeTruthy();
         expect(codeRequest.getValue()).toBe(expectedCodeRequest);
-        expect(codeRequest.getEntryId() == 'EmptyResult').toBeTruthy();
+        expect(codeRequest.isTypeOf('EmptyResult')).toBeTruthy();
         expect(result.getNumberCfdis()).toBe(expectedNumberCfdis);
         expect(result.getPackageIds()).toStrictEqual(expectedPackagesIds);
     });
@@ -32,7 +32,7 @@ describe('verify translator', () => {
     test('create verify result from soap response with two package', () => {
         const expectedPackagesIds = [
             '4e80345d-917f-40bb-a98f-4a73939343c5_01',
-            '4e80345d-917f-40bb-a98f-4a73939343c5_02',
+            '4e80345d-917f-40bb-a98f-4a73939343c5_02'
         ];
 
         const translator = new VerifyTranslator();
@@ -51,6 +51,8 @@ describe('verify translator', () => {
 
         const requestBody = translator.createSoapRequest(requestBuilder, requestId);
 
-        expect(Helpers.nospaces(TestCase.xmlFormat(requestBody))).toBe(Helpers.nospaces(TestCase.fileContents('verify/request.xml')));
+        expect(Helpers.nospaces(TestCase.xmlFormat(requestBody))).toBe(
+            Helpers.nospaces(TestCase.fileContents('verify/request.xml'))
+        );
     });
 });

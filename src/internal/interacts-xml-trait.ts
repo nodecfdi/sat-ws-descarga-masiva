@@ -1,4 +1,4 @@
-import { DOMParser } from '@xmldom/xmldom';
+import { getParser } from '@nodecfdi/cfdiutils-common';
 /**
  * Contain functions to interact with XML contents and XML DOM
  *
@@ -6,17 +6,18 @@ import { DOMParser } from '@xmldom/xmldom';
  * @internal
  */
 export class InteractsXmlTrait {
-
     public readXmlDocument(source: string): Document {
         if ('' == source) {
             throw new Error('Cannot load an xml with empty content');
         }
-        return new DOMParser().parseFromString(source);
+
+        return getParser().parseFromString(source, 'text/xml');
     }
 
     public readXmlElement(source: string): Element {
         const document = this.readXmlDocument(source);
         const element = document.documentElement;
+
         return element;
     }
 
@@ -31,14 +32,15 @@ export class InteractsXmlTrait {
                 const localName = (children[index] as Element).localName?.toLowerCase();
                 if (localName == current) {
                     if (names.length > 0) {
-                        return this.findElement((children[index] as Element), ...names);
+                        return this.findElement(children[index] as Element, ...names);
                     } else {
-                        return (children[index] as Element);
+                        return children[index] as Element;
                     }
                 }
             }
         }
-        return;
+
+        return undefined;
     }
 
     public findContent(element: Element, ...names: string[]): string {
@@ -46,6 +48,7 @@ export class InteractsXmlTrait {
         if (!found) {
             return '';
         }
+
         return this.extractElementContent(found);
     }
 
@@ -55,11 +58,13 @@ export class InteractsXmlTrait {
         for (let index = 0; index < children.length; index++) {
             // TODO find constant for Node.TEXT_NODE
             if ((children[index] as Element).nodeType == 3) {
-                const child = (children[index] as Element);
-                child?.textContent ? buffer.push(child.textContent) : null;
+                const child = children[index] as Element;
+                if (child?.textContent !== null) {
+                    buffer.push(child.textContent);
+                }
             }
-            
         }
+
         return buffer.join('');
     }
 
@@ -78,11 +83,11 @@ export class InteractsXmlTrait {
             if (children[index].ELEMENT_NODE == 1) {
                 const localName = (children[index] as Element).localName?.toLowerCase();
                 if (localName == current) {
-                    found.push((children[index] as Element));
+                    found.push(children[index] as Element);
                 }
             }
-
         }
+
         return found;
     }
 
@@ -100,6 +105,7 @@ export class InteractsXmlTrait {
         for (let index = 0; index < elementAttributes.length; index++) {
             attributes.set(elementAttributes[index].localName.toLowerCase(), elementAttributes[index].value);
         }
+
         return Object.fromEntries(attributes);
     }
 }

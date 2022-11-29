@@ -2,7 +2,7 @@ import { TestCase } from '../../test-case';
 import { InteractsXmlOverrideTraitSpecimen } from './interacts-xml-trait-override-specimen';
 import { InteractsXmlTraitSpecimen } from './interacts-xml-trait.specimen';
 
-describe('interacts xml trait ', () => {
+describe('interacts xml trait', () => {
     test('find element expecting one', () => {
         const specimen = new InteractsXmlTraitSpecimen();
         const content = TestCase.fileContents('verify/response-2-packages.xml', 'utf-8');
@@ -17,13 +17,13 @@ describe('interacts xml trait ', () => {
     test('read xml document without content throws exception', () => {
         const specimen = new InteractsXmlTraitSpecimen();
 
-        expect(() => specimen.readXmlDocument('')).toThrowError('Cannot load an xml with empty content');
+        expect(() => specimen.readXmlDocument('')).toThrow('Cannot load an xml with empty content');
     });
 
     test('read xml element without document root element throws exception', () => {
         const specimen = new InteractsXmlOverrideTraitSpecimen();
 
-        expect(() => specimen.readXmlElement('')).toThrowError('Cannot load an xml with empty content');
+        expect(() => specimen.readXmlElement('')).toThrow('Cannot load an xml with empty content');
     });
 
     test('find element expecting none', () => {
@@ -71,10 +71,7 @@ describe('interacts xml trait ', () => {
         const specimen = new InteractsXmlTraitSpecimen();
         const content = TestCase.fileContents('verify/response-2-packages.xml', 'utf-8');
         const search = ['body', 'verificaSolicitudDescargaResponse', 'verificaSolicitudDescargaResult', 'idsPaquetes'];
-        const expectedContent = [
-            '4e80345d-917f-40bb-a98f-4a73939343c5_01',
-            '4e80345d-917f-40bb-a98f-4a73939343c5_02',
-        ];
+        const expectedContent = ['4e80345d-917f-40bb-a98f-4a73939343c5_01', '4e80345d-917f-40bb-a98f-4a73939343c5_02'];
 
         const root = specimen.readXmlElement(content);
 
@@ -86,11 +83,11 @@ describe('interacts xml trait ', () => {
         const content = TestCase.fileContents('verify/response-2-packages.xml', 'utf-8');
         const search = ['body', 'verificaSolicitudDescargaResponse', 'verificaSolicitudDescargaResult'];
         const expectedContent = {
-            'codestatus': '5000',
-            'estadosolicitud': '3',
-            'codigoestadosolicitud': '5000',
-            'numerocfdis': '12345',
-            'mensaje': 'Solicitud Aceptada',
+            codestatus: '5000',
+            estadosolicitud: '3',
+            codigoestadosolicitud: '5000',
+            numerocfdis: '12345',
+            mensaje: 'Solicitud Aceptada'
         };
 
         const root = specimen.readXmlElement(content);

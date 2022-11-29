@@ -1,13 +1,13 @@
-import { Helpers } from '../../../src/internal/helpers';
+import { Helpers } from '~/internal/helpers';
 describe('Helpers', () => {
     test('no spaces contents', () => {
         const source = `
             <root>
                 <foo a="1" b="2">foo</foo>
-                
+
                 <bar>
                     <baz>
-                        BAZZ        
+                        BAZZ
                     </baz>
                 </bar>
             </root>

@@ -1,9 +1,10 @@
 import { PackageReaderException } from './package-reader-exception';
 
 export class OpenZipFileException extends PackageReaderException {
-
     private readonly _filename: string;
+
     private readonly _previous?: Error;
+
     private readonly _code: number;
 
     constructor(message: string, code: number, filename: string, previous?: Error) {
@@ -14,7 +15,11 @@ export class OpenZipFileException extends PackageReaderException {
     }
 
     public static create(filename: string, code: number, previous?: Error): OpenZipFileException {
-        const messageToSend = previous && previous.message != '' ? `Unable to open Zip file ${filename}. previous ${previous.message}` : `Unable to open Zip file ${filename}`;
+        const messageToSend =
+            previous && previous.message != ''
+                ? `Unable to open Zip file ${filename}. previous ${previous.message}`
+                : `Unable to open Zip file ${filename}`;
+
         return new OpenZipFileException(messageToSend, code, filename, previous);
     }
 

@@ -1,7 +1,7 @@
 import { TestCase } from '../../../test-case';
-import { Helpers } from '../../../../src/internal/helpers';
-import { AuthenticateTranslator } from '../../../../src/services/authenticate/authenticate-translator';
-import { DateTime } from '../../../../src/shared/date-time';
+import { Helpers } from '~/internal/helpers';
+import { AuthenticateTranslator } from '~/services/authenticate/authenticate-translator';
+import { DateTime } from '~/shared/date-time';
 describe('Authenticate translator', () => {
     test('create soap request', () => {
         const translator = new AuthenticateTranslator();
@@ -12,7 +12,9 @@ describe('Authenticate translator', () => {
         const securityTokenId = 'uuid-cf6c80fb-00ae-44c0-af56-54ec65decbaa-1';
         const requestBody = translator.createSoapRequestWithData(requestBuilder, since, until, securityTokenId);
 
-        expect(Helpers.nospaces(TestCase.xmlFormat(requestBody))).toBe(Helpers.nospaces(TestCase.fileContents('authenticate/request.xml')));
+        expect(Helpers.nospaces(TestCase.xmlFormat(requestBody))).toBe(
+            Helpers.nospaces(TestCase.fileContents('authenticate/request.xml'))
+        );
     });
 
     test('create token from soap response with token', () => {

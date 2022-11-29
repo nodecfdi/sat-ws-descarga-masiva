@@ -1,5 +1,5 @@
-import { DateTime } from '../../../src/shared/date-time';
-import { DateTimePeriod } from '../../../src/shared/date-time-period';
+import { DateTime } from '~/shared/date-time';
+import { DateTimePeriod } from '~/shared/date-time-period';
 
 describe('date time period', () => {
     test('create with correct start date time and end date time', () => {
@@ -24,6 +24,6 @@ describe('date time period', () => {
         const start = DateTime.create('2019-01-01 00:00:59');
         const end = DateTime.create('2019-01-01 00:00:55');
 
-        expect(() => DateTimePeriod.create(start, end)).toThrowError('The final date must be greater than the initial date');
+        expect(() => DateTimePeriod.create(start, end)).toThrow('The final date must be greater than the initial date');
     });
 });

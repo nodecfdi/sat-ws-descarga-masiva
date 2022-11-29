@@ -1,25 +1,29 @@
 export class StatusCode {
-    private _code: number;
-    private _message: string;
+    constructor(private _code: number, private _message: string) {}
 
-    constructor(code: number, message: string) {
-        this._code = code;
-        this._message = message;
-    }
-
+    /**
+     * Contains the value of "CodEstatus"
+     */
     public getCode(): number {
         return this._code;
     }
 
+    /**
+     * Contains the value of "Mensaje"
+     */
     public getMessage(): string {
         return this._message;
     }
 
+    /**
+     * Return true when "CodEstatus" is success
+     * The only success code is "5000: Solicitud recibida con éxito"
+     */
     public isAccepted(): boolean {
-        return (5000 == this._code);
+        return 5000 == this._code;
     }
 
-    public jsonSerialize(): { code: number, message: string } {
+    public toJSON(): { code: number; message: string } {
         return {
             code: this._code,
             message: this._message

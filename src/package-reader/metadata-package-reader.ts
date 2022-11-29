@@ -1,40 +1,48 @@
-import { Helpers } from '../internal/helpers';
 import { MetadataFileFilter } from './internal/file-filters/metadata-file-filter';
 import { FilteredPackageReader } from './internal/filtered-package-reader';
 import { MetadataContent } from './internal/metadata-content';
+import { ThirdPartiesRecords } from './internal/third-parties-records';
 import { MetadataItem } from './metadata-item';
 import { PackageReaderInterface } from './package-reader-interface';
 
-export class MetadaPackageReader implements PackageReaderInterface {
+export class MetadataPackageReader implements PackageReaderInterface {
+    constructor(private _packageReader: PackageReaderInterface, private _thirdParties?: ThirdPartiesRecords) {}
 
-    private _packageReader: PackageReaderInterface;
-
-    constructor(packageReader: PackageReaderInterface) {
-        this._packageReader = packageReader;
-    }
-
-    public static async createFromFile(fileName: string): Promise<MetadaPackageReader> {
+    public static async createFromFile(fileName: string): Promise<MetadataPackageReader> {
         const packageReader = await FilteredPackageReader.createFromFile(fileName);
         packageReader.setFilter(new MetadataFileFilter());
-        return new MetadaPackageReader(packageReader);
+
+        const thirdParties = await ThirdPartiesRecords.createFromPackageReader(packageReader);
+
+        return new MetadataPackageReader(packageReader, thirdParties);
     }
 
-    public static async createFromContents(contents: string): Promise<MetadaPackageReader> {
+    public static async createFromContents(contents: string): Promise<MetadataPackageReader> {
         const packageReader = await FilteredPackageReader.createFromContents(contents);
         packageReader.setFilter(new MetadataFileFilter());
         // delete temporary file
         packageReader.destruct();
-        return new MetadaPackageReader(packageReader);
+
+        const thirdParties = await ThirdPartiesRecords.createFromPackageReader(packageReader);
+
+        return new MetadataPackageReader(packageReader, thirdParties);
     }
 
-    public async *metadata(): AsyncGenerator<Record<string, MetadataItem>> {
+    public async getThirdParties(): Promise<ThirdPartiesRecords> {
+        this._thirdParties =
+            this._thirdParties ?? (await ThirdPartiesRecords.createFromPackageReader(this._packageReader));
+
+        return this._thirdParties;
+    }
+
+    public async *metadata(): AsyncGenerator<MetadataItem> {
         let reader: MetadataContent;
-        const fileContents = await Helpers.iteratorToMap(this._packageReader.fileContents());
-        for (const content of fileContents.values()) {
-            reader = MetadataContent.createFromContents(content);
-            const items = await reader.eachItem();
-            for (const item of items) {
-                yield Object.fromEntries([[item.get('uuid'), item]]);
+        for await (const content of this._packageReader.fileContents()) {
+            for (const [_key, value] of content) {
+                reader = MetadataContent.createFromContents(value, await this.getThirdParties());
+                for await (const item of reader.eachItem()) {
+                    yield item;
+                }
             }
         }
     }
@@ -44,21 +52,44 @@ export class MetadaPackageReader implements PackageReaderInterface {
     }
 
     public async count(): Promise<number> {
-        return (await Helpers.iteratorToMap(this.fileContents())).size;
-    }
-
-    public async *fileContents(): AsyncGenerator<Record<string, string>> {
-        for await (const iterator of this._packageReader.fileContents()) {
-            yield iterator;
+        let count = 0;
+        for await (const _item of this.fileContents()) {
+            count++;
         }
+
+        return count;
     }
 
-    public async jsonSerialize(): Promise<{ source: string, files: Record<string, string>, metadata: Record<string, MetadataItem> }> {
+    public async *fileContents(): AsyncGenerator<Map<string, string>> {
+        yield* this._packageReader.fileContents();
+    }
+
+    public async jsonSerialize(): Promise<{
+        source: string;
+        files: Record<string, string>;
+        metadata: Record<string, Record<string, string>>;
+    }> {
         const filtered = await (this._packageReader as FilteredPackageReader).jsonSerialize();
+
+        let metadata: Record<string, Record<string, string>> = {};
+
+        for await (const iterator of this.metadata()) {
+            metadata = { ...metadata, [iterator.get('uuid')]: iterator.all() };
+        }
+
         return {
             source: filtered.source,
             files: filtered.files,
-            metadata: await Helpers.iteratorToObject(this.metadata())
+            metadata
         };
+    }
+
+    public async metadataToArray(): Promise<MetadataItem[]> {
+        const content = [];
+        for await (const iterator of this.metadata()) {
+            content.push(iterator);
+        }
+
+        return content;
     }
 }

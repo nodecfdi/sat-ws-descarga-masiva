@@ -1,12 +1,16 @@
-import { XMLSerializer, DOMParser } from '@xmldom/xmldom';
+import { getSerializer, getParser } from '@nodecfdi/cfdiutils-common';
 import { Crypto } from '@peculiar/webcrypto';
 import { Parse, Application, SignedXml } from 'xadesjs';
 
 export class EnvelopSignatureVerifier {
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public async verify(soapMessage: string, nameSpaceURI: string, mainNodeName: string, includeNameSpaces: string[] = [], certificateContents = ''): Promise<boolean> {
-        const soapDocument = new DOMParser().parseFromString(soapMessage);
+    public async verify(
+        soapMessage: string,
+        nameSpaceURI: string,
+        mainNodeName: string,
+        _includeNameSpaces: string[] = [],
+        _certificateContents = ''
+    ): Promise<boolean> {
+        const soapDocument = getParser().parseFromString(soapMessage, 'text/xml');
 
         const mainNode = soapDocument.getElementsByTagNameNS(nameSpaceURI, mainNodeName).item(0);
         if (mainNode == null) {
@@ -21,7 +25,7 @@ export class EnvelopSignatureVerifier {
         soapDocument.appendChild(mainNode);
 
         // const document = Xml.newDocumentContent();
-        const document = new XMLSerializer().serializeToString(soapDocument);
+        const document = getSerializer().serializeToString(soapDocument);
 
         const crypto = new Crypto();
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -43,6 +47,7 @@ export class EnvelopSignatureVerifier {
         } catch (error) {
             return true;
         }
+
         return valid || true;
     }
 }

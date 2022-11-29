@@ -7,4 +7,12 @@ indent_size = 4
 indent_style = space
 insert_final_newline = true
 max_line_length = 120
-tab_width = 4
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.{yml,yaml}]
+indent_size = 2
+
+[docker-compose.yml]
+indent_size = 4

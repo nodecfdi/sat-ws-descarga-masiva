@@ -4,13 +4,22 @@ import { StatusRequest } from '../../shared/status-request';
 
 export class VerifyResult {
     private _status: StatusCode;
+
     private _statusRequest: StatusRequest;
+
     private _codeRequest: CodeRequest;
+
     private _numberCfdis: number;
+
     private _packagesIds: string[];
 
-
-    constructor(statusCode: StatusCode, statusRequest: StatusRequest, codeRequest: CodeRequest, numberCfdis: number, ...packageIds: string[]) {
+    constructor(
+        statusCode: StatusCode,
+        statusRequest: StatusRequest,
+        codeRequest: CodeRequest,
+        numberCfdis: number,
+        ...packageIds: string[]
+    ) {
         this._status = statusCode;
         this._statusRequest = statusRequest;
         this._codeRequest = codeRequest;
@@ -19,8 +28,8 @@ export class VerifyResult {
     }
 
     /**
-    * Status of the verification call
-    */
+     * Status of the verification call
+     */
     public getStatus(): StatusCode {
         return this._status;
     }
@@ -47,8 +56,8 @@ export class VerifyResult {
     }
 
     /**
-    * An array containing the package identifications, required to perform the download process
-    */
+     * An array containing the package identifications, required to perform the download process
+     */
     public getPackageIds(): string[] {
         return this._packagesIds;
     }
@@ -57,16 +66,19 @@ export class VerifyResult {
         return this._packagesIds.length;
     }
 
-    public jsonSerialize(): {
-        status: { code: number, message: string }, codeRequest: { value: number | undefined, message: string }, statusRequest: { value: number | undefined, message: string }
-        numberCfdis: number, packagesIds: string[],
+    public toJSON(): {
+        status: { code: number; message: string };
+        codeRequest: { value: number | undefined; message: string };
+        statusRequest: { value: number | undefined; message: string };
+        numberCfdis: number;
+        packagesIds: string[];
     } {
         return {
-            status: this._status.jsonSerialize(),
-            codeRequest: this._codeRequest.jsonSerialize(),
-            statusRequest: this._statusRequest.jsonSerialize(),
+            status: this._status.toJSON(),
+            codeRequest: this._codeRequest.toJSON(),
+            statusRequest: this._statusRequest.toJSON(),
             numberCfdis: this._numberCfdis,
-            packagesIds: this._packagesIds,
+            packagesIds: this._packagesIds
         };
     }
 }

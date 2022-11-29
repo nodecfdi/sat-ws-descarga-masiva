@@ -1,5 +1,5 @@
 import { TestCase } from '../../test-case';
-import { CRequest } from '../../../src/web-client/crequest';
+import { CRequest } from '~/web-client/crequest';
 
 describe('crequest', () => {
     test('properties', () => {
@@ -11,7 +11,6 @@ describe('crequest', () => {
         const request = new CRequest(method, uri, body, customHeaders);
         const map = new Map([...Object.entries(customHeaders), ...Object.entries(request.defaultHeaders())]);
         const headers = Object.fromEntries(map);
-        
 
         expect(request.getMethod()).toBe(method);
         expect(request.getUri()).toBe(uri);
@@ -29,6 +28,6 @@ describe('crequest', () => {
 
         const expectedFile = TestCase.fileContents('json/webclient-request.json');
 
-        expect(JSON.stringify(request.jsonSerialize())).toBe(JSON.stringify(JSON.parse(expectedFile)));
+        expect(JSON.stringify(request)).toBe(JSON.stringify(JSON.parse(expectedFile)));
     });
 });

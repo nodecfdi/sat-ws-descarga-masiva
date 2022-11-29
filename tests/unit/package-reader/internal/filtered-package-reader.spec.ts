@@ -1,13 +1,12 @@
 import { realpathSync, unlinkSync, writeFileSync } from 'fs';
 import JSZip from 'jszip';
-import { OpenZipFileException } from '../../../../src/package-reader/exceptions/open-zip-file-exception';
-import { FilteredPackageReader } from '../../../../src/package-reader/internal/filtered-package-reader';
+import { OpenZipFileException } from '~/package-reader/exceptions/open-zip-file-exception';
+import { FilteredPackageReader } from '~/package-reader/internal/filtered-package-reader';
 import { TestCase } from '../../../test-case';
 import os from 'os';
-import { join } from 'path/posix';
+import { join } from 'path';
 import { randomUUID } from 'crypto';
-import { NullFileFilter } from '../../../../src/package-reader/internal/file-filters/null-file-filter';
-import { Helpers } from '../../../../src/internal/helpers';
+import { NullFileFilter } from '~/package-reader/internal/file-filters/null-file-filter';
 describe('filtered package reader', () => {
     test('create from file with invalid file', async () => {
         const filename = __dirname;
@@ -19,7 +18,9 @@ describe('filtered package reader', () => {
     });
 
     test('create from content with invalid content', async () => {
-        await expect(FilteredPackageReader.createFromContents('invalid content')).rejects.toBeInstanceOf(OpenZipFileException);
+        await expect(FilteredPackageReader.createFromContents('invalid content')).rejects.toBeInstanceOf(
+            OpenZipFileException
+        );
     });
 
     test('file contents and count with file', async () => {
@@ -37,17 +38,23 @@ describe('filtered package reader', () => {
             compression: 'DEFLATE'
         });
         writeFileSync(tmpfile, data);
-        const expected = new Map(
-            [
-                ['empty file.txt', ''],
-                ['foo.txt', 'foo'],
-                ['sub/bar.txt', 'bar'],
-            ]
-        );
+        // zip excludes "empty dir/""
+        const expected = new Map([
+            ['empty file.txt', ''],
+            ['foo.txt', 'foo'],
+            ['sub/bar.txt', 'bar']
+        ]);
         const packageReader = await FilteredPackageReader.createFromFile(tmpfile);
-        packageReader.setFilter(new NullFileFilter);
-        const fileContents = await Helpers.iteratorToMap(packageReader.fileContents());
-        expect(fileContents).toStrictEqual(expected);
+        packageReader.setFilter(new NullFileFilter());
+        const result = new Map();
+        for await (const iterator of packageReader.fileContents()) {
+            for (const item of iterator) {
+                result.set(...item);
+            }
+        }
+
+        expect(result).toStrictEqual(expected);
+        // zip excludes "empty dir/""
         expect(3).toBe(await packageReader.count());
         unlinkSync(tmpfile);
         packageReader.destruct();

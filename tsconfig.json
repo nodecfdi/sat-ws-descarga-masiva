@@ -1,14 +1,26 @@
 {
     "compilerOptions": {
-        "experimentalDecorators": true,
-        "module": "esnext",
-        "target": "es6",
-        "moduleResolution": "node",
+        "target": "ESNext",
+        "module": "ESNext",
+        // "lib": ["ESNext"],
         "strict": true,
-        "esModuleInterop": true
+        "noImplicitOverride": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "stripInternal": true,
+        "esModuleInterop": true,
+        "skipDefaultLibCheck": false,
+        "skipLibCheck": false,
+        "allowSyntheticDefaultImports": true,
+        "experimentalDecorators": true,
+        "moduleResolution": "node",
+        "isolatedModules": true,
+        "incremental": true,
+        "jsx": "preserve",
+        "baseUrl": "."
     },
-    "exclude": [
-        "node_modules",
-        "tests"
-    ]
+    "include": ["src/**/*"],
+    "exclude": ["**/node_modules", "src/**/__tests__", "src/**/*.test.ts", "src/**/*.spec.ts"]
 }

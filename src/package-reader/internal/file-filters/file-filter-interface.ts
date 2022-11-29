@@ -10,8 +10,8 @@ export interface FileFilterInterface {
     /**
      * Filter the contents
      *
-     * @param string $contents
-     * @return bool
+     * @param contents - Content
+     * @returns boolean
      */
     filterContents(contents: string): boolean;
 }

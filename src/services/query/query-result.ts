@@ -11,23 +11,23 @@ export class QueryResult {
     }
 
     /**
-    * Status of the verification call
-    */
+     * Status of the verification call
+     */
     public getStatus(): StatusCode {
         return this._status;
     }
 
     /**
-    * If accepted, contains the request identification required for verification
-    */
+     * If accepted, contains the request identification required for verification
+     */
     public getRequestId(): string {
         return this._requestId;
     }
 
-    public jsonSerialize(): { status: { code: number, message: string }, requestId: string } {
+    public toJSON(): { status: StatusCode; requestId: string } {
         return {
-            status: this._status.jsonSerialize(),
-            requestId: this._requestId,
+            status: this._status,
+            requestId: this._requestId
         };
     }
 }

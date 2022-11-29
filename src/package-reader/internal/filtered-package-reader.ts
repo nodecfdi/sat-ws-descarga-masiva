@@ -8,13 +8,15 @@ import { join } from 'path';
 import { randomUUID } from 'crypto';
 import { CreateTemporaryZipFileException } from '../exceptions/create-temporary-file-zip-exception';
 import { NullFileFilter } from './file-filters/null-file-filter';
-import { Helpers } from '../../internal/helpers';
 
 export class FilteredPackageReader implements PackageReaderInterface {
     private _filename: string;
+
     private _archive: JSZip;
+
     private _removeOnDestruct = false;
-    private _filter?: FileFilterInterface;
+
+    private _filter!: FileFilterInterface;
 
     /**
      *
@@ -31,7 +33,7 @@ export class FilteredPackageReader implements PackageReaderInterface {
     }
 
     public static async createFromFile(filename: string): Promise<FilteredPackageReader> {
-        let archive = new JSZip();
+        let archive: JSZip;
         let data: Buffer;
         try {
             // if is directory fails in windows, linux and mac, not fails in BSD
@@ -44,6 +46,7 @@ export class FilteredPackageReader implements PackageReaderInterface {
         } catch (error) {
             throw OpenZipFileException.create(filename, -1);
         }
+
         return new FilteredPackageReader(filename, archive);
     }
 
@@ -56,7 +59,7 @@ export class FilteredPackageReader implements PackageReaderInterface {
         } catch (error) {
             throw CreateTemporaryZipFileException.create('Cannot create a temporary file', error as Error);
         }
-        // write contents 
+        // write contents
         try {
             writeFileSync(tmpfile, contents, { encoding: 'binary' });
         } catch (error) {
@@ -72,10 +75,11 @@ export class FilteredPackageReader implements PackageReaderInterface {
             throw error;
         }
         cpackage._removeOnDestruct = true;
+
         return cpackage;
     }
 
-    public async *fileContents(): AsyncGenerator<Record<string, string>> {
+    public async *fileContents(): AsyncGenerator<Map<string, string>> {
         const archive = this.getArchive();
         const filter = this.getFilter();
         const entries = Object.keys(archive.files).map(function (name) {
@@ -91,12 +95,17 @@ export class FilteredPackageReader implements PackageReaderInterface {
             if (contents == undefined || !filter.filterContents(contents)) {
                 continue;
             }
-            yield Object.fromEntries([[entries[index], contents || '']]);
+            yield new Map().set(entries[index], contents || '');
         }
     }
 
     public async count(): Promise<number> {
-        return (await Helpers.iteratorToMap(this.fileContents())).size;
+        let count = 0;
+        for await (const _item of this.fileContents()) {
+            count++;
+        }
+
+        return count;
     }
 
     public getFilename(): string {
@@ -107,7 +116,7 @@ export class FilteredPackageReader implements PackageReaderInterface {
         return this._archive;
     }
 
-    public getFilter(): FileFilterInterface | undefined {
+    public getFilter(): FileFilterInterface {
         return this._filter;
     }
 
@@ -115,10 +124,24 @@ export class FilteredPackageReader implements PackageReaderInterface {
         this._filter = filter ?? new NullFileFilter();
     }
 
-    public async jsonSerialize(): Promise<{ source: string, files: Record<string, string> }> {
+    public changeFilter(filter: FileFilterInterface): FileFilterInterface {
+        const previous = this.getFilter();
+        this.setFilter(filter);
+
+        return previous;
+    }
+
+    public async jsonSerialize(): Promise<{ source: string; files: Record<string, string> }> {
+        let files: Record<string, string> = {};
+        for await (const item of this.fileContents()) {
+            for (const [key, value] of item) {
+                files = { ...files, ...{ [key]: value } };
+            }
+        }
+
         return {
             source: this.getFilename(),
-            files: await Helpers.iteratorToObject(this.fileContents()),
+            files
         };
     }
 }

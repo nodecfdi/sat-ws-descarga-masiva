@@ -1,6 +1,8 @@
 export class CResponse {
     private _statusCode: number;
+
     private _body: string;
+
     private _headers: Record<string, string>;
 
     constructor(statuscode: number, body: string, headers: Record<string, string> = {}) {
@@ -33,10 +35,10 @@ export class CResponse {
         return this._statusCode < 600 && this._statusCode >= 500;
     }
 
-    public jsonSerialize(): {
-        statusCode: number,
-        body: string,
-        headers: Record<string, string>
+    public toJSON(): {
+        statusCode: number;
+        body: string;
+        headers: Record<string, string>;
     } {
         return {
             statusCode: this._statusCode,

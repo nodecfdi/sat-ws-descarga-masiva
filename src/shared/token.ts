@@ -2,16 +2,12 @@ import { DateTime } from './date-time';
 
 export class Token {
     private _created: DateTime;
-    private _expires: DateTime;
-    private _value: string;
 
-    constructor(created: DateTime, expires: DateTime, value: string) {
-        if (expires.compareTo(created) < 0) {
+    constructor(created: DateTime, private _expires: DateTime, private _value: string) {
+        if (_expires.compareTo(created) < 0) {
             throw new Error('Cannot create a token with expiration lower than creation');
         }
         this._created = created;
-        this._expires = expires;
-        this._value = value;
     }
 
     public getCreated(): DateTime {
@@ -34,8 +30,8 @@ export class Token {
     }
 
     /**
-    * A token is expired if the expiration date is greater or equal to current time
-    */
+     * A token is expired if the expiration date is greater or equal to current time
+     */
     public isExpired(): boolean {
         return this._expires.compareTo(DateTime.now()) < 0;
     }
@@ -47,11 +43,11 @@ export class Token {
         return !(this.isValueEmpty() || this.isExpired());
     }
 
-    public jsonSerialize(): { created: DateTime, expires: DateTime, value: string } {
+    public toJSON(): { created: DateTime; expires: DateTime; value: string } {
         return {
             created: this._created,
             expires: this._expires,
-            value: this._value,
+            value: this._value
         };
     }
 }
