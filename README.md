@@ -56,8 +56,7 @@ if (!fiel.isValid()) {
     return;
 }
 
-// creación del web client basado en Axios que implementa WebClientInterface
-// para usarlo necesitas instalar axios pues no es una dependencia directa
+// Creación del cliente web se usa el cliente incluido en nodeJS.
 const webClient = new HttpsWebClient();
 
 // creación del objeto encargado de crear las solicitudes firmadas usando una FIEL
