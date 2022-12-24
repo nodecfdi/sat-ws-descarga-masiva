@@ -428,7 +428,7 @@ and licensed for use under the MIT License (MIT). Please see [LICENSE][] for mor
 [discord]: https://discord.gg/AsqX8fkW2k
 [release]: https://www.npmjs.com/package/@nodecfdi/sat-ws-descarga-masiva
 [license]: https://github.com/nodecfdi/sat-ws-descarga-masiva/blob/main/LICENSE
-[build]: https://img.shields.io/github/actions/workflow/status/nodecfdi/sat-ws-descarga-masiva/build.yml?branch=main
+[build]: https://github.com/nodecfdi/sat-ws-descarga-masiva/actions/workflows/build.yml?query=branch:main
 [reliability]:https://sonarcloud.io/component_measures?id=nodecfdi_sat-ws-descarga-masiva&metric=Reliability
 [maintainability]: https://sonarcloud.io/component_measures?id=nodecfdi_sat-ws-descarga-masiva&metric=Maintainability
 [coverage]: https://sonarcloud.io/component_measures?id=nodecfdi_sat-ws-descarga-masiva&metric=Coverage
@@ -440,7 +440,7 @@ and licensed for use under the MIT License (MIT). Please see [LICENSE][] for mor
 [badge-discord]: https://img.shields.io/discord/459860554090283019?logo=discord
 [badge-release]: https://img.shields.io/npm/v/@nodecfdi/sat-ws-descarga-masiva.svg?logo=npm
 [badge-license]: https://img.shields.io/github/license/nodecfdi/sat-ws-descarga-masiva.svg?logo=open-source-initiative
-[badge-build]: https://img.shields.io/github/workflow/status/nodecfdi/sat-ws-descarga-masiva/build/main?logo=github-actions
+[badge-build]: https://img.shields.io/github/actions/workflow/status/nodecfdi/sat-ws-descarga-masiva/build.yml?branch=main
 [badge-reliability]: https://sonarcloud.io/api/project_badges/measure?project=nodecfdi_sat-ws-descarga-masiva&metric=reliability_rating
 [badge-maintainability]: https://sonarcloud.io/api/project_badges/measure?project=nodecfdi_sat-ws-descarga-masiva&metric=sqale_rating
 [badge-coverage]: https://img.shields.io/sonar/coverage/nodecfdi_sat-ws-descarga-masiva/main?logo=sonarcloud&server=https%3A%2F%2Fsonarcloud.io
