@@ -428,7 +428,7 @@ and licensed for use under the MIT License (MIT). Please see [LICENSE][] for mor
 [discord]: https://discord.gg/AsqX8fkW2k
 [release]: https://www.npmjs.com/package/@nodecfdi/sat-ws-descarga-masiva
 [license]: https://github.com/nodecfdi/sat-ws-descarga-masiva/blob/main/LICENSE
-[build]: https://github.com/nodecfdi/sat-ws-descarga-masiva/actions/workflows/build.yml?query=branch:main
+[build]: https://img.shields.io/github/actions/workflow/status/nodecfdi/sat-ws-descarga-masiva/build.yml?branch=main
 [reliability]:https://sonarcloud.io/component_measures?id=nodecfdi_sat-ws-descarga-masiva&metric=Reliability
 [maintainability]: https://sonarcloud.io/component_measures?id=nodecfdi_sat-ws-descarga-masiva&metric=Maintainability
 [coverage]: https://sonarcloud.io/component_measures?id=nodecfdi_sat-ws-descarga-masiva&metric=Coverage
