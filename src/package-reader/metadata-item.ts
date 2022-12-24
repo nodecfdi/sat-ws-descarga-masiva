@@ -1,7 +1,9 @@
+import { MetadataItemInterface } from './metadata-item-interface';
+
 /**
  * Metadata DTO object
  *
- * @internal This collection of magic properties is reported as of 2019-08-01, if it changes use all()/get() methods
+ * This collection of magic properties is reported as of 2019-08-01, if it changes use all()/get() methods
  *
  * - property-read string uuid
  * - property-read string rfcEmisor
@@ -18,11 +20,6 @@
  * - property-read string rfcACuentaTerceros
  * - property-read string nombreACuentaTerceros
  */
-
-export interface MetadataItemInterface {
-    key: string;
-    value: string;
-}
 export class MetadataItem {
     private _data: MetadataItemInterface[];
 
