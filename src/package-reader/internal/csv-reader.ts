@@ -8,8 +8,6 @@ import { createInterface, Interface } from 'readline';
  * Helper to iterate inside a CSV file
  * The file must have on the first line the headers.
  * The file uses "~" as separator and "|" as text delimiter.
- *
- * @internal
  */
 export class CsvReader {
     constructor(private _iterator: Interface) {}

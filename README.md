@@ -56,8 +56,7 @@ if (!fiel.isValid()) {
     return;
 }
 
-// creación del web client basado en Axios que implementa WebClientInterface
-// para usarlo necesitas instalar axios pues no es una dependencia directa
+// Creación del cliente web se usa el cliente incluido en nodeJS.
 const webClient = new HttpsWebClient();
 
 // creación del objeto encargado de crear las solicitudes firmadas usando una FIEL
@@ -441,7 +440,7 @@ and licensed for use under the MIT License (MIT). Please see [LICENSE][] for mor
 [badge-discord]: https://img.shields.io/discord/459860554090283019?logo=discord
 [badge-release]: https://img.shields.io/npm/v/@nodecfdi/sat-ws-descarga-masiva.svg?logo=npm
 [badge-license]: https://img.shields.io/github/license/nodecfdi/sat-ws-descarga-masiva.svg?logo=open-source-initiative
-[badge-build]: https://img.shields.io/github/workflow/status/nodecfdi/sat-ws-descarga-masiva/build/main?logo=github-actions
+[badge-build]: https://img.shields.io/github/actions/workflow/status/nodecfdi/sat-ws-descarga-masiva/build.yml?branch=main
 [badge-reliability]: https://sonarcloud.io/api/project_badges/measure?project=nodecfdi_sat-ws-descarga-masiva&metric=reliability_rating
 [badge-maintainability]: https://sonarcloud.io/api/project_badges/measure?project=nodecfdi_sat-ws-descarga-masiva&metric=sqale_rating
 [badge-coverage]: https://img.shields.io/sonar/coverage/nodecfdi_sat-ws-descarga-masiva/main?logo=sonarcloud&server=https%3A%2F%2Fsonarcloud.io
