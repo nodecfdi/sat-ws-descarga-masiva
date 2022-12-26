@@ -3,7 +3,6 @@ import { RequestBuilderInterface } from '../../request-builder/request-builder-i
 import { DateTime } from '../../shared/date-time';
 import { Token } from '../../shared/token';
 
-/** @internal */
 export class AuthenticateTranslator extends InteractsXmlTrait {
     public createTokenFromSoapResponse(content: string): Token {
         const env = this.readXmlElement(content);

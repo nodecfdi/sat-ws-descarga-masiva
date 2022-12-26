@@ -1,5 +1,11 @@
 # @nodecfdi/sat-ws-descarga-masiva ChangeLog
 
+## 0.1.2
+
+### Remove `@internal`
+
+- se remueve  `@internal` de los módulos internos para permitir que se exporten de manera correcta.
+
 ## 0.1.1
 
 ### Patch Changes

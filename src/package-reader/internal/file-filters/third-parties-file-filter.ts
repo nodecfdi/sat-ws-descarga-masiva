@@ -1,8 +1,6 @@
 import { FileFilterInterface } from './file-filter-interface';
 /**
  * Implementation to filter a Metadata Package file contents
- *
- * @internal
  */
 export class ThirdPartiesFileFilter implements FileFilterInterface {
     public filterFilename(filename: string): boolean {
