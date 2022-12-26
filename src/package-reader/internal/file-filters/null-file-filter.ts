@@ -1,8 +1,6 @@
 import { FileFilterInterface } from './file-filter-interface';
 /**
  * NullObject patern, it does not filter any file contents
- *
- * @internal
  */
 export class NullFileFilter implements FileFilterInterface {
     public filterFilename(_filename: string): boolean {

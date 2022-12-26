@@ -3,7 +3,6 @@
  * - SAT CSV EOL is <CR><LF> and might contain <LF> inside a field
  *
  * @see MetadataContent
- * @internal
  */
 export class MetadataPreprocessor {
     private static readonly CONTROL_CR = '\r';

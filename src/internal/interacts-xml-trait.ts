@@ -3,7 +3,6 @@ import { getParser } from '@nodecfdi/cfdiutils-common';
  * Contain functions to interact with XML contents and XML DOM
  *
  * This class is internal, do not use it outside this project
- * @internal
  */
 export class InteractsXmlTrait {
     public readXmlDocument(source: string): Document {

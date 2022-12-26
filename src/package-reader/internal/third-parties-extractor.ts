@@ -10,8 +10,6 @@ export interface ThirdPartiesInterface {
 
 /**
  * Class to extract the data from a "third parties" file.
- *
- * @internal
  */
 export class ThirdPartiesExtractor {
     constructor(private _csvReader: CsvReader) {}

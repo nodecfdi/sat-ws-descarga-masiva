@@ -1,7 +1,5 @@
 /**
  * Helper functions used by the library.
- *
- * @internal
  */
 export class Helpers {
     public static nospaces(input: string): string {
