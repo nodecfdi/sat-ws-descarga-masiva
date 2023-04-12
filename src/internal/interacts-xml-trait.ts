@@ -6,7 +6,7 @@ import { getParser } from '@nodecfdi/cfdiutils-common';
  */
 export class InteractsXmlTrait {
     public readXmlDocument(source: string): Document {
-        if ('' == source) {
+        if (source === '') {
             throw new Error('Cannot load an xml with empty content');
         }
 
@@ -29,14 +29,10 @@ export class InteractsXmlTrait {
         let index = 0;
         for (index; index < children.length; index++) {
             const child = children[index];
-            if (child.ELEMENT_NODE == 1) {
+            if (child.ELEMENT_NODE === 1) {
                 const localName = (child as Element).localName?.toLowerCase();
-                if (localName == current) {
-                    if (names.length > 0) {
-                        return this.findElement(child as Element, ...names);
-                    } else {
-                        return child as Element;
-                    }
+                if (localName === current) {
+                    return names.length > 0 ? this.findElement(child as Element, ...names) : (child as Element);
                 }
             }
         }
@@ -59,7 +55,7 @@ export class InteractsXmlTrait {
         let index = 0;
         for (index; index < children.length; index++) {
             const child = children[index];
-            if ((child as Element).nodeType == 3) {
+            if ((child as Element).nodeType === 3) {
                 const c = child;
                 if (c?.textContent !== null) {
                     buffer.push(c.textContent);
@@ -73,20 +69,21 @@ export class InteractsXmlTrait {
     public findElements(element: Element, ...names: string[]): Element[] {
         const last = names.pop();
         const current = last ? last.toLowerCase() : '';
-        const tempElement = this.findElement(element, ...names);
-        if (!tempElement) {
+        const temporaryElement = this.findElement(element, ...names);
+        if (!temporaryElement) {
             return [];
         }
-        element = tempElement;
+
+        element = temporaryElement;
 
         const found: Element[] = [];
         const children = element.childNodes;
         let index = 0;
         for (index; index < children.length; index++) {
             const child = children[index];
-            if (child.ELEMENT_NODE == 1) {
+            if (child.ELEMENT_NODE === 1) {
                 const localName = (child as Element).localName?.toLowerCase();
-                if (localName == current) {
+                if (localName === current) {
                     found.push(child as Element);
                 }
             }
@@ -104,6 +101,7 @@ export class InteractsXmlTrait {
         if (!found) {
             return {};
         }
+
         const attributes = new Map();
         const elementAttributes = found.attributes;
         let index = 0;
@@ -111,6 +109,6 @@ export class InteractsXmlTrait {
             attributes.set(elementAttributes[index].localName.toLowerCase(), elementAttributes[index].value);
         }
 
-        return Object.fromEntries(attributes);
+        return Object.fromEntries(attributes) as Record<string, string>;
     }
 }
