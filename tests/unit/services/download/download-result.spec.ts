@@ -1,7 +1,9 @@
-import { StatusCode } from '~/shared/status-code';
-import { DownloadResult } from '~/services/download/download-result';
-import { TestCase } from '../../../test-case';
+import { useTestCase } from '../../../test-case';
+import { StatusCode } from 'src/shared/status-code';
+import { DownloadResult } from 'src/services/download/download-result';
+
 describe('download result', () => {
+    const { fileContents } = useTestCase();
     test('properties', () => {
         const statusCode = new StatusCode(5000, 'Solicitud recibida con éxito');
         const packageContent = 'x-content';
@@ -20,8 +22,10 @@ describe('download result', () => {
 
         const result = new DownloadResult(statusCode, packageContent);
 
-        const expectedFile = TestCase.fileContents('json/download-result.json');
+        const expectedFile = fileContents('json/download-result.json');
 
-        expect(JSON.stringify(result)).toBe(JSON.stringify(JSON.parse(expectedFile)));
+        expect(JSON.stringify(result)).toBe(
+            JSON.stringify(JSON.parse(expectedFile))
+        );
     });
 });

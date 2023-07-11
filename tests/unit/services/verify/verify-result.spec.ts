@@ -1,9 +1,11 @@
-import { StatusCode } from '~/shared/status-code';
-import { StatusRequest } from '~/shared/status-request';
-import { CodeRequest } from '~/shared/code-request';
-import { VerifyResult } from '~/services/verify/verify-result';
-import { TestCase } from '../../../test-case';
+import { useTestCase } from '../../../test-case';
+import { StatusCode } from 'src/shared/status-code';
+import { StatusRequest } from 'src/shared/status-request';
+import { CodeRequest } from 'src/shared/code-request';
+import { VerifyResult } from 'src/services/verify/verify-result';
+
 describe('verify result', () => {
+    const { fileContents } = useTestCase();
     test('properties', () => {
         const statusCode = new StatusCode(5000, 'Solicitud recibida con éxito');
         const statusRequest = new StatusRequest(2);
@@ -11,7 +13,13 @@ describe('verify result', () => {
         const numberCfdis = 1000;
         const packageIds = ['x-package-1', 'x-package-2'];
 
-        const result = new VerifyResult(statusCode, statusRequest, codeRequest, numberCfdis, ...packageIds);
+        const result = new VerifyResult(
+            statusCode,
+            statusRequest,
+            codeRequest,
+            numberCfdis,
+            ...packageIds
+        );
 
         expect(result.getStatus()).toBe(statusCode);
         expect(result.getStatusRequest()).toBe(statusRequest);
@@ -28,10 +36,18 @@ describe('verify result', () => {
         const numberCfdis = 1000;
         const packageIds = ['x-package-1', 'x-package-2'];
 
-        const result = new VerifyResult(statusCode, statusRequest, codeRequest, numberCfdis, ...packageIds);
+        const result = new VerifyResult(
+            statusCode,
+            statusRequest,
+            codeRequest,
+            numberCfdis,
+            ...packageIds
+        );
 
-        const expectedFile = TestCase.fileContents('json/verify-result.json', 'utf8');
+        const expectedFile = fileContents('json/verify-result.json', 'utf8');
 
-        expect(JSON.stringify(result)).toBe(JSON.stringify(JSON.parse(expectedFile)));
+        expect(JSON.stringify(result)).toBe(
+            JSON.stringify(JSON.parse(expectedFile))
+        );
     });
 });

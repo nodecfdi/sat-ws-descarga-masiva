@@ -1,9 +1,9 @@
 import { RfcMatch } from './rfc-match';
 
 export class RfcMatches {
-    private _items: RfcMatch[];
+    private readonly _items: RfcMatch[];
 
-    private _count: number;
+    private readonly _count: number;
 
     constructor(...items: RfcMatch[]) {
         this._items = items;
@@ -25,13 +25,15 @@ export class RfcMatches {
     }
 
     public static createFromValues(...values: string[]): RfcMatches {
-        const valuesRfc = values.map((value) => (value === '' ? RfcMatch.empty() : RfcMatch.create(value)));
+        const valuesRfc = values.map((value) =>
+            value === '' ? RfcMatch.empty() : RfcMatch.create(value)
+        );
 
         return RfcMatches.create(...valuesRfc);
     }
 
     public isEmpty(): boolean {
-        return 0 === this._count;
+        return this._count === 0;
     }
 
     public getFirst(): RfcMatch {

@@ -5,17 +5,23 @@
  * @see MetadataContent
  */
 export class MetadataPreprocessor {
-    private static readonly CONTROL_CR = '\r';
-
-    private static readonly CONTROL_LF = '\n';
-
-    private static readonly CONTROL_CRLF = '\r\n';
-
     /** The data to process */
     private _contents: string;
 
     constructor(contents: string) {
         this._contents = contents;
+    }
+
+    private get CONTROL_CR(): string {
+        return '\r';
+    }
+
+    private get CONTROL_LF(): string {
+        return '\n';
+    }
+
+    private get CONTROL_CRLF(): string {
+        return '\r\n';
     }
 
     public getContents(): string {
@@ -28,16 +34,15 @@ export class MetadataPreprocessor {
 
     public fixEolCrLf(): void {
         // check if EOL is <CR><LF>
-        const firstLineFeedPosition = this._contents.indexOf(MetadataPreprocessor.CONTROL_LF);
+        const firstLineFeedPosition = this._contents.indexOf(this.CONTROL_LF);
         let eolIsCrLf: boolean;
-        if (firstLineFeedPosition == undefined) {
+        if (firstLineFeedPosition === -1) {
             eolIsCrLf = false;
         } else {
             eolIsCrLf =
                 firstLineFeedPosition > 0
-                    ? this._contents.substring(firstLineFeedPosition - 1, firstLineFeedPosition) ===
-                      MetadataPreprocessor.CONTROL_CR
-                    : this._contents.lastIndexOf(MetadataPreprocessor.CONTROL_CR) == undefined;
+                    ? this._contents.slice(firstLineFeedPosition - 1, firstLineFeedPosition) === this.CONTROL_CR
+                    : this._contents.lastIndexOf(this.CONTROL_CR) === -1;
         }
 
         // exit early if nothing to do
@@ -45,11 +50,9 @@ export class MetadataPreprocessor {
             return;
         }
 
-        const lines = this._contents.split(MetadataPreprocessor.CONTROL_CRLF);
+        const lines = this._contents.split(this.CONTROL_CRLF);
         this._contents = lines
-            .map((line) => {
-                return line.replace(new RegExp(`${MetadataPreprocessor.CONTROL_LF}`, 'g'), '');
-            })
-            .join(MetadataPreprocessor.CONTROL_LF);
+            .map((line) => line.replaceAll(new RegExp(`${this.CONTROL_LF}`, 'g'), ''))
+            .join(this.CONTROL_LF);
     }
 }

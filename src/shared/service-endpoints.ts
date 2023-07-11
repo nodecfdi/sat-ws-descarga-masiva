@@ -10,11 +10,11 @@ import { ServiceType } from './service-type';
  */
 export class ServiceEndpoints {
     constructor(
-        private _authenticate: string,
-        private _query: string,
-        private _verify: string,
-        private _download: string,
-        private _serviceType: ServiceType
+        private readonly _authenticate: string,
+        private readonly _query: string,
+        private readonly _verify: string,
+        private readonly _download: string,
+        private readonly _serviceType: ServiceType
     ) {}
 
     /**

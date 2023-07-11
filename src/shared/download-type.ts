@@ -4,7 +4,7 @@ export type DownloadTypeTypes = 'issued' | 'received';
 
 enum DownloadTypeEnum {
     issued = 'RfcEmisor',
-    received = 'RfcReceptor'
+    received = 'RfcReceptor',
 }
 
 export class DownloadType extends BaseEnum<DownloadTypeTypes> {

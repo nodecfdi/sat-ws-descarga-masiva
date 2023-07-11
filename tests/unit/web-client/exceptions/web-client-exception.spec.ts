@@ -1,13 +1,13 @@
-import { CRequest } from '~/web-client/crequest';
-import { CResponse } from '~/web-client/cresponse';
-import { WebClientException } from '~/web-client/exceptions/web-client-exception';
+import { CRequest } from 'src/web-client/crequest';
+import { CResponse } from 'src/web-client/cresponse';
+import { WebClientException } from 'src/web-client/exceptions/web-client-exception';
 
 describe('web client exception', () => {
     test('properties', () => {
         const message = 'message';
         const request = new CRequest('GET', 'unknown://invalid uri/', '', {});
         const response = new CResponse(200, '', {});
-        const previous = new Error();
+        const previous = new Error('an error');
 
         const exception = new WebClientException(message, request, response, previous);
 

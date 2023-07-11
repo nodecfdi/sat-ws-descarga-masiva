@@ -1,20 +1,28 @@
 export class CRequest {
-    private _method: string;
+    private readonly _method: string;
 
-    private _uri: string;
+    private readonly _uri: string;
 
-    private _body: string;
+    private readonly _body: string;
 
-    private _headers: Record<string, string>;
+    private readonly _headers: Record<string, string>;
 
     /**
      *
      */
-    constructor(method: string, uri: string, body: string, headers: Record<string, string>) {
+    constructor(
+        method: string,
+        uri: string,
+        body: string,
+        headers: Record<string, string>
+    ) {
         this._method = method;
         this._uri = uri;
         this._body = body;
-        const map = new Map([...Object.entries(this.defaultHeaders()), ...Object.entries(headers)]);
+        const map = new Map([
+            ...Object.entries(this.defaultHeaders()),
+            ...Object.entries(headers),
+        ]);
         this._headers = Object.fromEntries(map);
     }
 
@@ -42,7 +50,7 @@ export class CRequest {
         return {
             'Content-type': 'text/xml; charset="utf-8"',
             'Accept': 'text/xml',
-            'Cache-Control': 'no-cache'
+            'Cache-Control': 'no-cache',
         };
     }
 
@@ -56,7 +64,7 @@ export class CRequest {
             method: this._method,
             uri: this._uri,
             body: this._body,
-            headers: this._headers
+            headers: this._headers,
         };
     }
 }

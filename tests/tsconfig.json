@@ -4,7 +4,7 @@
         "types": ["vitest/globals"],
         "baseUrl": "./",
         "paths": {
-            "~/*": ["../src/*"]
+            "src/*": ["../src/*"]
         }
     },
     "exclude": ["../node_modules"],

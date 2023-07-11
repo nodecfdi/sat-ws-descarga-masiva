@@ -1,4 +1,4 @@
-import { FileFilterInterface } from './file-filter-interface';
+import { type FileFilterInterface } from './file-filter-interface';
 /**
  * NullObject patern, it does not filter any file contents
  */

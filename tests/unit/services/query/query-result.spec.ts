@@ -1,7 +1,9 @@
-import { StatusCode } from '~/shared/status-code';
-import { QueryResult } from '~/services/query/query-result';
-import { TestCase } from '../../../test-case';
+import { useTestCase } from '../../../test-case';
+import { StatusCode } from 'src/shared/status-code';
+import { QueryResult } from 'src/services/query/query-result';
+
 describe('query result', () => {
+    const { fileContents } = useTestCase();
     test('properties', () => {
         const statusCode = new StatusCode(9, 'foo');
         const requestId = 'x-request-id';
@@ -26,8 +28,10 @@ describe('query result', () => {
 
         const result = new QueryResult(statusCode, requestId);
 
-        const expectedFile = TestCase.fileContents('json/query-result.json');
+        const expectedFile = fileContents('json/query-result.json');
 
-        expect(JSON.stringify(result)).toBe(JSON.stringify(JSON.parse(expectedFile)));
+        expect(JSON.stringify(result)).toBe(
+            JSON.stringify(JSON.parse(expectedFile))
+        );
     });
 });

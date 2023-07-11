@@ -1,4 +1,4 @@
-import { ComplementoInterface } from './complemento-interface';
+import { type ComplementoInterface } from './complemento-interface';
 import { BaseEnum } from './enum/base-enum';
 
 export type ComplementoUndefinedTypes = 'undefined';
@@ -10,11 +10,13 @@ export class ComplementoUndefined
     private readonly Map = {
         undefined: {
             satCode: '',
-            label: 'Sin complemento definido'
-        }
+            label: 'Sin complemento definido',
+        },
     };
 
-    public static create(id: ComplementoUndefinedTypes): ComplementoInterface<ComplementoUndefinedTypes> {
+    public static create(
+        id: ComplementoUndefinedTypes
+    ): ComplementoInterface<ComplementoUndefinedTypes> {
         return new ComplementoUndefined(id);
     }
 

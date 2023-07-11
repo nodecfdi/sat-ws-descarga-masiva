@@ -1,9 +1,9 @@
 import { CfdiFileFilter } from './internal/file-filters/cfdi-file-filter';
 import { FilteredPackageReader } from './internal/filtered-package-reader';
-import { PackageReaderInterface } from './package-reader-interface';
+import { type PackageReaderInterface } from './package-reader-interface';
 
 export class CfdiPackageReader implements PackageReaderInterface {
-    constructor(private _packageReader: PackageReaderInterface) {}
+    constructor(private readonly _packageReader: PackageReaderInterface) {}
 
     public static async createFromFile(filename: string): Promise<CfdiPackageReader> {
         const packageReader = await FilteredPackageReader.createFromFile(filename);
@@ -27,6 +27,7 @@ export class CfdiPackageReader implements PackageReaderInterface {
             for (const item of content) {
                 data = item[1];
             }
+
             yield new Map().set(CfdiFileFilter.obtainUuidFromXmlCfdi(data), data);
         }
     }
@@ -37,6 +38,7 @@ export class CfdiPackageReader implements PackageReaderInterface {
 
     public async count(): Promise<number> {
         let count = 0;
+
         for await (const _item of this.fileContents()) {
             count++;
         }
@@ -57,19 +59,19 @@ export class CfdiPackageReader implements PackageReaderInterface {
         let cfdis: Record<string, string> = {};
         for await (const item of this.cfdis()) {
             for (const [key, value] of item) {
-                cfdis = { ...cfdis, ...{ [key]: value } };
+                cfdis = { ...cfdis, [key]: value };
             }
         }
 
         return {
             source: filtered.source,
             files: filtered.files,
-            cfdis
+            cfdis,
         };
     }
 
-    public async cfdisToArray(): Promise<{ uuid: string; content: string }[]> {
-        const cfdis: { uuid: string; content: string }[] = [];
+    public async cfdisToArray(): Promise<Array<{ uuid: string; content: string }>> {
+        const cfdis: Array<{ uuid: string; content: string }> = [];
         for await (const item of this.cfdis()) {
             for (const [uuid, content] of item) {
                 cfdis.push({ uuid, content });
@@ -79,8 +81,8 @@ export class CfdiPackageReader implements PackageReaderInterface {
         return cfdis;
     }
 
-    public async fileContentsToArray(): Promise<{ name: string; content: string }[]> {
-        const contents: { name: string; content: string }[] = [];
+    public async fileContentsToArray(): Promise<Array<{ name: string; content: string }>> {
+        const contents: Array<{ name: string; content: string }> = [];
         for await (const item of this.fileContents()) {
             for (const [name, content] of item) {
                 contents.push({ name, content });

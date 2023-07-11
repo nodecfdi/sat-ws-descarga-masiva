@@ -23,7 +23,7 @@ jspm_packages
 *.tsbuildinfo
 
 # Testing
-/coverage
+coverage
 
 # Pnpm
 .pnpm-debug.log

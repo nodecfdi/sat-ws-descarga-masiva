@@ -1,4 +1,4 @@
-import { FileFilterInterface } from './file-filter-interface';
+import { type FileFilterInterface } from './file-filter-interface';
 /**
  * Implementation to filter a Metadata Package file contents
  */
@@ -8,6 +8,6 @@ export class ThirdPartiesFileFilter implements FileFilterInterface {
     }
 
     public filterContents(contents: string): boolean {
-        return 'Uuid~RfcACuentaTerceros~NombreACuentaTerceros' == contents.substring(0, 45);
+        return contents.startsWith('Uuid~RfcACuentaTerceros~NombreACuentaTerceros');
     }
 }

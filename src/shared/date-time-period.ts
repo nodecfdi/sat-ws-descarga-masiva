@@ -3,14 +3,17 @@ import { DateTime } from './date-time';
  * Defines a period of time by start of period and end of period values
  */
 export class DateTimePeriod {
-    private _start: DateTime;
+    private readonly _start: DateTime;
 
-    private _end: DateTime;
+    private readonly _end: DateTime;
 
     constructor(start: DateTime, end: DateTime) {
         if (end.compareTo(start) < 0) {
-            throw new Error('The final date must be greater than the initial date');
+            throw new Error(
+                'The final date must be greater than the initial date'
+            );
         }
+
         this._start = start;
         this._end = end;
     }
@@ -34,7 +37,7 @@ export class DateTimePeriod {
     public toJSON(): { start: number; end: number } {
         return {
             start: this._start.toJSON(),
-            end: this._end.toJSON()
+            end: this._end.toJSON(),
         };
     }
 }

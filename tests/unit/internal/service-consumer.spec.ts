@@ -1,20 +1,23 @@
-import { TestCase } from '../../test-case';
-import { CResponse } from '~/web-client/cresponse';
-import { WebClientInterface } from '~/web-client/web-client-interface';
-import { ServiceConsumer } from '~/internal/service-consumer';
-import { mock, MockProxy } from 'jest-mock-extended';
-import { Token } from '~/shared/token';
-import { DateTime } from '~/index';
-import { CRequest } from '~/web-client/crequest';
-import { WebClientException } from '~/web-client/exceptions/web-client-exception';
-import { SoapFaultError } from '~/web-client/exceptions/soap-fault-error';
-import { HttpServerError } from '~/web-client/exceptions/http-server-error';
+import { mock, type MockProxy } from 'vitest-mock-extended';
+import { useTestCase } from '../../test-case';
+import { CResponse } from 'src/web-client/cresponse';
+import { type WebClientInterface } from 'src/web-client/web-client-interface';
+import { ServiceConsumer } from 'src/internal/service-consumer';
+import { Token } from 'src/shared/token';
+import { DateTime } from 'src/index';
+import { CRequest } from 'src/web-client/crequest';
+import { WebClientException } from 'src/web-client/exceptions/web-client-exception';
+import { SoapFaultError } from 'src/web-client/exceptions/soap-fault-error';
+import { HttpServerError } from 'src/web-client/exceptions/http-server-error';
 
-describe('service consumer test', () => {
+describe('service consumer', () => {
     let webClient: MockProxy<WebClientInterface>;
+    const { fileContents } = useTestCase();
 
     test('execute', async () => {
-        const responseBody = TestCase.fileContents('authenticate/response-with-token.xml');
+        const responseBody = fileContents(
+            'authenticate/response-with-token.xml'
+        );
         const response = new CResponse(200, responseBody);
 
         webClient = mock<WebClientInterface>();
@@ -26,15 +29,25 @@ describe('service consumer test', () => {
             new DateTime('2020-01-13 14:15:16'),
             'token-value'
         );
-        const returnValue = await consumer.execute(webClient, 'soap-action', 'uri', 'body', token);
+        const returnValue = await consumer.execute(
+            webClient,
+            'soap-action',
+            'uri',
+            'body',
+            token
+        );
 
         expect(returnValue).toBe(responseBody);
     });
 
     test('create request', () => {
         const consumer = new ServiceConsumer();
-        const request = consumer.createRequest('uri', 'body', { 'x-foo': 'foo value' });
-        const expected = new CRequest('POST', 'uri', 'body', { 'x-foo': 'foo value' });
+        const request = consumer.createRequest('uri', 'body', {
+            'x-foo': 'foo value',
+        });
+        const expected = new CRequest('POST', 'uri', 'body', {
+            'x-foo': 'foo value',
+        });
         expect(request).toStrictEqual(expected);
     });
 
@@ -42,11 +55,15 @@ describe('service consumer test', () => {
         const consumer = new ServiceConsumer();
         const soapAction = 'soap-action';
         const tokenValue = 'token-value';
-        const token = new Token(new DateTime('2020-01-13 14:15:16'), new DateTime('2020-01-13 14:15:16'), tokenValue);
+        const token = new Token(
+            new DateTime('2020-01-13 14:15:16'),
+            new DateTime('2020-01-13 14:15:16'),
+            tokenValue
+        );
         const headers = consumer.createHeaders(soapAction, token);
         const expected = {
             SOAPAction: soapAction,
-            Authorization: `WRAP access_token="${tokenValue}"`
+            Authorization: `WRAP access_token="${tokenValue}"`,
         };
         expect(headers).toStrictEqual(expected);
     });
@@ -60,7 +77,9 @@ describe('service consumer test', () => {
     });
 
     test('run request', async () => {
-        const request = new CRequest('POST', 'uri', 'request', { 'x-foo': 'foo value' });
+        const request = new CRequest('POST', 'uri', 'request', {
+            'x-foo': 'foo value',
+        });
         const response = new CResponse(200, 'response');
 
         webClient = mock<WebClientInterface>();
@@ -76,7 +95,9 @@ describe('service consumer test', () => {
     });
 
     test('run request with web client exception', async () => {
-        const request = new CRequest('POST', 'uri', 'request', { 'x-foo': 'foo value' });
+        const request = new CRequest('POST', 'uri', 'request', {
+            'x-foo': 'foo value',
+        });
         const response = new CResponse(500, '');
         const exception = new WebClientException('foo', request, response);
 
@@ -90,18 +111,23 @@ describe('service consumer test', () => {
         try {
             await consumer.runRequest(webClient, request);
         } catch (error) {
-            // eslint-disable-next-line jest/no-conditional-expect
-            expect((error as WebClientException).getResponse()).toStrictEqual(response);
+            expect((error as WebClientException).getResponse()).toStrictEqual(
+                response
+            );
         }
     });
 
     test('check error with fault', () => {
         const request = new CRequest('POST', 'uri', 'body', {});
-        const responseBody = TestCase.fileContents('authenticate/response-with-error.xml');
+        const responseBody = fileContents(
+            'authenticate/response-with-error.xml'
+        );
         const response = new CResponse(200, responseBody);
         const consumer = new ServiceConsumer();
 
-        expect(() => consumer.checkErrors(request, response)).toThrow(SoapFaultError);
+        expect(() => {
+            consumer.checkErrors(request, response);
+        }).toThrow(SoapFaultError);
     });
 
     test('check error on server side', () => {
@@ -109,7 +135,10 @@ describe('service consumer test', () => {
         const response = new CResponse(500, '<xml/>');
         const consumer = new ServiceConsumer();
 
-        const result = (): void => consumer.checkErrors(request, response);
+        const result = (): void => {
+            consumer.checkErrors(request, response);
+        };
+
         expect(result).toThrow(HttpServerError);
         expect(result).toThrow('Unexpected server error status code');
     });
@@ -119,7 +148,10 @@ describe('service consumer test', () => {
         const response = new CResponse(200, '');
         const consumer = new ServiceConsumer();
 
-        const result = (): void => consumer.checkErrors(request, response);
+        const result = (): void => {
+            consumer.checkErrors(request, response);
+        };
+
         expect(result).toThrow(HttpServerError);
         expect(result).toThrow('Unexpected empty response from server');
     });

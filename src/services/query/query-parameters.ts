@@ -1,18 +1,18 @@
-import { ComplementoInterface } from '../../shared/complemento-interface';
+import { type ComplementoInterface } from '../../shared/complemento-interface';
 import { ComplementoUndefined } from '../../shared/complemento-undefined';
 import { DateTime } from '../../shared/date-time';
 import { DocumentStatus } from '../../shared/document-status';
 import { DocumentType } from '../../shared/document-type';
-import { RfcMatch } from '../../shared/rfc-match';
+import { type RfcMatch } from '../../shared/rfc-match';
 import { RfcMatches } from '../../shared/rfc-matches';
 import { RfcOnBehalf } from '../../shared/rfc-on-behalf';
-import { ServiceType } from '../../shared/service-type';
+import { type ServiceType } from '../../shared/service-type';
 import { Uuid } from '../../shared/uuid';
 import { DateTimePeriod } from '../../shared/date-time-period';
 import { DownloadType } from '../../shared/download-type';
 import { RequestType } from '../../shared/request-type';
-import { ComplementoCfdiTypes } from '../../shared/complemento-cfdi';
-import { ComplementoRetencionesTypes } from '../../shared/complemento-retenciones';
+import { type ComplementoCfdiTypes } from '../../shared/complemento-cfdi';
+import { type ComplementoRetencionesTypes } from '../../shared/complemento-retenciones';
 
 /**
  * This class contains all the information required to perform a query on the SAT Web Service
@@ -37,14 +37,14 @@ export class QueryParameters {
         downloadType?: DownloadType,
         requestType?: RequestType
     ): QueryParameters {
-        downloadType = downloadType || new DownloadType('issued');
-        requestType = requestType || new RequestType('metadata');
+        downloadType = downloadType ?? new DownloadType('issued');
+        requestType = requestType ?? new RequestType('metadata');
         const currentTime = DateTime.now().formatSat();
 
         return new QueryParameters(
             period ?? DateTimePeriod.createFromValues(currentTime, currentTime),
-            downloadType ?? new DownloadType('issued'),
-            requestType ?? new RequestType('metadata'),
+            downloadType,
+            requestType,
             new DocumentType('undefined'),
             new ComplementoUndefined('undefined'),
             new DocumentStatus('undefined'),
@@ -106,69 +106,67 @@ export class QueryParameters {
         return this._rfcMatches.getFirst();
     }
 
-    public withServiceType(serviceType: ServiceType): QueryParameters {
+    public withServiceType(serviceType: ServiceType): this {
         this._serviceType = serviceType;
 
         return this;
     }
 
-    public withPeriod(period: DateTimePeriod): QueryParameters {
+    public withPeriod(period: DateTimePeriod): this {
         this._period = period;
 
         return this;
     }
 
-    public withDownloadType(downloadType: DownloadType): QueryParameters {
+    public withDownloadType(downloadType: DownloadType): this {
         this._downloadType = downloadType;
 
         return this;
     }
 
-    public withRequestType(requestType: RequestType): QueryParameters {
+    public withRequestType(requestType: RequestType): this {
         this._requestType = requestType;
 
         return this;
     }
 
-    public withDocumentType(documentType: DocumentType): QueryParameters {
+    public withDocumentType(documentType: DocumentType): this {
         this._documentType = documentType;
 
         return this;
     }
 
-    public withComplement(
-        complement: ComplementoInterface<ComplementoCfdiTypes | ComplementoRetencionesTypes>
-    ): QueryParameters {
+    public withComplement(complement: ComplementoInterface<ComplementoCfdiTypes | ComplementoRetencionesTypes>): this {
         this._complement = complement;
 
         return this;
     }
 
-    public withDocumentStatus(documentStatus: DocumentStatus): QueryParameters {
+    public withDocumentStatus(documentStatus: DocumentStatus): this {
         this._documentStatus = documentStatus;
 
         return this;
     }
 
-    public withUuid(uuid: Uuid): QueryParameters {
+    public withUuid(uuid: Uuid): this {
         this._uuid = uuid;
 
         return this;
     }
 
-    public withRfcOnBehalf(rfcOnBehalf: RfcOnBehalf): QueryParameters {
+    public withRfcOnBehalf(rfcOnBehalf: RfcOnBehalf): this {
         this._rfcOnBehalf = rfcOnBehalf;
 
         return this;
     }
 
-    public withRfcMatches(rfcMatches: RfcMatches): QueryParameters {
+    public withRfcMatches(rfcMatches: RfcMatches): this {
         this._rfcMatches = rfcMatches;
 
         return this;
     }
 
-    public withRfcMatch(rfcMatch: RfcMatch): QueryParameters {
+    public withRfcMatch(rfcMatch: RfcMatch): this {
         this._rfcMatches = RfcMatches.create(rfcMatch);
 
         return this;
@@ -196,7 +194,7 @@ export class QueryParameters {
             documentStatus: this._documentStatus,
             uuid: this._uuid,
             rfcOnBehalf: this._rfcOnBehalf,
-            rfcMatches: this._rfcMatches
+            rfcMatches: this._rfcMatches,
         };
     }
 }

@@ -1,4 +1,4 @@
-import { ComplementoInterface } from './complemento-interface';
+import { type ComplementoInterface } from './complemento-interface';
 import { BaseEnum } from './enum/base-enum';
 
 export type ComplementoRetencionesTypes =
@@ -24,63 +24,65 @@ export class ComplementoRetenciones
     private readonly Map = {
         undefined: {
             satCode: '',
-            label: 'Sin complemento definido'
+            label: 'Sin complemento definido',
         },
         arrendamientoEnFideicomiso: {
             satCode: 'arrendamientoenfideicomiso',
-            label: 'Arrendamiento en fideicomiso'
+            label: 'Arrendamiento en fideicomiso',
         },
         dividendos: {
             satCode: 'dividendos',
-            label: 'Dividendos'
+            label: 'Dividendos',
         },
         enajenacionAcciones: {
             satCode: 'enajenaciondeacciones',
-            label: 'Enajenación de acciones'
+            label: 'Enajenación de acciones',
         },
         fideicomisoNoEmpresarial: {
             satCode: 'fideicomisonoempresarial',
-            label: 'Fideicomiso no empresarial'
+            label: 'Fideicomiso no empresarial',
         },
         intereses: {
             satCode: 'intereses',
-            label: 'Intereses'
+            label: 'Intereses',
         },
         interesesHipotecarios: {
             satCode: 'intereseshipotecarios',
-            label: 'Intereses hipotecarios'
+            label: 'Intereses hipotecarios',
         },
         operacionesConDerivados: {
             satCode: 'operacionesconderivados',
-            label: 'Operaciones con derivados'
+            label: 'Operaciones con derivados',
         },
         pagosAExtranjeros: {
             satCode: 'pagosaextranjeros',
-            label: 'Pagos a extranjeros'
+            label: 'Pagos a extranjeros',
         },
         planesRetiro10: {
             satCode: 'planesderetiro',
-            label: 'Planes de retiro 1.0'
+            label: 'Planes de retiro 1.0',
         },
         planesRetiro11: {
             satCode: 'planesderetiro11',
-            label: 'Planes de retiro 1.1'
+            label: 'Planes de retiro 1.1',
         },
         premios: {
             satCode: 'premios',
-            label: 'Premios'
+            label: 'Premios',
         },
         sectorFinanciero: {
             satCode: 'sectorfinanciero',
-            label: 'Sector Financiero'
+            label: 'Sector Financiero',
         },
         serviciosPlataformasTecnologicas: {
             satCode: 'serviciosplataformastecnologicas10',
-            label: 'Servicios Plataformas Tecnológicas'
-        }
+            label: 'Servicios Plataformas Tecnológicas',
+        },
     };
 
-    public static create(id: ComplementoRetencionesTypes): ComplementoRetenciones {
+    public static create(
+        id: ComplementoRetencionesTypes
+    ): ComplementoRetenciones {
         return new ComplementoRetenciones(id);
     }
 

@@ -1,7 +1,8 @@
-import { ComplementoCfdi } from '~/shared/complemento-cfdi';
+import { ComplementoCfdi } from 'src/shared/complemento-cfdi';
+
 describe('complemento CFDI', () => {
     test('create undefined by name', () => {
-        const complemento = ComplementoCfdi.undefined() as ComplementoCfdi;
+        const complemento = ComplementoCfdi.undefined();
         expect(complemento.isTypeOf('undefined')).toBeTruthy();
     });
 
@@ -15,6 +16,8 @@ describe('complemento CFDI', () => {
         expect(complemento.isTypeOf('undefined')).toBeFalsy();
         expect(complemento.value()).toBe('valesdedespensa');
         expect(complemento.label()).toBe('Vales de despensa 1.0');
-        expect(new ComplementoCfdi('valesDespensa10')).toStrictEqual(complemento);
+        expect(new ComplementoCfdi('valesDespensa10')).toStrictEqual(
+            complemento
+        );
     });
 });

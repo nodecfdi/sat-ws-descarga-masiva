@@ -1,9 +1,9 @@
 export class Uuid {
-    constructor(private _value: string) {}
+    constructor(private readonly _value: string) {}
 
     public static create(value: string): Uuid {
         value = value.toLowerCase();
-        if (!/^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/.test(value)) {
+        if (!/^[\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12}$/.test(value)) {
             throw new Error('UUID does not have the correct format');
         }
 
@@ -19,13 +19,13 @@ export class Uuid {
             Uuid.create(value);
 
             return true;
-        } catch (error) {
+        } catch {
             return false;
         }
     }
 
     public isEmpty(): boolean {
-        return '' === this._value;
+        return this._value === '';
     }
 
     public getValue(): string {

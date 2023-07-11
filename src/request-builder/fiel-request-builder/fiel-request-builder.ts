@@ -1,14 +1,19 @@
-import { RequestBuilderInterface } from '../request-builder-interface';
-import { Fiel } from './fiel';
+import { createHash, randomUUID } from 'node:crypto';
 import { Helpers } from '../../internal/helpers';
-import { SignatureAlgorithm } from '@nodecfdi/credentials';
-import { createHash, randomUUID } from 'crypto';
-import { DateTime } from '../../shared/date-time';
-import { QueryParameters } from '../../services/query/query-parameters';
+import { type RequestBuilderInterface } from '../request-builder-interface';
+import { type DateTime } from '../../shared/date-time';
+import { type QueryParameters } from '../../services/query/query-parameters';
 import { RfcMatches } from '../../shared/rfc-matches';
+import { type Fiel } from './fiel';
 
 export class FielRequestBuilder implements RequestBuilderInterface {
-    constructor(private _fiel: Fiel) {}
+    constructor(private readonly _fiel: Fiel) {}
+
+    private static createXmlSecurityToken(): string {
+        const md5 = createHash('md5').update(randomUUID()).digest('hex');
+
+        return `uuid-${md5.slice(0, 8)}-${md5.slice(4, 8)}-${md5.slice(4, 12)}-${md5.slice(4, 16)}-${md5.slice(20)}-1`;
+    }
 
     public getFiel(): Fiel {
         return this._fiel;
@@ -82,6 +87,7 @@ export class FielRequestBuilder implements RequestBuilderInterface {
                 rfcIssuer = queryParameters.getRfcMatches().getFirst().getValue();
                 rfcReceivers = RfcMatches.createFromValues(rfcSigner);
             }
+
             solicitudAttributes.set('FechaInicial', start);
             solicitudAttributes.set('FechaFinal', end);
             solicitudAttributes.set('RfcEmisor', rfcIssuer);
@@ -92,23 +98,25 @@ export class FielRequestBuilder implements RequestBuilderInterface {
             if (!rfcReceivers.isEmpty()) {
                 xmlRfcReceived = rfcReceivers
                     .itemsToArray()
-                    .map((rfcMatch) => {
-                        return `<des:RfcReceptor>${this.parseXml(rfcMatch.getValue())}</des:RfcReceptor>`;
-                    })
+                    .map((rfcMatch) => `<des:RfcReceptor>${this.parseXml(rfcMatch.getValue())}</des:RfcReceptor>`)
                     .join('');
                 xmlRfcReceived = `<des:RfcReceptores>${xmlRfcReceived}</des:RfcReceptores>`;
             }
         }
+
         const cleanedSolicitudAttributes = new Map();
         for (const [key, value] of solicitudAttributes) {
-            if (value !== '') cleanedSolicitudAttributes.set(key, value);
+            if (value !== '') {
+                cleanedSolicitudAttributes.set(key, value);
+            }
         }
-        const sortedValues = new Map([...cleanedSolicitudAttributes].sort((a, b) => String(a[0]).localeCompare(b[0])));
+
+        const sortedValues = new Map(
+            [...cleanedSolicitudAttributes].sort((a, b) => String(a[0]).localeCompare(b[0] as string))
+        );
 
         const solicitudAttributesAsText = [...sortedValues]
-            .map(([name, value]) => {
-                return `${this.parseXml(name)}="${this.parseXml(value)}"`;
-            })
+            .map(([name, value]) => `${this.parseXml(name as string)}="${this.parseXml(value as string)}"`)
             .join(' ');
 
         const toDigestXml = `
@@ -190,25 +198,14 @@ export class FielRequestBuilder implements RequestBuilderInterface {
         return Helpers.nospaces(xml);
     }
 
-    private static createXmlSecurityToken(): string {
-        const md5 = createHash('md5').update(randomUUID()).digest('hex');
-
-        return `uuid-${md5.substring(0, 8)}-${md5.substring(8, 4)}-${md5.substring(12, 4)}-${md5.substring(
-            16,
-            4
-        )}-${md5.substring(20)}-1`;
-    }
-
     private createSignature(toDigest: string, signedInfoUri = '', keyInfo = ''): string {
         toDigest = Helpers.nospaces(toDigest);
         const digested = createHash('sha1').update(toDigest).digest('base64');
         let signedInfo = this.createSignedInfoCanonicalExclusive(digested, signedInfoUri);
-        const signatureValue = Buffer.from(this.getFiel().sign(signedInfo, SignatureAlgorithm.SHA1), 'hex').toString(
-            'base64'
-        );
+        const signatureValue = Buffer.from(this.getFiel().sign(signedInfo, 'sha1'), 'hex').toString('base64');
         signedInfo = signedInfo.replace('<SignedInfo xmlns="http://www.w3.org/2000/09/xmldsig#">', '<SignedInfo>');
 
-        if ('' === keyInfo) {
+        if (keyInfo === '') {
             keyInfo = this.createKeyInfoData();
         }
 

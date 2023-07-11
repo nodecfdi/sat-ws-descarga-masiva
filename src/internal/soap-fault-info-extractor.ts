@@ -10,12 +10,19 @@ export class SoapFaultInfoExtractor extends InteractsXmlTrait {
         let env: Element;
         try {
             env = this.readXmlElement(source);
-        } catch (error) {
+        } catch {
             return;
         }
-        const code = (this.findElement(env, 'body', 'fault', 'faultcode')?.textContent ?? '').trim();
-        const message = (this.findElement(env, 'body', 'fault', 'faultstring')?.textContent ?? '').trim();
-        if (code == '' && message == '') {
+
+        const code = (
+            this.findElement(env, 'body', 'fault', 'faultcode')?.textContent ??
+            ''
+        ).trim();
+        const message = (
+            this.findElement(env, 'body', 'fault', 'faultstring')
+                ?.textContent ?? ''
+        ).trim();
+        if (code === '' && message === '') {
             return;
         }
 

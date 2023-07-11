@@ -1,11 +1,15 @@
 export class CResponse {
-    private _statusCode: number;
+    private readonly _statusCode: number;
 
-    private _body: string;
+    private readonly _body: string;
 
-    private _headers: Record<string, string>;
+    private readonly _headers: Record<string, string>;
 
-    constructor(statuscode: number, body: string, headers: Record<string, string> = {}) {
+    constructor(
+        statuscode: number,
+        body: string,
+        headers: Record<string, string> = {}
+    ) {
         this._statusCode = statuscode;
         this._body = body;
         this._headers = headers;
@@ -43,7 +47,7 @@ export class CResponse {
         return {
             statusCode: this._statusCode,
             body: this._body,
-            headers: this._headers
+            headers: this._headers,
         };
     }
 }

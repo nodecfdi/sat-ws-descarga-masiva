@@ -1,12 +1,19 @@
 import { DateTime } from './date-time';
 
 export class Token {
-    private _created: DateTime;
+    private readonly _created: DateTime;
 
-    constructor(created: DateTime, private _expires: DateTime, private _value: string) {
+    constructor(
+        created: DateTime,
+        private readonly _expires: DateTime,
+        private readonly _value: string
+    ) {
         if (_expires.compareTo(created) < 0) {
-            throw new Error('Cannot create a token with expiration lower than creation');
+            throw new Error(
+                'Cannot create a token with expiration lower than creation'
+            );
         }
+
         this._created = created;
     }
 
@@ -26,7 +33,7 @@ export class Token {
      * A token is empty if does not contains an internal value
      */
     public isValueEmpty(): boolean {
-        return '' == this._value;
+        return this._value === '';
     }
 
     /**
@@ -47,7 +54,7 @@ export class Token {
         return {
             created: this._created,
             expires: this._expires,
-            value: this._value
+            value: this._value,
         };
     }
 }

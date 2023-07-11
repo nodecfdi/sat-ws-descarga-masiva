@@ -1,11 +1,12 @@
-import { RfcMatches } from '~/shared/rfc-matches';
-import { RfcMatch } from '~/shared/rfc-match';
+import { RfcMatches } from 'src/shared/rfc-matches';
+import { RfcMatch } from 'src/shared/rfc-match';
+
 describe('rfc matches', () => {
     test('object definition', () => {
         const list = RfcMatches.create();
         expect(list.toJSON).toBeDefined();
         expect(list.count).toBeDefined();
-        expect(Symbol.iterator in Object(list)).toBeTruthy();
+        expect(Symbol.iterator in new Object(list)).toBeTruthy();
     });
 
     test('create empty', () => {
@@ -18,7 +19,7 @@ describe('rfc matches', () => {
         const items = [
             RfcMatch.create('AAA010101001'),
             RfcMatch.create('AAA010101002'),
-            RfcMatch.create('AAA010101003')
+            RfcMatch.create('AAA010101003'),
         ];
         const list = RfcMatches.create(...items);
         expect(list.count()).toBe(3);
@@ -37,7 +38,7 @@ describe('rfc matches', () => {
             RfcMatch.create('AAA010101001'), // repeated
             RfcMatch.create('AAA010101001'), // repeated
             RfcMatch.create('AAA010101002'), // repeated
-            RfcMatch.create('AAA010101002') // repeated
+            RfcMatch.create('AAA010101002'), // repeated
         ];
         const list = RfcMatches.create(...items);
         expect(list.count()).toBe(2);

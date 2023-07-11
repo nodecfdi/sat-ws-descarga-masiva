@@ -1,7 +1,8 @@
-import { TestCase } from '../../test-case';
-import { CResponse } from '~/web-client/cresponse';
+import { useTestCase } from '../../test-case';
+import { CResponse } from 'src/web-client/cresponse';
 
 describe('cresponse', () => {
+    const { fileContents } = useTestCase();
     test('properties', () => {
         const statusCode = 200;
         const body = 'this is the body';
@@ -27,7 +28,7 @@ describe('cresponse', () => {
         [399, false],
         [400, true],
         [499, true],
-        [500, false]
+        [500, false],
     ])('status code is client error', (code: number, expected: boolean) => {
         const response = new CResponse(code, '', {});
 
@@ -41,7 +42,7 @@ describe('cresponse', () => {
         [499, false],
         [500, true],
         [599, true],
-        [600, false]
+        [600, false],
     ])('status code is server error', (code: number, expected: boolean) => {
         const response = new CResponse(code, '', {});
 
@@ -53,12 +54,12 @@ describe('cresponse', () => {
         const body = 'this is the body';
         const headers = {
             'X-First': 'first header',
-            'X-Second': 'second header'
+            'X-Second': 'second header',
         };
 
         const response = new CResponse(statusCode, body, headers);
 
-        const expectedFile = TestCase.fileContents('json/webclient-response.json');
+        const expectedFile = fileContents('json/webclient-response.json');
 
         expect(JSON.stringify(response)).toBe(JSON.stringify(JSON.parse(expectedFile)));
     });

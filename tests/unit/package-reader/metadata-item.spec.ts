@@ -1,7 +1,9 @@
-import { MetadataItem } from '~/package-reader/metadata-item';
-import { MetadataPackageReader } from '~/package-reader/metadata-package-reader';
-import { TestCase } from '../../test-case';
+import { useTestCase } from '../../test-case';
+import { MetadataItem } from 'src/package-reader/metadata-item';
+import { MetadataPackageReader } from 'src/package-reader/metadata-package-reader';
+
 describe('metadata item', () => {
+    const { fileContents, filePath } = useTestCase();
     test('with empty data', () => {
         const metadata = new MetadataItem({});
         expect(metadata.get('uuid')).toBe('');
@@ -18,20 +20,21 @@ describe('metadata item', () => {
     });
 
     test('reader cfdi in zip', async () => {
-        let expectedContent = TestCase.fileContents('zip/metadata.txt');
-        const zipFileName = TestCase.filePath('zip/metadata.zip');
-        const packageReader = await MetadataPackageReader.createFromFile(zipFileName);
+        let expectedContent = fileContents('zip/metadata.txt');
+        const zipFileName = filePath('zip/metadata.zip');
+        const packageReader = await MetadataPackageReader.createFromFile(
+            zipFileName
+        );
         let extracted = '';
         for await (const item of packageReader.fileContents()) {
             for (const map of item) {
                 extracted = map[1];
-                break;
             }
         }
 
         // normalize line endings
-        expectedContent = expectedContent.replace(new RegExp(/\r\n/, 'g'), '\n');
-        extracted = extracted.replace(new RegExp(/\r\n/, 'g'), '\n');
+        expectedContent = expectedContent.replaceAll('\r\n', '\n');
+        extracted = extracted.replaceAll('\r\n', '\n');
 
         expect(extracted).toBe(expectedContent);
     });

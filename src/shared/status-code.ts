@@ -1,5 +1,8 @@
 export class StatusCode {
-    constructor(private _code: number, private _message: string) {}
+    constructor(
+        private readonly _code: number,
+        private readonly _message: string
+    ) {}
 
     /**
      * Contains the value of "CodEstatus"
@@ -20,13 +23,13 @@ export class StatusCode {
      * The only success code is "5000: Solicitud recibida con éxito"
      */
     public isAccepted(): boolean {
-        return 5000 == this._code;
+        return this._code === 5000;
     }
 
     public toJSON(): { code: number; message: string } {
         return {
             code: this._code,
-            message: this._message
+            message: this._message,
         };
     }
 }

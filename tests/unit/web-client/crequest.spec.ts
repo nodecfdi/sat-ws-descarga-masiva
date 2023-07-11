@@ -1,7 +1,8 @@
-import { TestCase } from '../../test-case';
-import { CRequest } from '~/web-client/crequest';
+import { useTestCase } from '../../test-case';
+import { CRequest } from 'src/web-client/crequest';
 
 describe('crequest', () => {
+    const { fileContents } = useTestCase();
     test('properties', () => {
         const method = 'POST';
         const uri = 'http://localhost';
@@ -26,7 +27,7 @@ describe('crequest', () => {
 
         const request = new CRequest(method, uri, body, customHeaders);
 
-        const expectedFile = TestCase.fileContents('json/webclient-request.json');
+        const expectedFile = fileContents('json/webclient-request.json');
 
         expect(JSON.stringify(request)).toBe(JSON.stringify(JSON.parse(expectedFile)));
     });

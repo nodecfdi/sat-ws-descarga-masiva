@@ -1,26 +1,34 @@
-import { realpathSync, unlinkSync, writeFileSync } from 'fs';
+import { realpathSync, unlinkSync, writeFileSync } from 'node:fs';
+import os from 'node:os';
+import { dirname, join } from 'node:path';
+import { randomUUID } from 'node:crypto';
+import { fileURLToPath } from 'node:url';
 import JSZip from 'jszip';
-import { OpenZipFileException } from '~/package-reader/exceptions/open-zip-file-exception';
-import { FilteredPackageReader } from '~/package-reader/internal/filtered-package-reader';
-import { TestCase } from '../../../test-case';
-import os from 'os';
-import { join } from 'path';
-import { randomUUID } from 'crypto';
-import { NullFileFilter } from '~/package-reader/internal/file-filters/null-file-filter';
+import { useTestCase } from '../../../test-case';
+import { OpenZipFileException } from 'src/package-reader/exceptions/open-zip-file-exception';
+import { FilteredPackageReader } from 'src/package-reader/internal/filtered-package-reader';
+import { NullFileFilter } from 'src/package-reader/internal/file-filters/null-file-filter';
+
 describe('filtered package reader', () => {
+    const { filePath } = useTestCase();
+
     test('create from file with invalid file', async () => {
-        const filename = __dirname;
-        await expect(FilteredPackageReader.createFromFile(filename)).rejects.toBeInstanceOf(OpenZipFileException);
+        const filename = dirname(fileURLToPath(import.meta.url));
+        await expect(
+            FilteredPackageReader.createFromFile(filename)
+        ).rejects.toBeInstanceOf(OpenZipFileException);
     });
     test('create from empty zip', async () => {
-        const filename = TestCase.filePath('zip/empty.zip');
-        await expect(FilteredPackageReader.createFromFile(filename)).rejects.toBeInstanceOf(OpenZipFileException);
+        const filename = filePath('zip/empty.zip');
+        await expect(
+            FilteredPackageReader.createFromFile(filename)
+        ).rejects.toBeInstanceOf(OpenZipFileException);
     });
 
     test('create from content with invalid content', async () => {
-        await expect(FilteredPackageReader.createFromContents('invalid content')).rejects.toBeInstanceOf(
-            OpenZipFileException
-        );
+        await expect(
+            FilteredPackageReader.createFromContents('invalid content')
+        ).rejects.toBeInstanceOf(OpenZipFileException);
     });
 
     test('file contents and count with file', async () => {
@@ -35,16 +43,18 @@ describe('filtered package reader', () => {
         zip.file('sub/bar.txt', 'bar', { binary: true });
         const data = await zip.generateAsync({
             type: 'nodebuffer',
-            compression: 'DEFLATE'
+            compression: 'DEFLATE',
         });
         writeFileSync(tmpfile, data);
         // zip excludes "empty dir/""
         const expected = new Map([
             ['empty file.txt', ''],
             ['foo.txt', 'foo'],
-            ['sub/bar.txt', 'bar']
+            ['sub/bar.txt', 'bar'],
         ]);
-        const packageReader = await FilteredPackageReader.createFromFile(tmpfile);
+        const packageReader = await FilteredPackageReader.createFromFile(
+            tmpfile
+        );
         packageReader.setFilter(new NullFileFilter());
         const result = new Map();
         for await (const iterator of packageReader.fileContents()) {

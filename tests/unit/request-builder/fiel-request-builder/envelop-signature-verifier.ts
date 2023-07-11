@@ -10,33 +10,41 @@ export class EnvelopSignatureVerifier {
         _includeNameSpaces: string[] = [],
         _certificateContents = ''
     ): Promise<boolean> {
-        const soapDocument = getParser().parseFromString(soapMessage, 'text/xml');
+        const soapDocument = getParser().parseFromString(
+            soapMessage,
+            'text/xml'
+        );
 
-        const mainNode = soapDocument.getElementsByTagNameNS(nameSpaceURI, mainNodeName).item(0);
-        if (mainNode == null) {
+        const mainNode = soapDocument
+            .getElementsByTagNameNS(nameSpaceURI, mainNodeName)
+            .item(0);
+        if (mainNode === null) {
             return false;
         }
 
-        const parentNode = mainNode.parentNode;
-        if (parentNode == null) {
+        const { parentNode } = mainNode;
+        if (parentNode === null) {
             return false;
         }
-        parentNode.removeChild(mainNode);
-        soapDocument.appendChild(mainNode);
+
+        mainNode.remove();
+        soapDocument.append(mainNode);
 
         // const document = Xml.newDocumentContent();
         const document = getSerializer().serializeToString(soapDocument);
 
         const crypto = new Crypto();
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        Application.setEngine('OpenSSL', crypto as any);
+        Application.setEngine('OpenSSL', crypto);
 
         const signedDocument = Parse(document);
 
-        const xmlSignature = signedDocument.getElementsByTagNameNS('http://www.w3.org/2000/09/xmldsig#', 'Signature');
-        if (null === xmlSignature) {
-            throw new Error('Cannot locate Signature object');
-        }
+        const xmlSignature = signedDocument.getElementsByTagNameNS(
+            'http://www.w3.org/2000/09/xmldsig#',
+            'Signature'
+        );
+        // if (xmlSignature === null) {
+        //     throw new Error('Cannot locate Signature object');
+        // }
 
         const signedXml = new SignedXml(signedDocument);
         let valid: boolean;
@@ -44,7 +52,7 @@ export class EnvelopSignatureVerifier {
         try {
             // the verify method fails because xadesjs is incapable of find u:id and just find id in u:timestamp node
             valid = await signedXml.Verify();
-        } catch (error) {
+        } catch {
             return true;
         }
 

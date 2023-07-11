@@ -1,7 +1,8 @@
-import { ComplementoRetenciones } from '~/shared/complemento-retenciones';
+import { ComplementoRetenciones } from 'src/shared/complemento-retenciones';
+
 describe('complemento Retenciones', () => {
     test('create undefined by name', () => {
-        const complemento = ComplementoRetenciones.undefined() as ComplementoRetenciones;
+        const complemento = ComplementoRetenciones.undefined();
         expect(complemento.isTypeOf('undefined')).toBeTruthy();
     });
 
@@ -15,6 +16,8 @@ describe('complemento Retenciones', () => {
         expect(complemento.isTypeOf('undefined')).toBeFalsy();
         expect(complemento.value()).toBe('planesderetiro11');
         expect(complemento.label()).toBe('Planes de retiro 1.1');
-        expect(new ComplementoRetenciones('planesRetiro11')).toStrictEqual(complemento);
+        expect(new ComplementoRetenciones('planesRetiro11')).toStrictEqual(
+            complemento
+        );
     });
 });

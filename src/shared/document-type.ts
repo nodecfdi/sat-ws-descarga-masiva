@@ -1,6 +1,12 @@
 import { BaseEnum } from './enum/base-enum';
 
-export type DocumentTypeTypes = 'undefined' | 'ingreso' | 'egreso' | 'traslado' | 'nomina' | 'pago';
+export type DocumentTypeTypes =
+    | 'undefined'
+    | 'ingreso'
+    | 'egreso'
+    | 'traslado'
+    | 'nomina'
+    | 'pago';
 
 enum DocumentTypeEnum {
     undefined = '',
@@ -8,7 +14,7 @@ enum DocumentTypeEnum {
     egreso = 'E',
     traslado = 'T',
     nomina = 'N',
-    pago = 'P'
+    pago = 'P',
 }
 
 export class DocumentType extends BaseEnum<DocumentTypeTypes> {

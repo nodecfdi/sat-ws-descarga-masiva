@@ -1,5 +1,6 @@
-import { CsvReader } from '~/package-reader/internal/csv-reader';
-describe('csf reader test', () => {
+import { CsvReader } from 'src/package-reader/internal/csv-reader';
+
+describe('csv reader test', () => {
     test('read with blank lines', async () => {
         const contents = [
             '', // leading blank line
@@ -10,7 +11,7 @@ describe('csf reader test', () => {
             '', // inner data blank line
             '3~three',
             '', // trailing blank lines
-            ''
+            '',
         ].join('\r\n');
 
         const reader = CsvReader.createFromContents(contents);
@@ -19,10 +20,11 @@ describe('csf reader test', () => {
         for await (const item of iterator) {
             extracted.push(item);
         }
+
         const expected = [
             { id: '1', text: 'one' },
             { id: '2', text: 'two' },
-            { id: '3', text: 'three' }
+            { id: '3', text: 'three' },
         ];
 
         expect(extracted).toStrictEqual(expected);
@@ -42,7 +44,11 @@ describe('csf reader test', () => {
     test('combine with more values than keys', () => {
         const keys = ['xee', 'foo'];
         const values = ['x-xee', 'x-foo', 'x-bar'];
-        const expected = { 'xee': 'x-xee', 'foo': 'x-foo', '#extra-01': 'x-bar' };
+        const expected = {
+            'xee': 'x-xee',
+            'foo': 'x-foo',
+            '#extra-01': 'x-bar',
+        };
 
         const reader = CsvReader.createFromContents('');
         const combined = reader.combine(keys, values);

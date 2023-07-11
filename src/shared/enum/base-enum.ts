@@ -5,8 +5,6 @@ export abstract class BaseEnum<T extends string> {
         return this._id;
     }
 
-    public abstract value(): string;
-
     public isTypeOf(type: T): boolean {
         return this._id === type;
     }
@@ -14,4 +12,6 @@ export abstract class BaseEnum<T extends string> {
     public toJSON(): string {
         return this._id;
     }
+
+    public abstract value(): string;
 }

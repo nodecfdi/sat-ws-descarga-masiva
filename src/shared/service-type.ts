@@ -4,7 +4,7 @@ export type ServiceTypeValues = 'cfdi' | 'retenciones';
 
 enum ServiceTypeEnum {
     cfdi = 'cfdi',
-    retenciones = 'retenciones'
+    retenciones = 'retenciones',
 }
 
 export class ServiceType extends BaseEnum<ServiceTypeValues> {

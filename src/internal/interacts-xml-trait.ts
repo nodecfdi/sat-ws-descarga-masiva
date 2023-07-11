@@ -29,8 +29,8 @@ export class InteractsXmlTrait {
         let index = 0;
         for (index; index < children.length; index++) {
             const child = children[index];
-            if (child.ELEMENT_NODE === 1) {
-                const localName = (child as Element).localName?.toLowerCase();
+            if (child.nodeType === child.ELEMENT_NODE) {
+                const localName = (child as Element).localName.toLowerCase();
                 if (localName === current) {
                     return names.length > 0 ? this.findElement(child as Element, ...names) : (child as Element);
                 }
@@ -55,9 +55,10 @@ export class InteractsXmlTrait {
         let index = 0;
         for (index; index < children.length; index++) {
             const child = children[index];
+            // of type Node.TEXT_NODE
             if ((child as Element).nodeType === 3) {
                 const c = child;
-                if (c?.textContent !== null) {
+                if (c.textContent !== null) {
                     buffer.push(c.textContent);
                 }
             }
@@ -81,8 +82,8 @@ export class InteractsXmlTrait {
         let index = 0;
         for (index; index < children.length; index++) {
             const child = children[index];
-            if (child.ELEMENT_NODE === 1) {
-                const localName = (child as Element).localName?.toLowerCase();
+            if (child.nodeType === child.ELEMENT_NODE) {
+                const localName = (child as Element).localName.toLowerCase();
                 if (localName === current) {
                     found.push(child as Element);
                 }
@@ -96,6 +97,10 @@ export class InteractsXmlTrait {
         return this.findElements(element, ...names).map((element) => this.extractElementContent(element));
     }
 
+    /**
+     * Find the element determined by the chain of children and return the attributes as an
+     * array using the attribute name as array key and attribute value as entry value.
+     */
     public findAtrributes(element: Element, ...search: string[]): Record<string, string> {
         const found = this.findElement(element, ...search);
         if (!found) {
