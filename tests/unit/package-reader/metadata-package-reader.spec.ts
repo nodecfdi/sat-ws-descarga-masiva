@@ -136,8 +136,8 @@ describe('metadata package reader', () => {
             '129C4D12-1415-4ACE-BE12-34E71C4EAB4E',
         ];
         const jsonDataMetadata = jsonData.metadata;
-        expect(Object.keys(jsonDataMetadata).sort()).toStrictEqual(
-            expectedMetadata.sort()
+        expect(Object.keys(jsonDataMetadata)).toStrictEqual(
+            expectedMetadata
         );
     });
 

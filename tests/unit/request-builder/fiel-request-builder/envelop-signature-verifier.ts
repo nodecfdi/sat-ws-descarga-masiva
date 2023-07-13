@@ -10,14 +10,9 @@ export class EnvelopSignatureVerifier {
         _includeNameSpaces: string[] = [],
         _certificateContents = ''
     ): Promise<boolean> {
-        const soapDocument = getParser().parseFromString(
-            soapMessage,
-            'text/xml'
-        );
+        const soapDocument = getParser().parseFromString(soapMessage, 'text/xml');
 
-        const mainNode = soapDocument
-            .getElementsByTagNameNS(nameSpaceURI, mainNodeName)
-            .item(0);
+        const mainNode = soapDocument.getElementsByTagNameNS(nameSpaceURI, mainNodeName).item(0);
         if (mainNode === null) {
             return false;
         }
@@ -30,7 +25,6 @@ export class EnvelopSignatureVerifier {
         mainNode.remove();
         soapDocument.append(mainNode);
 
-        // const document = Xml.newDocumentContent();
         const document = getSerializer().serializeToString(soapDocument);
 
         const crypto = new Crypto();
@@ -38,13 +32,7 @@ export class EnvelopSignatureVerifier {
 
         const signedDocument = Parse(document);
 
-        const xmlSignature = signedDocument.getElementsByTagNameNS(
-            'http://www.w3.org/2000/09/xmldsig#',
-            'Signature'
-        );
-        // if (xmlSignature === null) {
-        //     throw new Error('Cannot locate Signature object');
-        // }
+        const xmlSignature = signedDocument.getElementsByTagNameNS('http://www.w3.org/2000/09/xmldsig#', 'Signature');
 
         const signedXml = new SignedXml(signedDocument);
         let valid: boolean;
