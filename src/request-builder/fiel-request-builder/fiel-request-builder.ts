@@ -202,7 +202,7 @@ export class FielRequestBuilder implements RequestBuilderInterface {
         toDigest = Helpers.nospaces(toDigest);
         const digested = createHash('sha1').update(toDigest).digest('base64');
         let signedInfo = this.createSignedInfoCanonicalExclusive(digested, signedInfoUri);
-        const signatureValue = Buffer.from(this.getFiel().sign(signedInfo, 'sha1'), 'hex').toString('base64');
+        const signatureValue = Buffer.from(this.getFiel().sign(signedInfo, 'sha1'), 'binary').toString('base64');
         signedInfo = signedInfo.replace('<SignedInfo xmlns="http://www.w3.org/2000/09/xmldsig#">', '<SignedInfo>');
 
         if (keyInfo === '') {

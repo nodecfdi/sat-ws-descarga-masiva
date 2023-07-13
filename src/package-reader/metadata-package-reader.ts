@@ -42,7 +42,7 @@ export class MetadataPackageReader implements PackageReaderInterface {
         let reader: MetadataContent;
         for await (const content of this._packageReader.fileContents()) {
             const parties = await this.getThirdParties();
-            for (const [, value] of content) {
+            for await (const [, value] of content) {
                 reader = MetadataContent.createFromContents(value, parties);
                 for await (const item of reader.eachItem()) {
                     yield item;
@@ -57,7 +57,7 @@ export class MetadataPackageReader implements PackageReaderInterface {
 
     public async count(): Promise<number> {
         let count = 0;
-        for await (const _item of this.fileContents()) {
+        for await (const [,] of this.fileContents()) {
             count++;
         }
 

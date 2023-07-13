@@ -54,7 +54,8 @@ export class CsvReader {
         const countValues = values.length;
         const countKeys = keys.length;
         if (countKeys > countValues) {
-            values = values.concat(new Array(countKeys - countValues).fill(''));
+            const emptyArray: string[] = Array.from({ length: countKeys - countValues });
+            values = [...values, ...emptyArray.fill('')];
         }
 
         if (countValues > countKeys) {

@@ -1,23 +1,11 @@
-import {
-    type Certificate,
-    Credential,
-    type PrivateKey,
-    type SerialNumber,
-} from '@nodecfdi/credentials';
+import { type Certificate, Credential, type PrivateKey, type SerialNumber } from '@nodecfdi/credentials';
 import { mock } from 'vitest-mock-extended';
 import { getParser } from '@nodecfdi/cfdiutils-common';
 import { useNamespaces } from 'xpath';
 import { useTestCase } from '../../../test-case';
 import { FielRequestBuilder } from 'src/request-builder/fiel-request-builder/fiel-request-builder';
 import { Helpers } from 'src/internal/helpers';
-import {
-    DateTime,
-    DateTimePeriod,
-    DownloadType,
-    Fiel,
-    QueryParameters,
-    RequestType,
-} from 'src/index';
+import { DateTime, DateTimePeriod, DownloadType, Fiel, QueryParameters, RequestType } from 'src/index';
 import { ServiceType } from 'src/shared/service-type';
 import { DocumentType } from 'src/shared/document-type';
 import { ComplementoCfdi } from 'src/shared/complemento-cfdi';
@@ -27,13 +15,9 @@ import { RfcMatch } from 'src/shared/rfc-match';
 import { Uuid } from 'src/shared/uuid';
 
 describe('Fiel request builder', () => {
-    const {
-        createFielUsingTestingFiles,
-        createFielRequestBuilderUsingTestingFiles,
-        fileContents,
-        xmlFormat,
-    } = useTestCase();
-    test('asdasd', () => {
+    const { createFielUsingTestingFiles, createFielRequestBuilderUsingTestingFiles, fileContents, xmlFormat } =
+        useTestCase();
+    test('construct fiel', () => {
         const fiel = createFielUsingTestingFiles();
         const requestBuilder = new FielRequestBuilder(fiel);
         expect(requestBuilder.getFiel()).toBe(fiel);
@@ -44,11 +28,7 @@ describe('Fiel request builder', () => {
         const created = DateTime.create('2019-08-01T03:38:19.000Z');
         const expires = DateTime.create('2019-08-01T03:43:19.000Z');
         const token = 'uuid-cf6c80fb-00ae-44c0-af56-54ec65decbaa-1';
-        const requestBody = requestBuilder.authorization(
-            created,
-            expires,
-            token
-        );
+        const requestBody = requestBuilder.authorization(created, expires, token);
 
         expect(Helpers.nospaces(xmlFormat(requestBody))).toBe(
             Helpers.nospaces(fileContents('authenticate/request.xml'))
@@ -76,17 +56,14 @@ describe('Fiel request builder', () => {
         expect(securityTokenId).not.toBe('');
 
         const otherRequestBody = requestBuilder.authorization(created, expires);
-        const otherSecurityTokenId =
-            extractSecurityTokenFromXml(otherRequestBody);
+        const otherSecurityTokenId = extractSecurityTokenFromXml(otherRequestBody);
 
         expect(securityTokenId).not.toBe('');
         expect(otherSecurityTokenId).not.toBe(securityTokenId);
     });
 
     function extractSecurityTokenFromXml(requestBody: string): string {
-        const matches = /o:BinarySecurityToken u:Id="(?<id>.*?)"/u.exec(
-            requestBody
-        );
+        const matches = /o:BinarySecurityToken u:Id="(?<id>.*?)"/u.exec(requestBody);
 
         return matches?.groups?.id ?? '';
     }
@@ -95,12 +72,7 @@ describe('Fiel request builder', () => {
         const requestBuilder = createFielRequestBuilderUsingTestingFiles();
         const parameters = QueryParameters.create()
             .withServiceType(new ServiceType('cfdi'))
-            .withPeriod(
-                DateTimePeriod.createFromValues(
-                    '2019-01-01T00:00:00',
-                    '2019-01-01T00:04:00'
-                )
-            )
+            .withPeriod(DateTimePeriod.createFromValues('2019-01-01T00:00:00', '2019-01-01T00:04:00'))
             .withDownloadType(new DownloadType('received'))
             .withRequestType(new RequestType('xml'))
             .withDocumentType(new DocumentType('nomina'))
@@ -112,9 +84,7 @@ describe('Fiel request builder', () => {
         const requestBody = requestBuilder.query(parameters);
 
         expect(Helpers.nospaces(xmlFormat(requestBody))).toBe(
-            Helpers.nospaces(
-                fileContents('query/request-received-by-filters.xml')
-            )
+            Helpers.nospaces(fileContents('query/request-received-by-filters.xml'))
         );
 
         // const xmlSecVeritifaction = await new EnvelopSignatureVerifier().verify(
@@ -151,12 +121,7 @@ describe('Fiel request builder', () => {
         const requestBuilder = createFielRequestBuilderUsingTestingFiles();
         const parameters = QueryParameters.create()
             .withServiceType(new ServiceType('cfdi'))
-            .withPeriod(
-                DateTimePeriod.createFromValues(
-                    '2019-01-01T00:00:00',
-                    '2019-01-01T00:04:00'
-                )
-            )
+            .withPeriod(DateTimePeriod.createFromValues('2019-01-01T00:00:00', '2019-01-01T00:04:00'))
             .withDownloadType(new DownloadType('issued'));
 
         const requestBody = requestBuilder.query(parameters);
@@ -185,9 +150,7 @@ describe('Fiel request builder', () => {
         const packageId = '3f30a4e1-af73-4085-8991-e4d97eef16bd';
         const requestBody = requestBuilder.verify(packageId);
 
-        expect(Helpers.nospaces(xmlFormat(requestBody))).toBe(
-            Helpers.nospaces(fileContents('verify/request.xml'))
-        );
+        expect(Helpers.nospaces(xmlFormat(requestBody))).toBe(Helpers.nospaces(fileContents('verify/request.xml')));
     });
 
     test('verify using special invalid xml characters', () => {
@@ -220,30 +183,13 @@ describe('Fiel request builder', () => {
             des: 'http://DescargaMasivaTerceros.sat.gob.mx',
             xd: 'http://www.w3.org/2000/09/xmldsig#',
         });
-        expect(
-            (
-                selectValue(
-                    '//des:solicitud/@IdSolicitud',
-                    document.documentElement
-                )[0] as Attr
-            ).value
-        ).toBe(requestId);
-        expect(
-            (
-                selectValue(
-                    '//des:solicitud/@RfcSolicitante',
-                    document.documentElement
-                )[0] as Attr
-            ).value
-        ).toBe(rfc);
-        expect(
-            (
-                selectValue(
-                    '//xd:X509IssuerName/text()',
-                    document.documentElement
-                )[0] as Element
-            ).nodeValue
-        ).toBe(issuerName);
+        expect((selectValue('//des:solicitud/@IdSolicitud', document.documentElement)[0] as Attr).value).toBe(
+            requestId
+        );
+        expect((selectValue('//des:solicitud/@RfcSolicitante', document.documentElement)[0] as Attr).value).toBe(rfc);
+        expect((selectValue('//xd:X509IssuerName/text()', document.documentElement)[0] as Element).nodeValue).toBe(
+            issuerName
+        );
     });
 
     test('download', () => {
@@ -257,9 +203,7 @@ describe('Fiel request builder', () => {
         const packageId = '4e80345d-917f-40bb-a98f-4a73939343c5_01';
         const requestBody = requestBuilder.download(packageId);
 
-        expect(Helpers.nospaces(xmlFormat(requestBody))).toBe(
-            Helpers.nospaces(fileContents('download/request.xml'))
-        );
+        expect(Helpers.nospaces(xmlFormat(requestBody))).toBe(Helpers.nospaces(fileContents('download/request.xml')));
     });
 
     test('download using special invalid xml characters', () => {
@@ -292,29 +236,14 @@ describe('Fiel request builder', () => {
             des: 'http://DescargaMasivaTerceros.sat.gob.mx',
             xd: 'http://www.w3.org/2000/09/xmldsig#',
         });
-        expect(
-            (
-                selectValue(
-                    '//des:peticionDescarga/@idPaquete',
-                    document.documentElement
-                )[0] as Attr
-            ).value
-        ).toBe(packageId);
-        expect(
-            (
-                selectValue(
-                    '//des:peticionDescarga/@RfcSolicitante',
-                    document.documentElement
-                )[0] as Attr
-            ).value
-        ).toBe(rfc);
-        expect(
-            (
-                selectValue(
-                    '//xd:X509IssuerName/text()',
-                    document.documentElement
-                )[0] as Element
-            ).nodeValue
-        ).toBe(issuerName);
+        expect((selectValue('//des:peticionDescarga/@idPaquete', document.documentElement)[0] as Attr).value).toBe(
+            packageId
+        );
+        expect((selectValue('//des:peticionDescarga/@RfcSolicitante', document.documentElement)[0] as Attr).value).toBe(
+            rfc
+        );
+        expect((selectValue('//xd:X509IssuerName/text()', document.documentElement)[0] as Element).nodeValue).toBe(
+            issuerName
+        );
     });
 });

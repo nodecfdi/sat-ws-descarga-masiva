@@ -80,9 +80,7 @@ export class ComplementoRetenciones
         },
     };
 
-    public static create(
-        id: ComplementoRetencionesTypes
-    ): ComplementoRetenciones {
+    public static create(id: ComplementoRetencionesTypes): ComplementoRetenciones {
         return new ComplementoRetenciones(id);
     }
 

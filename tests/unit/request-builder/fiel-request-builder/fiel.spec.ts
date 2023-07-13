@@ -1,9 +1,4 @@
-import {
-    type Certificate,
-    type PrivateKey,
-    SatTypeEnum,
-    Credential,
-} from '@nodecfdi/credentials';
+import { type Certificate, type PrivateKey, SatTypeEnum, Credential } from '@nodecfdi/credentials';
 import { mock } from 'vitest-mock-extended';
 import { useTestCase } from '../../../test-case';
 import { Fiel } from 'src/index';
@@ -11,20 +6,19 @@ import { Fiel } from 'src/index';
 describe('Fiel', () => {
     const { createFielUsingTestingFiles, fileContents } = useTestCase();
     test('fiel with incorrect password create an error', () => {
-        expect(() => createFielUsingTestingFiles('invalid password')).toThrow(
-            Error
-        );
+        expect(() => createFielUsingTestingFiles('invalid password')).toThrow(Error);
     });
 
     test('fiel with correct password', () => {
         const fiel = createFielUsingTestingFiles();
+
         expect(fiel.isValid()).toBeTruthy();
     });
     test('fiel unprotected pem', () => {
         const fiel = Fiel.create(
             fileContents('fake-fiel/EKU9003173C9.cer'),
             fileContents('fake-fiel/EKU9003173C9.key.pem'),
-            ''
+            '12345678a'
         );
         expect(fiel.isValid()).toBeTruthy();
     });
