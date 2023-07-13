@@ -13,9 +13,7 @@ export class Helpers {
     }
 
     public static cleanPemContents(pemContents: string): string {
-        const filteredLines = pemContents
-            .split('\n')
-            .filter((line: string): boolean => !line.startsWith('-----'));
+        const filteredLines = pemContents.split('\n').filter((line: string): boolean => !line.startsWith('-----'));
 
         return filteredLines.map((line) => line.trim()).join('');
     }

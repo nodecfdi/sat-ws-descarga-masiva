@@ -29,13 +29,13 @@ export class QueryParameters {
         private _documentStatus: DocumentStatus,
         private _uuid: Uuid,
         private _rfcOnBehalf: RfcOnBehalf,
-        private _rfcMatches: RfcMatches
+        private _rfcMatches: RfcMatches,
     ) {}
 
     public static create(
         period?: DateTimePeriod,
         downloadType?: DownloadType,
-        requestType?: RequestType
+        requestType?: RequestType,
     ): QueryParameters {
         downloadType = downloadType ?? new DownloadType('issued');
         requestType = requestType ?? new RequestType('metadata');
@@ -50,7 +50,7 @@ export class QueryParameters {
             new DocumentStatus('undefined'),
             Uuid.empty(),
             RfcOnBehalf.empty(),
-            RfcMatches.create()
+            RfcMatches.create(),
         );
     }
 

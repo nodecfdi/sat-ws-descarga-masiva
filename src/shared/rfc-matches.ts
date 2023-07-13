@@ -25,9 +25,7 @@ export class RfcMatches {
     }
 
     public static createFromValues(...values: string[]): RfcMatches {
-        const valuesRfc = values.map((value) =>
-            value === '' ? RfcMatch.empty() : RfcMatch.create(value)
-        );
+        const valuesRfc = values.map((value) => (value === '' ? RfcMatch.empty() : RfcMatch.create(value)));
 
         return RfcMatches.create(...valuesRfc);
     }

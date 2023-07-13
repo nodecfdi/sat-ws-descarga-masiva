@@ -1,17 +1,17 @@
-import { CodeRequest } from '../../shared/code-request';
-import { StatusCode } from '../../shared/status-code';
-import { StatusRequest } from '../../shared/status-request';
+import { type CodeRequest } from '../../shared/code-request';
+import { type StatusCode } from '../../shared/status-code';
+import { type StatusRequest } from '../../shared/status-request';
 
 export class VerifyResult {
-    private _status: StatusCode;
+    private readonly _status: StatusCode;
 
-    private _statusRequest: StatusRequest;
+    private readonly _statusRequest: StatusRequest;
 
-    private _codeRequest: CodeRequest;
+    private readonly _codeRequest: CodeRequest;
 
-    private _numberCfdis: number;
+    private readonly _numberCfdis: number;
 
-    private _packagesIds: string[];
+    private readonly _packagesIds: string[];
 
     constructor(
         statusCode: StatusCode,
@@ -78,7 +78,7 @@ export class VerifyResult {
             codeRequest: this._codeRequest.toJSON(),
             statusRequest: this._statusRequest.toJSON(),
             numberCfdis: this._numberCfdis,
-            packagesIds: this._packagesIds
+            packagesIds: this._packagesIds,
         };
     }
 }

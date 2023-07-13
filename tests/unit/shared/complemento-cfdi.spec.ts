@@ -16,8 +16,6 @@ describe('complemento CFDI', () => {
         expect(complemento.isTypeOf('undefined')).toBeFalsy();
         expect(complemento.value()).toBe('valesdedespensa');
         expect(complemento.label()).toBe('Vales de despensa 1.0');
-        expect(new ComplementoCfdi('valesDespensa10')).toStrictEqual(
-            complemento
-        );
+        expect(new ComplementoCfdi('valesDespensa10')).toStrictEqual(complemento);
     });
 });

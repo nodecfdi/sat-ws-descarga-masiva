@@ -112,7 +112,7 @@ export class FielRequestBuilder implements RequestBuilderInterface {
         }
 
         const sortedValues = new Map(
-            [...cleanedSolicitudAttributes].sort((a, b) => String(a[0]).localeCompare(b[0] as string))
+            [...cleanedSolicitudAttributes].sort((a, b) => String(a[0]).localeCompare(b[0] as string)),
         );
 
         const solicitudAttributesAsText = [...sortedValues]

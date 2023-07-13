@@ -1,10 +1,4 @@
-export type StatusRequestTypes =
-    | 'Accepted'
-    | 'InProgress'
-    | 'Finished'
-    | 'Failure'
-    | 'Rejected'
-    | 'Expired';
+export type StatusRequestTypes = 'Accepted' | 'InProgress' | 'Finished' | 'Failure' | 'Rejected' | 'Expired';
 
 export class StatusRequest {
     protected static readonly VALUES = [
@@ -26,9 +20,7 @@ export class StatusRequest {
      */
     constructor(index: number | string) {
         if (typeof index === 'number') {
-            const value = StatusRequest.VALUES.find(
-                (element) => index === element.code
-            );
+            const value = StatusRequest.VALUES.find((element) => index === element.code);
             if (!value) {
                 this.value = this.getEntryValueOnUndefined();
 
@@ -40,9 +32,7 @@ export class StatusRequest {
         }
 
         if (typeof index === 'string') {
-            const value = StatusRequest.VALUES.find(
-                (element) => index === element.name
-            );
+            const value = StatusRequest.VALUES.find((element) => index === element.name);
             if (!value) {
                 this.value = this.getEntryValueOnUndefined();
 

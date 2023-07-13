@@ -18,21 +18,14 @@ describe('abstract rfc filter', () => {
         ['invalid', 'XXX99120099A'],
     ];
 
-    test.each(providerInvalidValues)(
-        'construct with invalid value %s',
-        (_name: string, value: string) => {
-            const uuid = (): AbstractRfcFilter =>
-                RfcFilterImplementation.create(value);
-            expect(uuid).toThrow('RFC is invalid');
-        }
-    );
+    test.each(providerInvalidValues)('construct with invalid value %s', (_name: string, value: string) => {
+        const uuid = (): AbstractRfcFilter => RfcFilterImplementation.create(value);
+        expect(uuid).toThrow('RFC is invalid');
+    });
 
-    test.each(providerInvalidValues)(
-        'check invalid value',
-        (_name: string, value: string) => {
-            expect(RfcFilterImplementation.check(value)).toBeFalsy();
-        }
-    );
+    test.each(providerInvalidValues)('check invalid value', (_name: string, value: string) => {
+        expect(RfcFilterImplementation.check(value)).toBeFalsy();
+    });
 
     test('Json serialize', () => {
         const value = 'XXX01010199A';

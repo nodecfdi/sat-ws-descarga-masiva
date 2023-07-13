@@ -18,7 +18,7 @@ describe('Fiel', () => {
         const fiel = Fiel.create(
             fileContents('fake-fiel/EKU9003173C9.cer'),
             fileContents('fake-fiel/EKU9003173C9.key.pem'),
-            '12345678a'
+            '12345678a',
         );
         expect(fiel.isValid()).toBeTruthy();
     });
@@ -26,7 +26,7 @@ describe('Fiel', () => {
         const fiel = Fiel.create(
             fileContents('fake-fiel/EKU9003173C9.cer'),
             fileContents('fake-fiel/EKU9003173C9.key'),
-            fileContents('fake-fiel/EKU9003173C9-password.txt').trim()
+            fileContents('fake-fiel/EKU9003173C9-password.txt').trim(),
         );
         expect(fiel.isValid()).toBeTruthy();
     });
@@ -35,7 +35,7 @@ describe('Fiel', () => {
         const fiel = Fiel.create(
             fileContents('fake-csd/EKU9003173C9.cer'),
             fileContents('fake-csd/EKU9003173C9.key'),
-            fileContents('fake-csd/EKU9003173C9-password.txt').trim()
+            fileContents('fake-csd/EKU9003173C9-password.txt').trim(),
         );
         expect(fiel.isValid()).toBeFalsy();
     });

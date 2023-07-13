@@ -70,15 +70,11 @@ describe('Third parties extractor', () => {
         const packageReader = mock<PackageReaderInterface>();
         const result = async (): Promise<ThirdPartiesExtractor> =>
             ThirdPartiesExtractor.createFromPackageReader(packageReader);
-        await expect(result).rejects.toThrow(
-            'PackageReader parameter must be a FilteredPackageReader'
-        );
+        await expect(result).rejects.toThrow('PackageReader parameter must be a FilteredPackageReader');
     });
 
     test('create from package reader restore filter', async () => {
-        const packageReader = await FilteredPackageReader.createFromFile(
-            filePath('zip/metadata.zip')
-        );
+        const packageReader = await FilteredPackageReader.createFromFile(filePath('zip/metadata.zip'));
         const filter = new NullFileFilter();
         packageReader.setFilter(filter);
 

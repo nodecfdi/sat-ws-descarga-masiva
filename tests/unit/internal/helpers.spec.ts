@@ -13,8 +13,7 @@ describe('Helpers', () => {
                 </bar>
             </root>
         `;
-        const expected =
-            '<root><foo a="1" b="2">foo</foo><bar><baz>BAZZ</baz></bar></root>';
+        const expected = '<root><foo a="1" b="2">foo</foo><bar><baz>BAZZ</baz></bar></root>';
         expect(Helpers.nospaces(source)).toBe(expected);
     });
 });

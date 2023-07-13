@@ -8,10 +8,7 @@ describe('metadata content', () => {
         const contents = fileContents('zip/metadata.txt');
         const reader = MetadataContent.createFromContents(contents);
         const extracted = [];
-        const expected = [
-            'E7215E3B-2DC5-4A40-AB10-C902FF9258DF',
-            '129C4D12-1415-4ACE-BE12-34E71C4EAB4E',
-        ];
+        const expected = ['E7215E3B-2DC5-4A40-AB10-C902FF9258DF', '129C4D12-1415-4ACE-BE12-34E71C4EAB4E'];
 
         for await (const item of reader.eachItem()) {
             extracted.push(item.get('uuid'));
@@ -54,6 +51,6 @@ describe('metadata content', () => {
             }
 
             expect(extracted[0].get('value')).toBe(expectedValue);
-        }
+        },
     );
 });

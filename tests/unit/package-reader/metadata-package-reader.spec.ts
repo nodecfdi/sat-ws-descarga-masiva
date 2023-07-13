@@ -17,8 +17,7 @@ describe('metadata package reader', () => {
         const expectedNUmberRows = 2;
 
         const filename = filePath('zip/metadata.zip');
-        const metadataPackageReader =
-            await MetadataPackageReader.createFromFile(filename);
+        const metadataPackageReader = await MetadataPackageReader.createFromFile(filename);
 
         const content = await metadataPackageReader.metadataToArray();
 
@@ -28,8 +27,7 @@ describe('metadata package reader', () => {
 
     test('retrieve metadata contents', async () => {
         const filename = filePath('zip/metadata.zip');
-        const metadataPackageReader =
-            await MetadataPackageReader.createFromFile(filename);
+        const metadataPackageReader = await MetadataPackageReader.createFromFile(filename);
         const metadata = await metadataPackageReader.metadataToArray();
 
         expect(metadata.length).toBe(2);
@@ -40,10 +38,7 @@ describe('metadata package reader', () => {
             extracted.push(item.get('uuid'));
         }
 
-        const expected = [
-            'E7215E3B-2DC5-4A40-AB10-C902FF9258DF',
-            '129C4D12-1415-4ACE-BE12-34E71C4EAB4E',
-        ];
+        const expected = ['E7215E3B-2DC5-4A40-AB10-C902FF9258DF', '129C4D12-1415-4ACE-BE12-34E71C4EAB4E'];
 
         expect(extracted).toStrictEqual(expected);
     });
@@ -70,9 +65,7 @@ describe('metadata package reader', () => {
          */
         const zipFilename = filePath('zip/metadata-terceros.zip');
 
-        const packageReader = await MetadataPackageReader.createFromFile(
-            zipFilename
-        );
+        const packageReader = await MetadataPackageReader.createFromFile(zipFilename);
         const extracted: Array<Record<string, string>> = [];
 
         const values = await packageReader.metadataToArray();
@@ -117,9 +110,7 @@ describe('metadata package reader', () => {
 
     test('json', async () => {
         const zipFilename = filePath('zip/metadata.zip');
-        const packageReader = await MetadataPackageReader.createFromFile(
-            zipFilename
-        );
+        const packageReader = await MetadataPackageReader.createFromFile(zipFilename);
 
         // assert fileName
         const jsonData = await packageReader.jsonSerialize();
@@ -131,25 +122,16 @@ describe('metadata package reader', () => {
         expect(Object.keys(jsonDataFiles)).toStrictEqual(expectedFiles);
 
         // assert metadataItems
-        const expectedMetadata = [
-            'E7215E3B-2DC5-4A40-AB10-C902FF9258DF',
-            '129C4D12-1415-4ACE-BE12-34E71C4EAB4E',
-        ];
+        const expectedMetadata = ['E7215E3B-2DC5-4A40-AB10-C902FF9258DF', '129C4D12-1415-4ACE-BE12-34E71C4EAB4E'];
         const jsonDataMetadata = jsonData.metadata;
-        expect(Object.keys(jsonDataMetadata)).toStrictEqual(
-            expectedMetadata
-        );
+        expect(Object.keys(jsonDataMetadata)).toStrictEqual(expectedMetadata);
     });
 
     test('metadata json', async () => {
         const zipFilename = filePath('zip/metadata.zip');
-        const packageReader = await MetadataPackageReader.createFromFile(
-            zipFilename
-        );
+        const packageReader = await MetadataPackageReader.createFromFile(zipFilename);
 
-        const expectedFile = JSON.parse(
-            fileContents('zip/metadata.json')
-        ) as Record<string, unknown>;
+        const expectedFile = JSON.parse(fileContents('zip/metadata.json')) as Record<string, unknown>;
 
         const map = Object.entries(expectedFile);
         const metadata = await packageReader.metadataToArray();

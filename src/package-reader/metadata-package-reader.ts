@@ -8,7 +8,7 @@ import { type PackageReaderInterface } from './package-reader-interface';
 export class MetadataPackageReader implements PackageReaderInterface {
     constructor(
         private readonly _packageReader: PackageReaderInterface,
-        private _thirdParties?: ThirdPartiesRecords
+        private _thirdParties?: ThirdPartiesRecords,
     ) {}
 
     public static async createFromFile(fileName: string): Promise<MetadataPackageReader> {

@@ -5,7 +5,7 @@ export class DownloadResult {
 
     constructor(
         private readonly _status: StatusCode,
-        private readonly _packageContent: string
+        private readonly _packageContent: string,
     ) {
         this._packageSize = _packageContent.length;
     }

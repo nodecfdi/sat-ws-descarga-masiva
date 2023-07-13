@@ -24,8 +24,6 @@ describe('download result', () => {
 
         const expectedFile = fileContents('json/download-result.json');
 
-        expect(JSON.stringify(result)).toBe(
-            JSON.stringify(JSON.parse(expectedFile))
-        );
+        expect(JSON.stringify(result)).toBe(JSON.stringify(JSON.parse(expectedFile)));
     });
 });

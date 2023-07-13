@@ -30,8 +30,6 @@ describe('query result', () => {
 
         const expectedFile = fileContents('json/query-result.json');
 
-        expect(JSON.stringify(result)).toBe(
-            JSON.stringify(JSON.parse(expectedFile))
-        );
+        expect(JSON.stringify(result)).toBe(JSON.stringify(JSON.parse(expectedFile)));
     });
 });

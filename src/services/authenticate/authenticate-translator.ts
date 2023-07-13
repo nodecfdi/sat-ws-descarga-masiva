@@ -26,7 +26,7 @@ export class AuthenticateTranslator extends InteractsXmlTrait {
         requestBuilder: RequestBuilderInterface,
         since: DateTime,
         until: DateTime,
-        securityToken = ''
+        securityToken = '',
     ): string {
         return requestBuilder.authorization(since, until, securityToken);
     }

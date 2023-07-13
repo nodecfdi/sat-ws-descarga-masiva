@@ -22,9 +22,7 @@ describe('metadata item', () => {
     test('reader cfdi in zip', async () => {
         let expectedContent = fileContents('zip/metadata.txt');
         const zipFileName = filePath('zip/metadata.zip');
-        const packageReader = await MetadataPackageReader.createFromFile(
-            zipFileName
-        );
+        const packageReader = await MetadataPackageReader.createFromFile(zipFileName);
         let extracted = '';
         for await (const item of packageReader.fileContents()) {
             for (const map of item) {

@@ -14,9 +14,7 @@ export class ComplementoUndefined
         },
     };
 
-    public static create(
-        id: ComplementoUndefinedTypes
-    ): ComplementoInterface<ComplementoUndefinedTypes> {
+    public static create(id: ComplementoUndefinedTypes): ComplementoInterface<ComplementoUndefinedTypes> {
         return new ComplementoUndefined(id);
     }
 

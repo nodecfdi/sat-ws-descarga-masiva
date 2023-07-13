@@ -11,13 +11,10 @@ export const useTestCase = (): {
     fileContent: (path: string, encoding?: BufferEncoding) => string;
     fileContents: (append: string, encoding?: BufferEncoding) => string;
     createFielUsingTestingFiles: (password?: string) => Fiel;
-    createFielRequestBuilderUsingTestingFiles: (
-        password?: string
-    ) => FielRequestBuilder;
+    createFielRequestBuilderUsingTestingFiles: (password?: string) => FielRequestBuilder;
     xmlFormat: (content: string) => string;
 } => {
-    const filePath = (append = ''): string =>
-        join(dirname(fileURLToPath(import.meta.url)), '_files', append);
+    const filePath = (append = ''): string => join(dirname(fileURLToPath(import.meta.url)), '_files', append);
 
     const fileContent = (path: string, encoding?: BufferEncoding): string => {
         if (!existsSync(path)) {
@@ -27,22 +24,18 @@ export const useTestCase = (): {
         return readFileSync(path, encoding ?? 'binary');
     };
 
-    const fileContents = (append: string, encoding?: BufferEncoding): string =>
-        fileContent(filePath(append), encoding);
+    const fileContents = (append: string, encoding?: BufferEncoding): string => fileContent(filePath(append), encoding);
 
     const createFielUsingTestingFiles = (password?: string): Fiel =>
         new Fiel(
             Credential.openFiles(
                 filePath('fake-fiel/EKU9003173C9.cer'),
                 filePath('fake-fiel/EKU9003173C9.key'),
-                password ??
-                    fileContents('fake-fiel/EKU9003173C9-password.txt').trim()
-            )
+                password ?? fileContents('fake-fiel/EKU9003173C9-password.txt').trim(),
+            ),
         );
 
-    const createFielRequestBuilderUsingTestingFiles = (
-        password?: string
-    ): FielRequestBuilder => {
+    const createFielRequestBuilderUsingTestingFiles = (password?: string): FielRequestBuilder => {
         const fiel = createFielUsingTestingFiles(password);
 
         return new FielRequestBuilder(fiel);
@@ -50,10 +43,7 @@ export const useTestCase = (): {
 
     const xmlFormat = (content: string): string => {
         const document = getParser().parseFromString(content, 'text/xml');
-        const xml = document.createProcessingInstruction(
-            'xml',
-            'version="1.0"'
-        );
+        const xml = document.createProcessingInstruction('xml', 'version="1.0"');
         document.insertBefore(xml, document.firstChild);
 
         return getSerializer().serializeToString(document);

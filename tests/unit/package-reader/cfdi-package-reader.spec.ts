@@ -19,20 +19,16 @@ describe('cfdi package reader', () => {
     const { fileContents, filePath } = useTestCase();
     test('reader zip when the content is invalid', async () => {
         const zipContents = 'INVALID_ZIP_CONTENT';
-        await expect(
-            CfdiPackageReader.createFromContents(zipContents)
-        ).rejects.toBeInstanceOf(OpenZipFileException);
+        await expect(CfdiPackageReader.createFromContents(zipContents)).rejects.toBeInstanceOf(OpenZipFileException);
     });
     test('reader zip when the content valid', async () => {
         const zipContents = fileContents('zip/cfdi.zip');
-        const cfdiPackageReader = await CfdiPackageReader.createFromContents(
-            zipContents
-        );
+        const cfdiPackageReader = await CfdiPackageReader.createFromContents(zipContents);
         const temporaryFileName = cfdiPackageReader.getFilename();
         const cfdiArray = await cfdiPackageReader.cfdisToArray();
         expect(cfdiArray.length).toBe(2);
         expect(() => readFileSync(temporaryFileName)).toThrow(
-            `ENOENT: no such file or directory, open '${temporaryFileName}'`
+            `ENOENT: no such file or directory, open '${temporaryFileName}'`,
         );
     });
 
@@ -40,9 +36,7 @@ describe('cfdi package reader', () => {
         const expectedNumberCfdis = 2;
 
         const filename = filePath('zip/cfdi.zip');
-        const cfdiPackageReader = await CfdiPackageReader.createFromFile(
-            filename
-        );
+        const cfdiPackageReader = await CfdiPackageReader.createFromFile(filename);
 
         expect(await cfdiPackageReader.count()).toBe(expectedNumberCfdis);
     });
@@ -54,9 +48,7 @@ describe('cfdi package reader', () => {
         ];
 
         const filename = filePath('zip/cfdi.zip');
-        const cfdiPackageReader = await CfdiPackageReader.createFromFile(
-            filename
-        );
+        const cfdiPackageReader = await CfdiPackageReader.createFromFile(filename);
         const fileContentsArray = await cfdiPackageReader.fileContentsToArray();
 
         const fileNames = fileContentsArray.map((item) => item.name);
@@ -68,9 +60,7 @@ describe('cfdi package reader', () => {
         const expectedCfdi = fileContents('zip/cfdi.xml', 'utf8');
 
         const zipFileName = filePath('zip/cfdi.zip');
-        const cfdiPackageReader = await CfdiPackageReader.createFromFile(
-            zipFileName
-        );
+        const cfdiPackageReader = await CfdiPackageReader.createFromFile(zipFileName);
         const fileContentsArray = await cfdiPackageReader.fileContentsToArray();
 
         const cfdis = fileContentsArray.map((item) => item.content);
@@ -165,14 +155,12 @@ describe('cfdi package reader', () => {
         (_name: string, source: string, expected: string) => {
             const uuid = CfdiFileFilter.obtainUuidFromXmlCfdi(source);
             expect(uuid).toBe(expected);
-        }
+        },
     );
 
     test('json', async () => {
         const zipFilename = filePath('zip/cfdi.zip');
-        const packageReader = await CfdiPackageReader.createFromFile(
-            zipFilename
-        );
+        const packageReader = await CfdiPackageReader.createFromFile(zipFilename);
 
         const jsonData = await packageReader.jsonSerialize();
         expect(jsonData.source).toBe(zipFilename);

@@ -28,21 +28,13 @@ describe('uuid', () => {
         ['bigger', 'x6623061-61fe-49de-b298-c7156476aa8bb'],
     ];
 
-    test.each(providerInvalidValues)(
-        'constructor with invalid value %s',
-        (value: string) => {
-            expect((): Uuid => Uuid.create(value)).toThrow(
-                'does not have the correct format'
-            );
-        }
-    );
+    test.each(providerInvalidValues)('constructor with invalid value %s', (value: string) => {
+        expect((): Uuid => Uuid.create(value)).toThrow('does not have the correct format');
+    });
 
-    test.each(providerInvalidValues)(
-        'Check invalid value %s',
-        (value: string) => {
-            expect(Uuid.check(value)).toBeFalsy();
-        }
-    );
+    test.each(providerInvalidValues)('Check invalid value %s', (value: string) => {
+        expect(Uuid.check(value)).toBeFalsy();
+    });
 
     test('json serialize', () => {
         const value = '96623061-61fe-49de-b298-c7156476aa8b';

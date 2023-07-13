@@ -1,7 +1,7 @@
 export class StatusCode {
     constructor(
         private readonly _code: number,
-        private readonly _message: string
+        private readonly _message: string,
     ) {}
 
     /**

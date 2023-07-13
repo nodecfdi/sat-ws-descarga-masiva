@@ -15,9 +15,7 @@ describe('service consumer', () => {
     const { fileContents } = useTestCase();
 
     test('execute', async () => {
-        const responseBody = fileContents(
-            'authenticate/response-with-token.xml'
-        );
+        const responseBody = fileContents('authenticate/response-with-token.xml');
         const response = new CResponse(200, responseBody);
 
         webClient = mock<WebClientInterface>();
@@ -27,15 +25,9 @@ describe('service consumer', () => {
         const token = new Token(
             new DateTime('2020-01-13 14:15:16'),
             new DateTime('2020-01-13 14:15:16'),
-            'token-value'
+            'token-value',
         );
-        const returnValue = await consumer.execute(
-            webClient,
-            'soap-action',
-            'uri',
-            'body',
-            token
-        );
+        const returnValue = await consumer.execute(webClient, 'soap-action', 'uri', 'body', token);
 
         expect(returnValue).toBe(responseBody);
     });
@@ -55,11 +47,7 @@ describe('service consumer', () => {
         const consumer = new ServiceConsumer();
         const soapAction = 'soap-action';
         const tokenValue = 'token-value';
-        const token = new Token(
-            new DateTime('2020-01-13 14:15:16'),
-            new DateTime('2020-01-13 14:15:16'),
-            tokenValue
-        );
+        const token = new Token(new DateTime('2020-01-13 14:15:16'), new DateTime('2020-01-13 14:15:16'), tokenValue);
         const headers = consumer.createHeaders(soapAction, token);
         const expected = {
             SOAPAction: soapAction,
@@ -111,17 +99,13 @@ describe('service consumer', () => {
         try {
             await consumer.runRequest(webClient, request);
         } catch (error) {
-            expect((error as WebClientException).getResponse()).toStrictEqual(
-                response
-            );
+            expect((error as WebClientException).getResponse()).toStrictEqual(response);
         }
     });
 
     test('check error with fault', () => {
         const request = new CRequest('POST', 'uri', 'body', {});
-        const responseBody = fileContents(
-            'authenticate/response-with-error.xml'
-        );
+        const responseBody = fileContents('authenticate/response-with-error.xml');
         const response = new CResponse(200, responseBody);
         const consumer = new ServiceConsumer();
 

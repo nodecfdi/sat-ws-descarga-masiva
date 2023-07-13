@@ -104,7 +104,7 @@ export class FilteredPackageReader implements PackageReaderInterface {
 
     public async count(): Promise<number> {
         let count = 0;
-        for await (const _item of this.fileContents()) {
+        for await (const [,] of this.fileContents()) {
             count++;
         }
 

@@ -17,7 +17,7 @@ describe('query parameters', () => {
     test('all properties', () => {
         const period = DateTimePeriod.create(
             DateTime.create('2019-01-01 00:00:00'),
-            DateTime.create('2019-01-01 00:04:00')
+            DateTime.create('2019-01-01 00:04:00'),
         );
         const downloadType = new DownloadType('received');
         const requestType = new RequestType('xml');
@@ -58,7 +58,7 @@ describe('query parameters', () => {
     test('minimal create', () => {
         const period = DateTimePeriod.create(
             DateTime.create('2019-01-01 00:00:00'),
-            DateTime.create('2019-01-01 00:04:00')
+            DateTime.create('2019-01-01 00:04:00'),
         );
 
         const query = QueryParameters.create(period);
@@ -76,12 +76,7 @@ describe('query parameters', () => {
 
     test('json', () => {
         const query = QueryParameters.create()
-            .withPeriod(
-                DateTimePeriod.createFromValues(
-                    '2019-01-01T00:00:00-06:00',
-                    '2019-01-01T00:04:00-06:00'
-                )
-            )
+            .withPeriod(DateTimePeriod.createFromValues('2019-01-01T00:00:00-06:00', '2019-01-01T00:04:00-06:00'))
             .withDownloadType(new DownloadType('received'))
             .withRequestType(new RequestType('xml'))
             .withDocumentType(new DocumentType('ingreso'))
@@ -93,8 +88,6 @@ describe('query parameters', () => {
 
         const expectedFile = fileContents('json/query-parameters.json');
 
-        expect(JSON.stringify(query)).toBe(
-            JSON.stringify(JSON.parse(expectedFile))
-        );
+        expect(JSON.stringify(query)).toBe(JSON.stringify(JSON.parse(expectedFile)));
     });
 });

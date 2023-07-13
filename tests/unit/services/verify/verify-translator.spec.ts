@@ -3,11 +3,7 @@ import { Helpers } from 'src/internal/helpers';
 import { VerifyTranslator } from 'src/services/verify/verify-translator';
 
 describe('verify translator', () => {
-    const {
-        fileContents,
-        createFielRequestBuilderUsingTestingFiles,
-        xmlFormat,
-    } = useTestCase();
+    const { fileContents, createFielRequestBuilderUsingTestingFiles, xmlFormat } = useTestCase();
     test('create verify result from soap response with zero packages', () => {
         const expectedStatusCode = 5000;
         const expectedStatusRequest = 5;
@@ -17,12 +13,9 @@ describe('verify translator', () => {
         const expectedPackagesIds: string[] = [];
 
         const translator = new VerifyTranslator();
-        const responseBody = Helpers.nospaces(
-            fileContents('verify/response-0-packages.xml')
-        );
+        const responseBody = Helpers.nospaces(fileContents('verify/response-0-packages.xml'));
 
-        const result =
-            translator.createVerifyResultFromSoapResponse(responseBody);
+        const result = translator.createVerifyResultFromSoapResponse(responseBody);
         const status = result.getStatus();
         const statusRequest = result.getStatusRequest();
         const codeRequest = result.getCodeRequest();
@@ -45,12 +38,9 @@ describe('verify translator', () => {
         ];
 
         const translator = new VerifyTranslator();
-        const responseBody = Helpers.nospaces(
-            fileContents('verify/response-2-packages.xml')
-        );
+        const responseBody = Helpers.nospaces(fileContents('verify/response-2-packages.xml'));
 
-        const result =
-            translator.createVerifyResultFromSoapResponse(responseBody);
+        const result = translator.createVerifyResultFromSoapResponse(responseBody);
 
         expect(result.getPackageIds()).toStrictEqual(expectedPackagesIds);
         expect(result.countPackages()).toBe(2);
@@ -61,13 +51,8 @@ describe('verify translator', () => {
         const requestBuilder = createFielRequestBuilderUsingTestingFiles();
         const requestId = '3f30a4e1-af73-4085-8991-e4d97eef16bd';
 
-        const requestBody = translator.createSoapRequest(
-            requestBuilder,
-            requestId
-        );
+        const requestBody = translator.createSoapRequest(requestBuilder, requestId);
 
-        expect(Helpers.nospaces(xmlFormat(requestBody))).toBe(
-            Helpers.nospaces(fileContents('verify/request.xml'))
-        );
+        expect(Helpers.nospaces(xmlFormat(requestBody))).toBe(Helpers.nospaces(fileContents('verify/request.xml')));
     });
 });

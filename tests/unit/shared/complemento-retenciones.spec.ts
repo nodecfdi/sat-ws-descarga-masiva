@@ -16,8 +16,6 @@ describe('complemento Retenciones', () => {
         expect(complemento.isTypeOf('undefined')).toBeFalsy();
         expect(complemento.value()).toBe('planesderetiro11');
         expect(complemento.label()).toBe('Planes de retiro 1.1');
-        expect(new ComplementoRetenciones('planesRetiro11')).toStrictEqual(
-            complemento
-        );
+        expect(new ComplementoRetenciones('planesRetiro11')).toStrictEqual(complemento);
     });
 });

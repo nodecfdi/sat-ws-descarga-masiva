@@ -13,13 +13,7 @@ describe('verify result', () => {
         const numberCfdis = 1000;
         const packageIds = ['x-package-1', 'x-package-2'];
 
-        const result = new VerifyResult(
-            statusCode,
-            statusRequest,
-            codeRequest,
-            numberCfdis,
-            ...packageIds
-        );
+        const result = new VerifyResult(statusCode, statusRequest, codeRequest, numberCfdis, ...packageIds);
 
         expect(result.getStatus()).toBe(statusCode);
         expect(result.getStatusRequest()).toBe(statusRequest);
@@ -36,18 +30,10 @@ describe('verify result', () => {
         const numberCfdis = 1000;
         const packageIds = ['x-package-1', 'x-package-2'];
 
-        const result = new VerifyResult(
-            statusCode,
-            statusRequest,
-            codeRequest,
-            numberCfdis,
-            ...packageIds
-        );
+        const result = new VerifyResult(statusCode, statusRequest, codeRequest, numberCfdis, ...packageIds);
 
         const expectedFile = fileContents('json/verify-result.json', 'utf8');
 
-        expect(JSON.stringify(result)).toBe(
-            JSON.stringify(JSON.parse(expectedFile))
-        );
+        expect(JSON.stringify(result)).toBe(JSON.stringify(JSON.parse(expectedFile)));
     });
 });

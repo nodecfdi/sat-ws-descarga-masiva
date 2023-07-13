@@ -6,12 +6,10 @@ export class Token {
     constructor(
         created: DateTime,
         private readonly _expires: DateTime,
-        private readonly _value: string
+        private readonly _value: string,
     ) {
         if (_expires.compareTo(created) < 0) {
-            throw new Error(
-                'Cannot create a token with expiration lower than creation'
-            );
+            throw new Error('Cannot create a token with expiration lower than creation');
         }
 
         this._created = created;

@@ -8,7 +8,7 @@ describe('http server error', () => {
         const exception = new HttpServerError(
             'message',
             new CRequest('GET', 'unknown://invalid uri/', '', {}),
-            new CResponse(200, '', {})
+            new CResponse(200, '', {}),
         );
 
         expect(exception).toBeInstanceOf(WebClientException);

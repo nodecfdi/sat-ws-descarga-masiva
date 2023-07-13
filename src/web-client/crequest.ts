@@ -10,19 +10,11 @@ export class CRequest {
     /**
      *
      */
-    constructor(
-        method: string,
-        uri: string,
-        body: string,
-        headers: Record<string, string>
-    ) {
+    constructor(method: string, uri: string, body: string, headers: Record<string, string>) {
         this._method = method;
         this._uri = uri;
         this._body = body;
-        const map = new Map([
-            ...Object.entries(this.defaultHeaders()),
-            ...Object.entries(headers),
-        ]);
+        const map = new Map([...Object.entries(this.defaultHeaders()), ...Object.entries(headers)]);
         this._headers = Object.fromEntries(map);
     }
 

@@ -14,15 +14,9 @@ export class ServiceConsumer {
         soapAction: string,
         uri: string,
         body: string,
-        token?: Token
+        token?: Token,
     ): Promise<string> {
-        return new ServiceConsumer().execute(
-            webClient,
-            soapAction,
-            uri,
-            body,
-            token
-        );
+        return new ServiceConsumer().execute(webClient, soapAction, uri, body, token);
     }
 
     public async execute(
@@ -30,7 +24,7 @@ export class ServiceConsumer {
         soapAction: string,
         uri: string,
         body: string,
-        token?: Token
+        token?: Token,
     ): Promise<string> {
         const headers = this.createHeaders(soapAction, token);
         const request = this.createRequest(uri, body, headers);
@@ -49,34 +43,21 @@ export class ServiceConsumer {
         return response.getBody();
     }
 
-    public createRequest(
-        uri: string,
-        body: string,
-        headers: Record<string, string>
-    ): CRequest {
+    public createRequest(uri: string, body: string, headers: Record<string, string>): CRequest {
         return new CRequest('POST', uri, body, headers);
     }
 
-    public createHeaders(
-        soapAction: string,
-        token?: Token
-    ): Record<string, string> {
+    public createHeaders(soapAction: string, token?: Token): Record<string, string> {
         const headers = new Map();
         headers.set('SOAPAction', soapAction);
         if (token) {
-            headers.set(
-                'Authorization',
-                `WRAP access_token="${token.getValue()}"`
-            );
+            headers.set('Authorization', `WRAP access_token="${token.getValue()}"`);
         }
 
         return Object.fromEntries(headers) as Record<string, string>;
     }
 
-    public async runRequest(
-        webClient: WebClientInterface,
-        request: CRequest
-    ): Promise<CResponse> {
+    public async runRequest(webClient: WebClientInterface, request: CRequest): Promise<CResponse> {
         webClient.fireRequest(request);
         let response: CResponse;
         try {
@@ -92,11 +73,7 @@ export class ServiceConsumer {
         return response;
     }
 
-    public checkErrors(
-        request: CRequest,
-        response: CResponse,
-        exception?: Error
-    ): void {
+    public checkErrors(request: CRequest, response: CResponse, exception?: Error): void {
         const fault = SoapFaultInfoExtractor.extract(response.getBody());
         // evaluate SoapFaultInfo
         if (fault) {
@@ -114,12 +91,7 @@ export class ServiceConsumer {
         }
 
         if (response.isEmpty()) {
-            throw new HttpServerError(
-                'Unexpected empty response from server',
-                request,
-                response,
-                exception
-            );
+            throw new HttpServerError('Unexpected empty response from server', request, response, exception);
         }
     }
 }

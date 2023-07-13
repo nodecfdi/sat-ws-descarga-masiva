@@ -11,7 +11,7 @@ export class MetadataContent {
      */
     constructor(
         private readonly _csvReader: CsvReader,
-        private readonly _thirdParties: ThirdPartiesRecords
+        private readonly _thirdParties: ThirdPartiesRecords,
     ) {}
 
     /**
@@ -19,7 +19,7 @@ export class MetadataContent {
      */
     public static createFromContents(
         contents: string,
-        thirdParties?: ThirdPartiesRecords | undefined
+        thirdParties?: ThirdPartiesRecords | undefined,
     ): MetadataContent {
         thirdParties = thirdParties ?? ThirdPartiesRecords.createEmpty();
         // fix known errors on metadata text file

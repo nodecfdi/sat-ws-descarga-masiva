@@ -1,19 +1,16 @@
+import https from 'node:https';
+import { type ClientRequest } from 'node:http';
 import { type CRequest } from './crequest';
 import { CResponse } from './cresponse';
 import { type WebClientInterface } from './web-client-interface';
-import https from 'node:https';
 import { WebClientException } from './exceptions/web-client-exception';
-import { type ClientRequest } from 'node:http';
 
 export class HttpsWebClient implements WebClientInterface {
     private readonly _fireRequestClosure?: CallableFunction;
 
     private readonly _fireResponseClosure?: CallableFunction;
 
-    constructor(
-        onFireRequest?: CallableFunction,
-        onFireResponse?: CallableFunction
-    ) {
+    constructor(onFireRequest?: CallableFunction, onFireResponse?: CallableFunction) {
         this._fireRequestClosure = onFireRequest;
         this._fireResponseClosure = onFireResponse;
     }
@@ -39,41 +36,24 @@ export class HttpsWebClient implements WebClientInterface {
         return new Promise((resolve, reject) => {
             let request_: ClientRequest;
             try {
-                request_ = https.request(
-                    request.getUri(),
-                    options,
-                    (response) => {
-                        const code = response.statusCode ?? 0;
-                        const body: Uint8Array[] = [];
-                        response.on('data', (chunk: Uint8Array) =>
-                            body.push(chunk)
-                        );
-                        response.on('end', () => {
-                            const responseString =
-                                Buffer.concat(body).toString();
-                            resolve(new CResponse(code, responseString));
-                        });
-                    }
-                );
+                request_ = https.request(request.getUri(), options, (response) => {
+                    const code = response.statusCode ?? 0;
+                    const body: Uint8Array[] = [];
+                    response.on('data', (chunk: Uint8Array) => body.push(chunk));
+                    response.on('end', () => {
+                        const responseString = Buffer.concat(body).toString();
+                        resolve(new CResponse(code, responseString));
+                    });
+                });
             } catch (error) {
                 const error_ = error as Error;
                 const errorResponse = new CResponse(0, error_.message, {});
-                throw new WebClientException(
-                    error_.message,
-                    request,
-                    errorResponse
-                );
+                throw new WebClientException(error_.message, request, errorResponse);
             }
 
             request_.on('error', (error) => {
                 const errorResponse = new CResponse(0, error.message, {});
-                reject(
-                    new WebClientException(
-                        error.message,
-                        request,
-                        errorResponse
-                    )
-                );
+                reject(new WebClientException(error.message, request, errorResponse));
             });
 
             request_.on('timeout', () => {

@@ -1,5 +1,5 @@
 import { InteractsXmlTrait } from '../../internal/interacts-xml-trait';
-import { RequestBuilderInterface } from '../../request-builder/request-builder-interface';
+import { type RequestBuilderInterface } from '../../request-builder/request-builder-interface';
 import { CodeRequest } from '../../shared/code-request';
 import { StatusCode } from '../../shared/status-code';
 import { StatusRequest } from '../../shared/status-request';
@@ -11,16 +11,21 @@ export class VerifyTranslator extends InteractsXmlTrait {
 
         const values = this.findAtrributes(
             env,
-            ...['body', 'VerificaSolicitudDescargaResponse', 'VerificaSolicitudDescargaResult']
+            'body',
+            'VerificaSolicitudDescargaResponse',
+            'VerificaSolicitudDescargaResult',
         );
-        const status = new StatusCode(Number(values['codestatus']) ?? 0, values['mensaje'] ?? '');
-        const statusRequest = new StatusRequest(Number(values['estadosolicitud']) ?? 0);
+        const status = new StatusCode(Number(values.codestatus), values.mensaje);
+        const statusRequest = new StatusRequest(Number(values.estadosolicitud));
 
-        const codeRequest = new CodeRequest(Number(values['codigoestadosolicitud'] ?? 0));
-        const numberCfdis = Number(values['numerocfdis']) ?? 0;
+        const codeRequest = new CodeRequest(Number(values.codigoestadosolicitud));
+        const numberCfdis = Number(values.numerocfdis);
         const packages = this.findContents(
             env,
-            ...['body', 'VerificaSolicitudDescargaResponse', 'VerificaSolicitudDescargaResult', 'IdsPaquetes']
+            'body',
+            'VerificaSolicitudDescargaResponse',
+            'VerificaSolicitudDescargaResult',
+            'IdsPaquetes',
         );
 
         return new VerifyResult(status, statusRequest, codeRequest, numberCfdis, ...packages);

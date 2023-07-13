@@ -15,23 +15,17 @@ export class DateTime {
      *
      * @throws Error if unable to create a DateTime
      */
-    constructor(
-        value?: number | string | DateTimeImmutable,
-        defaultTimeZone?: string
-    ) {
+    constructor(value?: number | string | DateTimeImmutable, defaultTimeZone?: string) {
         value = value ?? 'now';
 
         const originalValue = value;
-        this._defaultTimeZone =
-            defaultTimeZone ?? DateTimeImmutable.now().zone.name;
+        this._defaultTimeZone = defaultTimeZone ?? DateTimeImmutable.now().zone.name;
         if (typeof value === 'number') {
             this._value = DateTimeImmutable.fromSeconds(value, {
                 zone: this._defaultTimeZone,
             });
             if (!this._value.isValid) {
-                throw new Error(
-                    `Unable to create a Datetime("${originalValue as string}")`
-                );
+                throw new Error(`Unable to create a Datetime("${originalValue as string}")`);
             }
 
             return;
@@ -39,23 +33,18 @@ export class DateTime {
 
         if (typeof value === 'string') {
             if (value === 'now') {
-                value = DateTimeImmutable.fromISO(
-                    DateTimeImmutable.now().toISO() ?? '',
-                    { zone: this._defaultTimeZone }
-                );
+                value = DateTimeImmutable.fromISO(DateTimeImmutable.now().toISO() ?? '', {
+                    zone: this._defaultTimeZone,
+                });
             } else {
                 const temporary = DateTimeImmutable.fromSQL(value, {
                     zone: this._defaultTimeZone,
                 });
-                value = temporary.isValid
-                    ? temporary
-                    : DateTimeImmutable.fromISO(value);
+                value = temporary.isValid ? temporary : DateTimeImmutable.fromISO(value);
             }
 
             if (!value.isValid) {
-                throw new Error(
-                    `Unable to create a Datetime("${originalValue as string}")`
-                );
+                throw new Error(`Unable to create a Datetime("${originalValue as string}")`);
             }
         }
 
@@ -72,10 +61,7 @@ export class DateTime {
      * If value is an integer is used as a timestamp, if is a string is evaluated
      * as an argument for DateTimeImmutable and if it is DateTimeImmutable is used as is.
      */
-    public static create(
-        value?: number | string | DateTimeImmutable,
-        defaultTimeZone?: string
-    ): DateTime {
+    public static create(value?: number | string | DateTimeImmutable, defaultTimeZone?: string): DateTime {
         return new DateTime(value, defaultTimeZone);
     }
 
@@ -116,9 +102,7 @@ export class DateTime {
     }
 
     public compareTo(otherDate: DateTime): number {
-        return this.formatSat()
-            .toString()
-            .localeCompare(otherDate.formatSat().toString());
+        return this.formatSat().toString().localeCompare(otherDate.formatSat().toString());
     }
 
     public equalsTo(expectedExpires: DateTime): boolean {

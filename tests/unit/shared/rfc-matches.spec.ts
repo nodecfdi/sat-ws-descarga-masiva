@@ -62,7 +62,7 @@ describe('rfc matches', () => {
         const list = RfcMatches.create(
             RfcMatch.create('AAA010101001'),
             RfcMatch.create('AAA010101002'),
-            RfcMatch.create('AAA010101003')
+            RfcMatch.create('AAA010101003'),
         );
         const expectedJson = JSON.stringify(list.itemsToArray());
         expect(JSON.stringify(list)).toBe(expectedJson);

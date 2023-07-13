@@ -31,7 +31,7 @@ describe('Fiel request builder', () => {
         const requestBody = requestBuilder.authorization(created, expires, token);
 
         expect(Helpers.nospaces(xmlFormat(requestBody))).toBe(
-            Helpers.nospaces(fileContents('authenticate/request.xml'))
+            Helpers.nospaces(fileContents('authenticate/request.xml')),
         );
 
         // const xmlSecVeritifaction = await new EnvelopSignatureVerifier().verify(
@@ -84,7 +84,7 @@ describe('Fiel request builder', () => {
         const requestBody = requestBuilder.query(parameters);
 
         expect(Helpers.nospaces(xmlFormat(requestBody))).toBe(
-            Helpers.nospaces(fileContents('query/request-received-by-filters.xml'))
+            Helpers.nospaces(fileContents('query/request-received-by-filters.xml')),
         );
 
         // const xmlSecVeritifaction = await new EnvelopSignatureVerifier().verify(
@@ -105,7 +105,7 @@ describe('Fiel request builder', () => {
         const requestBody = requestBuilder.query(parameters);
 
         expect(Helpers.nospaces(xmlFormat(requestBody))).toBe(
-            Helpers.nospaces(fileContents('query/request-received-by-uuid.xml'))
+            Helpers.nospaces(fileContents('query/request-received-by-uuid.xml')),
         );
 
         // const xmlSecVeritifaction = await new EnvelopSignatureVerifier().verify(
@@ -127,7 +127,7 @@ describe('Fiel request builder', () => {
         const requestBody = requestBuilder.query(parameters);
 
         expect(Helpers.nospaces(xmlFormat(requestBody))).toBe(
-            Helpers.nospaces(fileContents('query/request-issued.xml'))
+            Helpers.nospaces(fileContents('query/request-issued.xml')),
         );
 
         // const xmlSecVeritifaction = await new EnvelopSignatureVerifier().verify(
@@ -143,7 +143,7 @@ describe('Fiel request builder', () => {
         const fiel = Fiel.create(
             fileContents('fake-fiel/EKU9003173C9.cer'),
             fileContents('fake-fiel/EKU9003173C9.key'),
-            fileContents('fake-fiel/EKU9003173C9-password.txt').trim()
+            fileContents('fake-fiel/EKU9003173C9-password.txt').trim(),
         );
         const requestBuilder = new FielRequestBuilder(fiel);
 
@@ -184,11 +184,11 @@ describe('Fiel request builder', () => {
             xd: 'http://www.w3.org/2000/09/xmldsig#',
         });
         expect((selectValue('//des:solicitud/@IdSolicitud', document.documentElement)[0] as Attr).value).toBe(
-            requestId
+            requestId,
         );
         expect((selectValue('//des:solicitud/@RfcSolicitante', document.documentElement)[0] as Attr).value).toBe(rfc);
         expect((selectValue('//xd:X509IssuerName/text()', document.documentElement)[0] as Element).nodeValue).toBe(
-            issuerName
+            issuerName,
         );
     });
 
@@ -196,7 +196,7 @@ describe('Fiel request builder', () => {
         const fiel = Fiel.create(
             fileContents('fake-fiel/EKU9003173C9.cer'),
             fileContents('fake-fiel/EKU9003173C9.key'),
-            fileContents('fake-fiel/EKU9003173C9-password.txt').trim()
+            fileContents('fake-fiel/EKU9003173C9-password.txt').trim(),
         );
         const requestBuilder = new FielRequestBuilder(fiel);
 
@@ -237,13 +237,13 @@ describe('Fiel request builder', () => {
             xd: 'http://www.w3.org/2000/09/xmldsig#',
         });
         expect((selectValue('//des:peticionDescarga/@idPaquete', document.documentElement)[0] as Attr).value).toBe(
-            packageId
+            packageId,
         );
         expect((selectValue('//des:peticionDescarga/@RfcSolicitante', document.documentElement)[0] as Attr).value).toBe(
-            rfc
+            rfc,
         );
         expect((selectValue('//xd:X509IssuerName/text()', document.documentElement)[0] as Element).nodeValue).toBe(
-            issuerName
+            issuerName,
         );
     });
 });

@@ -9,9 +9,7 @@ export class DateTimePeriod {
 
     constructor(start: DateTime, end: DateTime) {
         if (end.compareTo(start) < 0) {
-            throw new Error(
-                'The final date must be greater than the initial date'
-            );
+            throw new Error('The final date must be greater than the initial date');
         }
 
         this._start = start;

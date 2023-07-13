@@ -8,7 +8,7 @@ export class EnvelopSignatureVerifier {
         nameSpaceURI: string,
         mainNodeName: string,
         _includeNameSpaces: string[] = [],
-        _certificateContents = ''
+        _certificateContents = '',
     ): Promise<boolean> {
         const soapDocument = getParser().parseFromString(soapMessage, 'text/xml');
 
