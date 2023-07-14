@@ -2,7 +2,11 @@ import { randomUUID } from 'node:crypto';
 import { createReadStream, realpathSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import os from 'node:os';
-import { createInterface, type Interface } from 'node:readline';
+import * as readline from 'node:readline';
+
+export type ReadLineInterface = {
+    [Symbol.asyncIterator](): AsyncIterableIterator<string>;
+};
 
 /**
  * Helper to iterate inside a CSV file
@@ -10,14 +14,14 @@ import { createInterface, type Interface } from 'node:readline';
  * The file uses "~" as separator and "|" as text delimiter.
  */
 export class CsvReader {
-    constructor(private readonly _iterator: Interface) {}
+    constructor(private readonly _iterator: ReadLineInterface) {}
 
-    public static createIteratorFromContents(contents: string): Interface {
+    public static createIteratorFromContents(contents: string): ReadLineInterface {
         const tmpdir = realpathSync(os.tmpdir());
         const filePath = join(tmpdir, `${randomUUID()}.csv`);
         writeFileSync(filePath, contents);
 
-        const iterator = createInterface({
+        const iterator = readline.createInterface({
             input: createReadStream(filePath),
             crlfDelay: Number.POSITIVE_INFINITY,
         });

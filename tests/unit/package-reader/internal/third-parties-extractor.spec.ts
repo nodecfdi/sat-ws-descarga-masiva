@@ -1,5 +1,5 @@
 import { createReadStream } from 'node:fs';
-import { createInterface } from 'node:readline';
+import * as readline from 'node:readline';
 import { mock } from 'vitest-mock-extended';
 import { useTestCase } from '../../../test-case';
 import { CsvReader } from 'src/package-reader/internal/csv-reader';
@@ -33,7 +33,7 @@ describe('Third parties extractor', () => {
                 },
             },
         ];
-        const iterator = createInterface({
+        const iterator = readline.createInterface({
             input: createReadStream(sourcePath),
             crlfDelay: Number.POSITIVE_INFINITY,
         });
@@ -51,7 +51,7 @@ describe('Third parties extractor', () => {
     test('empty uuid is ignored', async () => {
         const sourcePath = filePath('zip/metadata-empty-uuid.txt');
         const expected = {};
-        const iterator = createInterface({
+        const iterator = readline.createInterface({
             input: createReadStream(sourcePath),
             crlfDelay: Number.POSITIVE_INFINITY,
         });
