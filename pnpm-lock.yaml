@@ -52,6 +52,9 @@ devDependencies:
   '@types/node':
     specifier: ^20.4.2
     version: 20.4.2
+  '@types/node-forge':
+    specifier: ^1.3.3
+    version: 1.3.3
   '@vitest/coverage-istanbul':
     specifier: ^0.33.0
     version: 0.33.0(vitest@0.33.0)
@@ -79,6 +82,9 @@ devDependencies:
   rimraf:
     specifier: ^5.0.1
     version: 5.0.1
+  ts-mixer:
+    specifier: ^6.0.3
+    version: 6.0.3
   tsup:
     specifier: ^7.1.0
     version: 7.1.0(ts-node@10.9.1)(typescript@5.1.6)
@@ -1223,6 +1229,12 @@ packages:
 
   /@types/minimist@1.2.2:
     resolution: {integrity: sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==}
+    dev: true
+
+  /@types/node-forge@1.3.3:
+    resolution: {integrity: sha512-SWpOXtqCNKaDO4xY+ZHrU5ih7UeEeo6frW468B/G7eJ3d9t2r9Vi/9iLHUuuvdZdv5l2yvZ10R2NlY3cV/CuWQ==}
+    dependencies:
+      '@types/node': 20.4.2
     dev: true
 
   /@types/node@12.20.55:
@@ -5104,6 +5116,10 @@ packages:
 
   /ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
+    dev: true
+
+  /ts-mixer@6.0.3:
+    resolution: {integrity: sha512-k43M7uCG1AkTyxgnmI5MPwKoUvS/bRvLvUb7+Pgpdlmok8AoqmUaZxUUw8zKM5B1lqZrt41GjYgnvAi0fppqgQ==}
     dev: true
 
   /ts-node@10.9.1(@types/node@20.4.2)(typescript@5.1.6):

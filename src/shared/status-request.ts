@@ -10,8 +10,6 @@ export class StatusRequest {
         { code: 6, name: 'Expired', message: 'Vencida' },
     ];
 
-    private readonly index?: number;
-
     private readonly value!: { code?: number; name: string; message: string };
 
     /**
@@ -28,7 +26,6 @@ export class StatusRequest {
             }
 
             this.value = value;
-            this.index = value.code;
         }
 
         if (typeof index === 'string') {
@@ -40,7 +37,6 @@ export class StatusRequest {
             }
 
             this.value = value;
-            this.index = value.code;
         }
     }
 
@@ -61,7 +57,7 @@ export class StatusRequest {
     }
 
     public getValue(): number | undefined {
-        return this.index;
+        return this.value.code;
     }
 
     public isTypeOf(type: StatusRequestTypes): boolean {
@@ -70,7 +66,7 @@ export class StatusRequest {
 
     public toJSON(): { value: number | undefined; message: string } {
         return {
-            value: this.index,
+            value: this.value.code,
             message: this.value.message,
         };
     }

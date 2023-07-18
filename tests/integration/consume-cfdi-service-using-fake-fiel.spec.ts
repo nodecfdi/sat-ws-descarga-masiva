@@ -34,14 +34,14 @@ describe('consume cfdi service using fake fiel', () => {
     test('authentication', async () => {
         const token = await service.authenticate();
         expect(token.isValid()).toBeTruthy();
-    }, 30_000);
+    }, 50_000);
 
     test('query default parameters', async () => {
         const parameters = QueryParameters.create();
 
         const result = await service.query(parameters);
         expect(result.getStatus().getCode()).toBe(305);
-    }, 30_000);
+    }, 50_000);
 
     test('query change all parameteres', async () => {
         const parameters = QueryParameters.create()
@@ -56,21 +56,21 @@ describe('consume cfdi service using fake fiel', () => {
 
         const result = await service.query(parameters);
         expect(result.getStatus().getCode()).toBe(305);
-    }, 30_000);
+    }, 50_000);
 
     test('query uuid', async () => {
         const parameters = QueryParameters.create().withUuid(Uuid.create('96623061-61fe-49de-b298-c7156476aa8b'));
 
         const result = await service.query(parameters);
         expect(result.getStatus().getCode()).toBe(305);
-    }, 30_000);
+    }, 50_000);
 
     test('service endpoints different than query endpoints throws error', async () => {
         const otherServiceType = new ServiceType('retenciones');
         const parameters = QueryParameters.create().withServiceType(otherServiceType);
         const result = async (): Promise<QueryResult> => service.query(parameters);
         await expect(result).rejects.toThrow(Error);
-    }, 30_000);
+    }, 50_000);
 
     test('verify', async () => {
         const requestId = '3edbd462-9fa0-4363-b60f-bac332338028';
@@ -78,7 +78,7 @@ describe('consume cfdi service using fake fiel', () => {
         const result = await service.verify(requestId);
 
         expect(result.getStatus().getCode()).toBe(305);
-    }, 30_000);
+    }, 50_000);
 
     test('download', async () => {
         const requestId = '4e80345d-917f-40bb-a98f-4a73939343c5_01';
@@ -86,5 +86,5 @@ describe('consume cfdi service using fake fiel', () => {
         const result = await service.download(requestId);
 
         expect(result.getStatus().getCode()).toBe(305);
-    }, 30_000);
+    }, 50_000);
 });
