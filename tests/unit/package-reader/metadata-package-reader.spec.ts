@@ -1,5 +1,5 @@
-import { MetadataPackageReader } from '~/package-reader/metadata-package-reader';
-import { TestCase } from '../../test-case';
+import { useTestCase } from '../../test-case';
+import { MetadataPackageReader } from 'src/package-reader/metadata-package-reader';
 /**
  * This tests uses the Zip file located at tests/_files/zip/metadata.zip that contains:
  *
@@ -11,11 +11,12 @@ import { TestCase } from '../../test-case';
  * other.txt // file with incorrect extension and incorrect content
  */
 describe('metadata package reader', () => {
+    const { filePath, fileContents } = useTestCase();
     test('count all contents', async () => {
         const expectedNumberFiles = 1;
         const expectedNUmberRows = 2;
 
-        const filename = TestCase.filePath('zip/metadata.zip');
+        const filename = filePath('zip/metadata.zip');
         const metadataPackageReader = await MetadataPackageReader.createFromFile(filename);
 
         const content = await metadataPackageReader.metadataToArray();
@@ -25,7 +26,7 @@ describe('metadata package reader', () => {
     });
 
     test('retrieve metadata contents', async () => {
-        const filename = TestCase.filePath('zip/metadata.zip');
+        const filename = filePath('zip/metadata.zip');
         const metadataPackageReader = await MetadataPackageReader.createFromFile(filename);
         const metadata = await metadataPackageReader.metadataToArray();
 
@@ -33,9 +34,9 @@ describe('metadata package reader', () => {
 
         const extracted: string[] = [];
 
-        metadata.forEach((item) => {
+        for (const item of metadata) {
             extracted.push(item.get('uuid'));
-        });
+        }
 
         const expected = ['E7215E3B-2DC5-4A40-AB10-C902FF9258DF', '129C4D12-1415-4ACE-BE12-34E71C4EAB4E'];
 
@@ -43,12 +44,12 @@ describe('metadata package reader', () => {
     });
 
     test('create from file and contents', async () => {
-        const filename = TestCase.filePath('zip/metadata.zip');
+        const filename = filePath('zip/metadata.zip');
         const first = await MetadataPackageReader.createFromFile(filename);
 
         expect(first.getFilename()).toBe(filename);
 
-        const contents = TestCase.fileContents('zip/metadata.zip');
+        const contents = fileContents('zip/metadata.zip');
         const second = await MetadataPackageReader.createFromContents(contents);
         const metadata1 = await first.metadataToArray();
         const metadata2 = await second.metadataToArray();
@@ -62,53 +63,53 @@ describe('metadata package reader', () => {
          * It contains 4 metadata records and also a third parties file with
          * with 3 references, unsorted, with different upper and lower cases.
          */
-        const zipFilename = TestCase.filePath('zip/metadata-terceros.zip');
+        const zipFilename = filePath('zip/metadata-terceros.zip');
 
         const packageReader = await MetadataPackageReader.createFromFile(zipFilename);
-        const extracted: Record<string, string>[] = [];
+        const extracted: Array<Record<string, string>> = [];
 
         const values = await packageReader.metadataToArray();
 
-        values.forEach((item) => {
+        for (const item of values) {
             extracted.push({
                 uuid: item.get('uuid').toLowerCase(),
                 rfcACuentaTerceros: item.get('rfcACuentaTerceros'),
-                nombreACuentaTerceros: item.get('nombreACuentaTerceros')
+                nombreACuentaTerceros: item.get('nombreACuentaTerceros'),
             });
-        });
+        }
 
         const expectedRecords = [
             {
                 uuid: '11111111-aaaa-bbbb-0000-000000000001',
                 rfcACuentaTerceros: '',
-                nombreACuentaTerceros: ''
+                nombreACuentaTerceros: '',
             },
             {
                 uuid: '11111111-aaaa-bbbb-0000-000000000002',
                 rfcACuentaTerceros: 'AAAA010101AA1',
-                nombreACuentaTerceros: 'PERSONA FISICA UNO'
+                nombreACuentaTerceros: 'PERSONA FISICA UNO',
             },
             {
                 uuid: '11111111-aaaa-bbbb-0000-000000000003',
                 rfcACuentaTerceros: 'AAAA010101AA2',
-                nombreACuentaTerceros: 'PERSONA FISICA DOS'
+                nombreACuentaTerceros: 'PERSONA FISICA DOS',
             },
             {
                 uuid: '11111111-aaaa-bbbb-0000-000000000004',
                 rfcACuentaTerceros: 'AAAA010101AA3',
-                nombreACuentaTerceros: 'PERSONA FISICA TRES'
+                nombreACuentaTerceros: 'PERSONA FISICA TRES',
             },
             {
                 uuid: '11111111-aaaa-bbbb-0000-000000000005',
                 rfcACuentaTerceros: '',
-                nombreACuentaTerceros: ''
-            }
+                nombreACuentaTerceros: '',
+            },
         ];
         expect(extracted).toStrictEqual(expectedRecords);
     });
 
     test('json', async () => {
-        const zipFilename = TestCase.filePath('zip/metadata.zip');
+        const zipFilename = filePath('zip/metadata.zip');
         const packageReader = await MetadataPackageReader.createFromFile(zipFilename);
 
         // assert fileName
@@ -123,14 +124,14 @@ describe('metadata package reader', () => {
         // assert metadataItems
         const expectedMetadata = ['E7215E3B-2DC5-4A40-AB10-C902FF9258DF', '129C4D12-1415-4ACE-BE12-34E71C4EAB4E'];
         const jsonDataMetadata = jsonData.metadata;
-        expect(Object.keys(jsonDataMetadata).sort()).toStrictEqual(expectedMetadata.sort());
+        expect(Object.keys(jsonDataMetadata)).toStrictEqual(expectedMetadata);
     });
 
     test('metadata json', async () => {
-        const zipFilename = TestCase.filePath('zip/metadata.zip');
+        const zipFilename = filePath('zip/metadata.zip');
         const packageReader = await MetadataPackageReader.createFromFile(zipFilename);
 
-        const expectedFile = JSON.parse(TestCase.fileContents('zip/metadata.json'));
+        const expectedFile = JSON.parse(fileContents('zip/metadata.json')) as Record<string, unknown>;
 
         const map = Object.entries(expectedFile);
         const metadata = await packageReader.metadataToArray();

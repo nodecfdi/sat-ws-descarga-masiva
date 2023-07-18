@@ -1,22 +1,23 @@
-import { DateTime } from '~/shared/date-time';
-import { DateTimePeriod } from '~/shared/date-time-period';
-import { DownloadType } from '~/shared/download-type';
-import { RequestType } from '~/shared/request-type';
-import { QueryParameters } from '~/services/query/query-parameters';
-import { TestCase } from '../../../test-case';
-import { DocumentStatus } from '~/shared/document-status';
-import { DocumentType } from '~/shared/document-type';
-import { Uuid } from '~/shared/uuid';
-import { RfcOnBehalf } from '~/shared/rfc-on-behalf';
-import { RfcMatches } from '~/shared/rfc-matches';
-import { ComplementoCfdi } from '~/shared/complemento-cfdi';
-import { RfcMatch } from '~/shared/rfc-match';
+import { useTestCase } from '../../../test-case';
+import { DateTime } from 'src/shared/date-time';
+import { DateTimePeriod } from 'src/shared/date-time-period';
+import { DownloadType } from 'src/shared/download-type';
+import { RequestType } from 'src/shared/request-type';
+import { QueryParameters } from 'src/services/query/query-parameters';
+import { DocumentStatus } from 'src/shared/document-status';
+import { DocumentType } from 'src/shared/document-type';
+import { Uuid } from 'src/shared/uuid';
+import { RfcOnBehalf } from 'src/shared/rfc-on-behalf';
+import { RfcMatches } from 'src/shared/rfc-matches';
+import { ComplementoCfdi } from 'src/shared/complemento-cfdi';
+import { RfcMatch } from 'src/shared/rfc-match';
 
 describe('query parameters', () => {
+    const { fileContents } = useTestCase();
     test('all properties', () => {
         const period = DateTimePeriod.create(
             DateTime.create('2019-01-01 00:00:00'),
-            DateTime.create('2019-01-01 00:04:00')
+            DateTime.create('2019-01-01 00:04:00'),
         );
         const downloadType = new DownloadType('received');
         const requestType = new RequestType('xml');
@@ -57,7 +58,7 @@ describe('query parameters', () => {
     test('minimal create', () => {
         const period = DateTimePeriod.create(
             DateTime.create('2019-01-01 00:00:00'),
-            DateTime.create('2019-01-01 00:04:00')
+            DateTime.create('2019-01-01 00:04:00'),
         );
 
         const query = QueryParameters.create(period);
@@ -85,7 +86,7 @@ describe('query parameters', () => {
             .withRfcOnBehalf(RfcOnBehalf.create('XXX01010199A'))
             .withRfcMatch(RfcMatch.create('AAAA010101AAA'));
 
-        const expectedFile = TestCase.fileContents('json/query-parameters.json');
+        const expectedFile = fileContents('json/query-parameters.json');
 
         expect(JSON.stringify(query)).toBe(JSON.stringify(JSON.parse(expectedFile)));
     });

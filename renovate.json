@@ -1,18 +1,32 @@
 {
-    "extends": ["config:base", "schedule:earlyMondays"],
+    "extends": [
+        "config:base",
+        "schedule:earlyMondays"
+    ],
     "rangeStrategy": "replace",
-    "labels": ["dependencies"],
+    "labels": [
+        "dependencies"
+    ],
     "timezone": "America/Mexico_City",
     "ignoreDeps": [],
     "packageRules": [
         {
-            "updateTypes": ["minor", "patch", "pin", "digest"],
+            "updateTypes": [
+                "minor",
+                "patch",
+                "pin",
+                "digest"
+            ],
             "automerge": true
         },
         {
-            "packagePatterns": ["^eslint"],
+            "packagePatterns": [
+                "^eslint"
+            ],
             "groupName": "eslint packages",
-            "addLabels": ["eslint"]
+            "addLabels": [
+                "eslint"
+            ]
         }
     ]
 }

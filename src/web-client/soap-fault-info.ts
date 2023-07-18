@@ -1,7 +1,7 @@
 export class SoapFaultInfo {
-    private _code: string;
+    private readonly _code: string;
 
-    private _message: string;
+    private readonly _message: string;
 
     constructor(code: string, message: string) {
         this._code = code;
@@ -19,7 +19,7 @@ export class SoapFaultInfo {
     public toJSON(): { code: string; message: string } {
         return {
             code: this._code,
-            message: this._message
+            message: this._message,
         };
     }
 }

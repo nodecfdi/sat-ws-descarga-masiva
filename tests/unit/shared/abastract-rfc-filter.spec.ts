@@ -1,5 +1,6 @@
-import { AbstractRfcFilter } from '~/shared/abstract-rfc-filter';
 import { RfcFilterImplementation } from './rfc-filter-implementation';
+import { type AbstractRfcFilter } from 'src/shared/abstract-rfc-filter';
+
 describe('abstract rfc filter', () => {
     test('create with correct value', () => {
         const value = 'XXX01010199A';
@@ -14,7 +15,7 @@ describe('abstract rfc filter', () => {
 
     const providerInvalidValues = [
         ['empty', ''],
-        ['invalid', 'XXX99120099A']
+        ['invalid', 'XXX99120099A'],
     ];
 
     test.each(providerInvalidValues)('construct with invalid value %s', (_name: string, value: string) => {

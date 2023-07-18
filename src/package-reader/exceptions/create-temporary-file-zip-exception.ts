@@ -9,7 +9,7 @@ export class CreateTemporaryZipFileException extends PackageReaderException {
     }
 
     public static create(message: string, previous?: Error): CreateTemporaryZipFileException {
-        const messageToSend = previous && previous.message != '' ? `${message} : ${previous.message}` : message;
+        const messageToSend = previous && previous.message !== '' ? `${message} : ${previous.message}` : message;
 
         return new CreateTemporaryZipFileException(messageToSend, previous);
     }

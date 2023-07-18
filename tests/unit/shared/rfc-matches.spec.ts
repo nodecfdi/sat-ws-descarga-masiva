@@ -1,11 +1,14 @@
-import { RfcMatches } from '~/shared/rfc-matches';
-import { RfcMatch } from '~/shared/rfc-match';
+import { RfcMatches } from 'src/shared/rfc-matches';
+import { RfcMatch } from 'src/shared/rfc-match';
+
 describe('rfc matches', () => {
     test('object definition', () => {
         const list = RfcMatches.create();
+        // eslint-disable-next-line @typescript-eslint/unbound-method
         expect(list.toJSON).toBeDefined();
+        // eslint-disable-next-line @typescript-eslint/unbound-method
         expect(list.count).toBeDefined();
-        expect(Symbol.iterator in Object(list)).toBeTruthy();
+        expect(Symbol.iterator in list).toBeTruthy();
     });
 
     test('create empty', () => {
@@ -18,7 +21,7 @@ describe('rfc matches', () => {
         const items = [
             RfcMatch.create('AAA010101001'),
             RfcMatch.create('AAA010101002'),
-            RfcMatch.create('AAA010101003')
+            RfcMatch.create('AAA010101003'),
         ];
         const list = RfcMatches.create(...items);
         expect(list.count()).toBe(3);
@@ -37,7 +40,7 @@ describe('rfc matches', () => {
             RfcMatch.create('AAA010101001'), // repeated
             RfcMatch.create('AAA010101001'), // repeated
             RfcMatch.create('AAA010101002'), // repeated
-            RfcMatch.create('AAA010101002') // repeated
+            RfcMatch.create('AAA010101002'), // repeated
         ];
         const list = RfcMatches.create(...items);
         expect(list.count()).toBe(2);
@@ -59,7 +62,7 @@ describe('rfc matches', () => {
         const list = RfcMatches.create(
             RfcMatch.create('AAA010101001'),
             RfcMatch.create('AAA010101002'),
-            RfcMatch.create('AAA010101003')
+            RfcMatch.create('AAA010101003'),
         );
         const expectedJson = JSON.stringify(list.itemsToArray());
         expect(JSON.stringify(list)).toBe(expectedJson);

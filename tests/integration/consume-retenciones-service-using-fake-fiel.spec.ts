@@ -1,31 +1,33 @@
-import { TestCase } from '../test-case';
-import { RequestBuilderInterface } from '~/request-builder/request-builder-interface';
-import { Service } from '~/service';
-import { DateTimePeriod } from '~/shared/date-time-period';
-import { QueryParameters } from '~/services/query/query-parameters';
-import { DownloadType } from '~/shared/download-type';
-import { RequestType } from '~/shared/request-type';
-import { ServiceEndpoints } from '~/shared/service-endpoints';
-import { DocumentStatus } from '~/shared/document-status';
-import { RfcOnBehalf } from '~/shared/rfc-on-behalf';
-import { RfcMatch } from '~/shared/rfc-match';
-import { Uuid } from '~/shared/uuid';
-import { ServiceType } from '~/shared/service-type';
-import { QueryResult } from '~/services/query/query-result';
-import { ComplementoRetenciones } from '~/shared/complemento-retenciones';
-import { HttpsWebClient } from '~/web-client/https-web-client';
+import { useTestCase } from '../test-case';
+import { type RequestBuilderInterface } from 'src/request-builder/request-builder-interface';
+import { Service } from 'src/service';
+import { DateTimePeriod } from 'src/shared/date-time-period';
+import { QueryParameters } from 'src/services/query/query-parameters';
+import { DownloadType } from 'src/shared/download-type';
+import { RequestType } from 'src/shared/request-type';
+import { ServiceEndpoints } from 'src/shared/service-endpoints';
+import { DocumentStatus } from 'src/shared/document-status';
+import { RfcOnBehalf } from 'src/shared/rfc-on-behalf';
+import { RfcMatch } from 'src/shared/rfc-match';
+import { Uuid } from 'src/shared/uuid';
+import { ServiceType } from 'src/shared/service-type';
+import { type QueryResult } from 'src/services/query/query-result';
+import { ComplementoRetenciones } from 'src/shared/complemento-retenciones';
+import { HttpsWebClient } from 'src/web-client/https-web-client';
 
 describe('consume retenciones service using fake fiel', () => {
     let requestBuilder: RequestBuilderInterface;
     let webClient: HttpsWebClient;
     let service: Service;
 
+    const { createFielRequestBuilderUsingTestingFiles } = useTestCase();
+
     function getServiceEndpoints(): ServiceEndpoints {
         return ServiceEndpoints.retenciones();
     }
 
     beforeEach(() => {
-        requestBuilder = TestCase.createFielRequestBuilderUsingTestingFiles();
+        requestBuilder = createFielRequestBuilderUsingTestingFiles();
         webClient = new HttpsWebClient();
         service = new Service(requestBuilder, webClient, undefined, getServiceEndpoints());
     });
@@ -33,14 +35,14 @@ describe('consume retenciones service using fake fiel', () => {
     test('authentication', async () => {
         const token = await service.authenticate();
         expect(token.isValid()).toBeTruthy();
-    }, 30000);
+    }, 30_000);
 
     test('query default parameters', async () => {
         const parameters = QueryParameters.create();
 
         const result = await service.query(parameters);
         expect(result.getStatus().getCode()).toBe(305);
-    }, 30000);
+    }, 30_000);
 
     test('query change all parameteres', async () => {
         const parameters = QueryParameters.create()
@@ -54,21 +56,21 @@ describe('consume retenciones service using fake fiel', () => {
 
         const result = await service.query(parameters);
         expect(result.getStatus().getCode()).toBe(305);
-    }, 30000);
+    }, 30_000);
 
     test('query uuid', async () => {
         const parameters = QueryParameters.create().withUuid(Uuid.create('96623061-61fe-49de-b298-c7156476aa8b'));
 
         const result = await service.query(parameters);
         expect(result.getStatus().getCode()).toBe(305);
-    }, 30000);
+    }, 30_000);
 
     test('service endpoints different than query endpoints throws error', async () => {
         const otherServiceType = new ServiceType('cfdi');
         const parameters = QueryParameters.create().withServiceType(otherServiceType);
-        const result = async (): Promise<QueryResult> => await service.query(parameters);
+        const result = async (): Promise<QueryResult> => service.query(parameters);
         await expect(result).rejects.toThrow(Error);
-    }, 30000);
+    }, 30_000);
 
     test('verify', async () => {
         const requestId = '3edbd462-9fa0-4363-b60f-bac332338028';
@@ -76,7 +78,7 @@ describe('consume retenciones service using fake fiel', () => {
         const result = await service.verify(requestId);
 
         expect(result.getStatus().getCode()).toBe(305);
-    }, 30000);
+    }, 30_000);
 
     test('download', async () => {
         const requestId = '4e80345d-917f-40bb-a98f-4a73939343c5_01';
@@ -84,5 +86,5 @@ describe('consume retenciones service using fake fiel', () => {
         const result = await service.download(requestId);
 
         expect(result.getStatus().getCode()).toBe(305);
-    }, 30000);
+    }, 30_000);
 });

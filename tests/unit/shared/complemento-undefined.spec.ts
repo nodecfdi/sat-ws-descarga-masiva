@@ -1,4 +1,5 @@
-import { ComplementoUndefined } from '~/shared/complemento-undefined';
+import { ComplementoUndefined } from 'src/shared/complemento-undefined';
+
 describe('complemento Undefined', () => {
     test('create undefined by name', () => {
         const complemento = ComplementoUndefined.undefined() as ComplementoUndefined;

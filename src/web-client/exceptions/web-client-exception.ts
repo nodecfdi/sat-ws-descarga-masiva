@@ -1,10 +1,10 @@
-import { CRequest } from '../crequest';
-import { CResponse } from '../cresponse';
+import { type CRequest } from '../crequest';
+import { type CResponse } from '../cresponse';
 
 export class WebClientException extends Error {
-    private _request: CRequest;
+    private readonly _request: CRequest;
 
-    private _response: CResponse;
+    private readonly _response: CResponse;
 
     private readonly _previous?: Error;
 

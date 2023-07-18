@@ -1,17 +1,9 @@
-*.sh
 node_modules
-*.md
-*.woff
-*.ttf
-.vscode
-.idea
+coverage
 dist
-/public
-/docs
-/vendor
-.husky
-.local
-/bin
-/coverage
-tests/tsconfig.json
-/examples
+docs
+temp
+
+# Config files
+tsup.config.ts
+vitest.config.ts

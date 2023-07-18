@@ -1,9 +1,9 @@
-import { StatusCode } from '../../shared/status-code';
+import { type StatusCode } from '../../shared/status-code';
 
 export class QueryResult {
-    private _status: StatusCode;
+    private readonly _status: StatusCode;
 
-    private _requestId: string;
+    private readonly _requestId: string;
 
     constructor(statusCode: StatusCode, requestId: string) {
         this._status = statusCode;
@@ -27,7 +27,7 @@ export class QueryResult {
     public toJSON(): { status: StatusCode; requestId: string } {
         return {
             status: this._status,
-            requestId: this._requestId
+            requestId: this._requestId,
         };
     }
 }

@@ -1,4 +1,4 @@
-import { SignatureAlgorithm, Credential } from '@nodecfdi/credentials';
+import { Credential } from '@nodecfdi/credentials';
 
 /**
  * Defines a eFirma/FIEL/FEA
@@ -7,7 +7,7 @@ import { SignatureAlgorithm, Credential } from '@nodecfdi/credentials';
  * @see Credential
  */
 export class Fiel {
-    constructor(private _credential: Credential) {}
+    constructor(private readonly _credential: Credential) {}
 
     /**
      * Create a Fiel based on certificate and private key contents
@@ -18,7 +18,7 @@ export class Fiel {
         return new Fiel(credential);
     }
 
-    public sign(toSign: string, algorithm: SignatureAlgorithm = SignatureAlgorithm.SHA1): string {
+    public sign(toSign: string, algorithm: 'md5' | 'sha1' | 'sha256' | 'sha384' | 'sha512'): string {
         return this._credential.sign(toSign, algorithm);
     }
 
@@ -26,6 +26,7 @@ export class Fiel {
         if (!this._credential.certificate().satType().isFiel()) {
             return false;
         }
+
         if (!this._credential.certificate().validOn()) {
             return false;
         }

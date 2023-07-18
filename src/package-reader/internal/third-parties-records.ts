@@ -1,8 +1,8 @@
-import { PackageReaderInterface } from '../package-reader-interface';
-import { ThirdPartiesExtractor, ThirdPartiesInterface } from './third-parties-extractor';
+import { type PackageReaderInterface } from '../package-reader-interface';
+import { ThirdPartiesExtractor, type ThirdPartiesInterface } from './third-parties-extractor';
 
 export class ThirdPartiesRecords {
-    constructor(private _records: Record<string, ThirdPartiesInterface>) {}
+    constructor(private readonly _records: Record<string, ThirdPartiesInterface | undefined>) {}
 
     public static createEmpty(): ThirdPartiesRecords {
         return new ThirdPartiesRecords({});
@@ -24,8 +24,8 @@ export class ThirdPartiesRecords {
         return uuid.toLowerCase();
     }
 
-    public addToData(data: Record<string, string>): Record<string, string> {
-        const uuid = data['Uuid'] ?? '';
+    public addToData(data: Record<string, string | undefined>): Record<string, string> {
+        const uuid = data.Uuid ?? '';
         const values = this.getDataFromUuid(uuid);
 
         return { ...data, ...values };
@@ -34,7 +34,7 @@ export class ThirdPartiesRecords {
     public getDataFromUuid(uuid: string): ThirdPartiesInterface {
         const defaultValue = {
             RfcACuentaTerceros: '',
-            NombreACuentaTerceros: ''
+            NombreACuentaTerceros: '',
         };
 
         return this._records[ThirdPartiesRecords.formatUuid(uuid)] ?? defaultValue;

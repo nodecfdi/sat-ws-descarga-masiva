@@ -1,11 +1,11 @@
-import { DateTime as DateTimeImmutable, DurationLike } from 'luxon';
+import { DateTime as DateTimeImmutable, type DurationLike } from 'luxon';
 /**
  * Defines a date and time
  */
 export class DateTime {
     private _value: DateTimeImmutable;
 
-    private _defaultTimeZone: string;
+    private readonly _defaultTimeZone: string;
 
     /**
      * DateTime constructor.
@@ -19,29 +19,39 @@ export class DateTime {
         value = value ?? 'now';
 
         const originalValue = value;
-        this._defaultTimeZone = defaultTimeZone || DateTimeImmutable.now().zone.name;
-        if (typeof value == 'number') {
-            this._value = DateTimeImmutable.fromSeconds(value, { zone: this._defaultTimeZone });
+        this._defaultTimeZone = defaultTimeZone ?? DateTimeImmutable.now().zone.name;
+        if (typeof value === 'number') {
+            this._value = DateTimeImmutable.fromSeconds(value, {
+                zone: this._defaultTimeZone,
+            });
             if (!this._value.isValid) {
-                throw new Error(`Unable to create a Datetime("${originalValue}")`);
+                throw new Error(`Unable to create a Datetime("${originalValue as string}")`);
             }
 
             return;
         }
-        if (typeof value == 'string') {
-            if (value == 'now') {
-                value = DateTimeImmutable.fromISO(DateTimeImmutable.now().toISO(), { zone: this._defaultTimeZone });
+
+        if (typeof value === 'string') {
+            if (value === 'now') {
+                value = DateTimeImmutable.fromISO(DateTimeImmutable.now().toISO() ?? '', {
+                    zone: this._defaultTimeZone,
+                });
             } else {
-                const temp = DateTimeImmutable.fromSQL(value, { zone: this._defaultTimeZone });
-                value = temp.isValid ? temp : DateTimeImmutable.fromISO(value);
+                const temporary = DateTimeImmutable.fromSQL(value, {
+                    zone: this._defaultTimeZone,
+                });
+                value = temporary.isValid ? temporary : DateTimeImmutable.fromISO(value);
             }
+
             if (!value.isValid) {
-                throw new Error(`Unable to create a Datetime("${originalValue}")`);
+                throw new Error(`Unable to create a Datetime("${originalValue as string}")`);
             }
         }
+
         if (!(value instanceof DateTimeImmutable) || !value.isValid) {
             throw new Error('Unable to create a Datetime');
         }
+
         this._value = value;
     }
 
@@ -64,9 +74,10 @@ export class DateTime {
     }
 
     public format(format: string, timezone = ''): string {
-        if (timezone == '') {
+        if (timezone === '') {
             timezone = this._defaultTimeZone;
         }
+
         this._value = this._value.setZone(timezone);
 
         return this._value.toFormat(format);
@@ -77,7 +88,7 @@ export class DateTime {
     }
 
     public formatTimeZone(timezone: string): string {
-        return this._value.setZone(timezone).toISO();
+        return this._value.setZone(timezone).toISO() ?? '';
     }
 
     /**
@@ -85,17 +96,17 @@ export class DateTime {
      *
      */
     public modify(time: DurationLike): DateTime {
-        const temp = this._value;
+        const temporary = this._value;
 
-        return new DateTime(temp.plus(time));
+        return new DateTime(temporary.plus(time));
     }
 
     public compareTo(otherDate: DateTime): number {
-        return (this.formatSat() ?? 0).toString().localeCompare((otherDate.formatSat() ?? 0).toString());
+        return this.formatSat().toString().localeCompare(otherDate.formatSat().toString());
     }
 
     public equalsTo(expectedExpires: DateTime): boolean {
-        return this.formatSat() == expectedExpires.formatSat();
+        return this.formatSat() === expectedExpires.formatSat();
     }
 
     public toJSON(): number {

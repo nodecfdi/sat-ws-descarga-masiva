@@ -1,11 +1,11 @@
 import { BaseEnum } from './enum/base-enum';
-import { ServiceType } from './service-type';
+import { type ServiceType } from './service-type';
 
 export type RequestTypeTypes = 'xml' | 'metadata';
 
 enum RequestTypeEnum {
     xml = 'xml',
-    metadata = 'metadata'
+    metadata = 'metadata',
 }
 
 export class RequestType extends BaseEnum<RequestTypeTypes> {
@@ -13,6 +13,7 @@ export class RequestType extends BaseEnum<RequestTypeTypes> {
         if (this.isTypeOf('xml') && serviceType.isTypeOf('cfdi')) {
             return 'CFDI';
         }
+
         if (this.isTypeOf('xml') && serviceType.isTypeOf('retenciones')) {
             return 'Retencion';
         }

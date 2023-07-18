@@ -1,0 +1,13 @@
+{
+    "entryPoints": [
+        "src/index.ts"
+    ],
+    "entryPointStrategy": "expand",
+    "out": "docs",
+    "plugin": [
+        "typedoc-theme-hierarchy"
+    ],
+    "theme": "hierarchy",
+    "tsconfig": "./tsconfig.json",
+    "name": "@nodecfdi/sat-ws-descarga-masiva"
+}

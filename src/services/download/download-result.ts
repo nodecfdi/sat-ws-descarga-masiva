@@ -1,9 +1,12 @@
-import { StatusCode } from '../../shared/status-code';
+import { type StatusCode } from '../../shared/status-code';
 
 export class DownloadResult {
-    private _packageSize: number;
+    private readonly _packageSize: number;
 
-    constructor(private _status: StatusCode, private _packageContent: string) {
+    constructor(
+        private readonly _status: StatusCode,
+        private readonly _packageContent: string,
+    ) {
         this._packageSize = _packageContent.length;
     }
 
@@ -31,7 +34,7 @@ export class DownloadResult {
     public toJSON(): { status: StatusCode; length: number } {
         return {
             status: this._status,
-            length: this._packageSize
+            length: this._packageSize,
         };
     }
 }

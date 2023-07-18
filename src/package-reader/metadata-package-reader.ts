@@ -2,11 +2,14 @@ import { MetadataFileFilter } from './internal/file-filters/metadata-file-filter
 import { FilteredPackageReader } from './internal/filtered-package-reader';
 import { MetadataContent } from './internal/metadata-content';
 import { ThirdPartiesRecords } from './internal/third-parties-records';
-import { MetadataItem } from './metadata-item';
-import { PackageReaderInterface } from './package-reader-interface';
+import { type MetadataItem } from './metadata-item';
+import { type PackageReaderInterface } from './package-reader-interface';
 
 export class MetadataPackageReader implements PackageReaderInterface {
-    constructor(private _packageReader: PackageReaderInterface, private _thirdParties?: ThirdPartiesRecords) {}
+    constructor(
+        private readonly _packageReader: PackageReaderInterface,
+        private _thirdParties?: ThirdPartiesRecords,
+    ) {}
 
     public static async createFromFile(fileName: string): Promise<MetadataPackageReader> {
         const packageReader = await FilteredPackageReader.createFromFile(fileName);
@@ -38,8 +41,9 @@ export class MetadataPackageReader implements PackageReaderInterface {
     public async *metadata(): AsyncGenerator<MetadataItem> {
         let reader: MetadataContent;
         for await (const content of this._packageReader.fileContents()) {
-            for (const [_key, value] of content) {
-                reader = MetadataContent.createFromContents(value, await this.getThirdParties());
+            const parties = await this.getThirdParties();
+            for await (const [, value] of content) {
+                reader = MetadataContent.createFromContents(value, parties);
                 for await (const item of reader.eachItem()) {
                     yield item;
                 }
@@ -53,7 +57,7 @@ export class MetadataPackageReader implements PackageReaderInterface {
 
     public async count(): Promise<number> {
         let count = 0;
-        for await (const _item of this.fileContents()) {
+        for await (const [,] of this.fileContents()) {
             count++;
         }
 
@@ -80,7 +84,7 @@ export class MetadataPackageReader implements PackageReaderInterface {
         return {
             source: filtered.source,
             files: filtered.files,
-            metadata
+            metadata,
         };
     }
 

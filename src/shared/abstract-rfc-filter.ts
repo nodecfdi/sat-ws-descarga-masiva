@@ -1,11 +1,12 @@
 import { Rfc } from '@nodecfdi/rfc';
+
 export class AbstractRfcFilter {
-    protected constructor(private _value?: Rfc) {}
+    protected constructor(private readonly _value?: Rfc) {}
 
     public static create(value: string): AbstractRfcFilter {
         try {
             return new AbstractRfcFilter(Rfc.parse(value));
-        } catch (error) {
+        } catch {
             throw new Error('RFC is invalid');
         }
     }
@@ -19,7 +20,7 @@ export class AbstractRfcFilter {
             AbstractRfcFilter.create(value);
 
             return true;
-        } catch (error) {
+        } catch {
             return false;
         }
     }

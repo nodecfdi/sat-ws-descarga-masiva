@@ -1,4 +1,5 @@
-import { ServiceType } from '~/shared/service-type';
+import { ServiceType } from 'src/shared/service-type';
+
 describe('service type', () => {
     test('equal to', () => {
         const firstCfdi = new ServiceType('cfdi');
@@ -9,7 +10,7 @@ describe('service type', () => {
 
     test.each([
         ['cfdi', new ServiceType('cfdi')],
-        ['retenciones', new ServiceType('retenciones')]
+        ['retenciones', new ServiceType('retenciones')],
     ])('json encode %s', (_name: string, serviceType: ServiceType) => {
         const json = JSON.stringify(serviceType);
         const expected = JSON.stringify(serviceType.value());

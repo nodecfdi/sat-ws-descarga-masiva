@@ -1,5 +1,5 @@
-import { DateTime } from '../shared/date-time';
-import { QueryParameters } from '../services/query/query-parameters';
+import { type DateTime } from '../shared/date-time';
+import { type QueryParameters } from '../services/query/query-parameters';
 /**
  * The implementors must create the request signed ready to send to the SAT Web Service Descarga Masiva
  * The information about owner like RFC, certificate, private key, etc. are outside the scope of this interface

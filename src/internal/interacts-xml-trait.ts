@@ -6,7 +6,7 @@ import { getParser } from '@nodecfdi/cfdiutils-common';
  */
 export class InteractsXmlTrait {
     public readXmlDocument(source: string): Document {
-        if ('' == source) {
+        if (source === '') {
             throw new Error('Cannot load an xml with empty content');
         }
 
@@ -29,14 +29,10 @@ export class InteractsXmlTrait {
         let index = 0;
         for (index; index < children.length; index++) {
             const child = children[index];
-            if (child.ELEMENT_NODE == 1) {
-                const localName = (child as Element).localName?.toLowerCase();
-                if (localName == current) {
-                    if (names.length > 0) {
-                        return this.findElement(child as Element, ...names);
-                    } else {
-                        return child as Element;
-                    }
+            if (child.nodeType === child.ELEMENT_NODE) {
+                const localName = (child as Element).localName.toLowerCase();
+                if (localName === current) {
+                    return names.length > 0 ? this.findElement(child as Element, ...names) : (child as Element);
                 }
             }
         }
@@ -59,9 +55,10 @@ export class InteractsXmlTrait {
         let index = 0;
         for (index; index < children.length; index++) {
             const child = children[index];
-            if ((child as Element).nodeType == 3) {
+            // of type Node.TEXT_NODE
+            if ((child as Element).nodeType === 3) {
                 const c = child;
-                if (c?.textContent !== null) {
+                if (c.textContent !== null) {
                     buffer.push(c.textContent);
                 }
             }
@@ -73,20 +70,21 @@ export class InteractsXmlTrait {
     public findElements(element: Element, ...names: string[]): Element[] {
         const last = names.pop();
         const current = last ? last.toLowerCase() : '';
-        const tempElement = this.findElement(element, ...names);
-        if (!tempElement) {
+        const temporaryElement = this.findElement(element, ...names);
+        if (!temporaryElement) {
             return [];
         }
-        element = tempElement;
+
+        element = temporaryElement;
 
         const found: Element[] = [];
         const children = element.childNodes;
         let index = 0;
         for (index; index < children.length; index++) {
             const child = children[index];
-            if (child.ELEMENT_NODE == 1) {
-                const localName = (child as Element).localName?.toLowerCase();
-                if (localName == current) {
+            if (child.nodeType === child.ELEMENT_NODE) {
+                const localName = (child as Element).localName.toLowerCase();
+                if (localName === current) {
                     found.push(child as Element);
                 }
             }
@@ -99,11 +97,16 @@ export class InteractsXmlTrait {
         return this.findElements(element, ...names).map((element) => this.extractElementContent(element));
     }
 
+    /**
+     * Find the element determined by the chain of children and return the attributes as an
+     * array using the attribute name as array key and attribute value as entry value.
+     */
     public findAtrributes(element: Element, ...search: string[]): Record<string, string> {
         const found = this.findElement(element, ...search);
         if (!found) {
             return {};
         }
+
         const attributes = new Map();
         const elementAttributes = found.attributes;
         let index = 0;
@@ -111,6 +114,6 @@ export class InteractsXmlTrait {
             attributes.set(elementAttributes[index].localName.toLowerCase(), elementAttributes[index].value);
         }
 
-        return Object.fromEntries(attributes);
+        return Object.fromEntries(attributes) as Record<string, string>;
     }
 }

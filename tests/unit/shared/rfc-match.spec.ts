@@ -1,5 +1,5 @@
-import { AbstractRfcFilter } from '~/shared/abstract-rfc-filter';
-import { RfcMatch } from '~/shared/rfc-match';
+import { AbstractRfcFilter } from 'src/shared/abstract-rfc-filter';
+import { RfcMatch } from 'src/shared/rfc-match';
 
 describe('rfc match', () => {
     test('extends abastract rfc filter', () => {

@@ -1,4 +1,4 @@
-import { MetadataItemInterface } from './metadata-item-interface';
+import { type MetadataItemInterface } from './metadata-item-interface';
 
 /**
  * Metadata DTO object
@@ -21,19 +21,17 @@ import { MetadataItemInterface } from './metadata-item-interface';
  * - property-read string nombreACuentaTerceros
  */
 export class MetadataItem {
-    private _data: MetadataItemInterface[];
+    private readonly _data: MetadataItemInterface[];
 
     constructor(data: Record<string, string>) {
-        this._data = Object.entries(data).map(([key, value]) => {
-            return {
-                key,
-                value
-            };
-        });
+        this._data = Object.entries(data).map(([key, value]) => ({
+            key,
+            value,
+        }));
     }
 
     public get(key: string): string {
-        return this._data.find((item) => item.key === key)?.value || '';
+        return this._data.find((item) => item.key === key)?.value ?? '';
     }
 
     /**
@@ -41,12 +39,7 @@ export class MetadataItem {
      * returns all keys and values in a record form.
      */
     public all(): Record<string, string> {
-        return this._data.reduce((previous, current) => {
-            return {
-                ...previous,
-                [current.key]: current.value
-            };
-        }, {});
+        return Object.fromEntries(this._data.map((current) => [current.key, current.value]));
     }
 
     public [Symbol.iterator](): IterableIterator<MetadataItemInterface> {

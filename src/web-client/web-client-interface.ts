@@ -1,5 +1,5 @@
-import { CRequest } from './crequest';
-import { CResponse } from './cresponse';
+import { type CRequest } from './crequest';
+import { type CResponse } from './cresponse';
 
 export interface WebClientInterface {
     /**

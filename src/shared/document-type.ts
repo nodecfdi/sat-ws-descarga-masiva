@@ -8,7 +8,7 @@ enum DocumentTypeEnum {
     egreso = 'E',
     traslado = 'T',
     nomina = 'N',
-    pago = 'P'
+    pago = 'P',
 }
 
 export class DocumentType extends BaseEnum<DocumentTypeTypes> {

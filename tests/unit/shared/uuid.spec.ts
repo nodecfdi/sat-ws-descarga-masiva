@@ -1,4 +1,5 @@
-import { Uuid } from '~/shared/uuid';
+import { Uuid } from 'src/shared/uuid';
+
 describe('uuid', () => {
     test('create with correct value', () => {
         const value = '96623061-61fe-49de-b298-c7156476aa8b';
@@ -24,7 +25,7 @@ describe('uuid', () => {
         ['no dashes', '9662306161fe49deb298c7156476aa8b'],
         ['invalid char', 'x6623061-61fe-49de-b298-c7156476aa8b'],
         ['smaller', 'x6623061-61fe-49de-b298-c7156476aa8'],
-        ['bigger', 'x6623061-61fe-49de-b298-c7156476aa8bb']
+        ['bigger', 'x6623061-61fe-49de-b298-c7156476aa8bb'],
     ];
 
     test.each(providerInvalidValues)('constructor with invalid value %s', (value: string) => {

@@ -10,11 +10,11 @@ import { ServiceType } from './service-type';
  */
 export class ServiceEndpoints {
     constructor(
-        private _authenticate: string,
-        private _query: string,
-        private _verify: string,
-        private _download: string,
-        private _serviceType: ServiceType
+        private readonly _authenticate: string,
+        private readonly _query: string,
+        private readonly _verify: string,
+        private readonly _download: string,
+        private readonly _serviceType: ServiceType,
     ) {}
 
     /**
@@ -26,7 +26,7 @@ export class ServiceEndpoints {
             'https://cfdidescargamasivasolicitud.clouda.sat.gob.mx/SolicitaDescargaService.svc',
             'https://cfdidescargamasivasolicitud.clouda.sat.gob.mx/VerificaSolicitudDescargaService.svc',
             'https://cfdidescargamasiva.clouda.sat.gob.mx/DescargaMasivaService.svc',
-            new ServiceType('cfdi')
+            new ServiceType('cfdi'),
         );
     }
 
@@ -36,7 +36,7 @@ export class ServiceEndpoints {
             'https://retendescargamasivasolicitud.clouda.sat.gob.mx/SolicitaDescargaService.svc',
             'https://retendescargamasivasolicitud.clouda.sat.gob.mx/VerificaSolicitudDescargaService.svc',
             'https://retendescargamasiva.clouda.sat.gob.mx/DescargaMasivaService.svc',
-            new ServiceType('retenciones')
+            new ServiceType('retenciones'),
         );
     }
 

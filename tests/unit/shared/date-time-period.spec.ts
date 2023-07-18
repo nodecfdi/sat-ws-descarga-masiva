@@ -1,5 +1,5 @@
-import { DateTime } from '~/shared/date-time';
-import { DateTimePeriod } from '~/shared/date-time-period';
+import { DateTime } from 'src/shared/date-time';
+import { DateTimePeriod } from 'src/shared/date-time-period';
 
 describe('date time period', () => {
     test('create with correct start date time and end date time', () => {

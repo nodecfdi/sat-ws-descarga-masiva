@@ -1,5 +1,6 @@
-import { DateTime } from '~/shared/date-time';
 import { DateTime as DateTimeImmutable, Settings } from 'luxon';
+import { DateTime } from 'src/shared/date-time';
+
 describe('date time', () => {
     let defaultTimeZone: string;
 
@@ -34,7 +35,7 @@ describe('date time', () => {
     });
 
     test('create date time with timestamp', () => {
-        const date = DateTime.create(316569600);
+        const date = DateTime.create(316_569_600);
 
         expect(date.formatSat()).toBe('1980-01-13T00:00:00.000Z');
     });

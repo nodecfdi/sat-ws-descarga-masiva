@@ -5,7 +5,7 @@ export type DocumentStatusTypes = 'undefined' | 'active' | 'cancelled';
 enum DocumentStatusEnum {
     undefined = '',
     active = '1',
-    cancelled = '0'
+    cancelled = '0',
 }
 
 export class DocumentStatus extends BaseEnum<DocumentStatusTypes> {

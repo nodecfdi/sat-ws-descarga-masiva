@@ -1,7 +1,8 @@
-import { ComplementoCfdi } from '~/shared/complemento-cfdi';
+import { ComplementoCfdi } from 'src/shared/complemento-cfdi';
+
 describe('complemento CFDI', () => {
     test('create undefined by name', () => {
-        const complemento = ComplementoCfdi.undefined() as ComplementoCfdi;
+        const complemento = ComplementoCfdi.undefined();
         expect(complemento.isTypeOf('undefined')).toBeTruthy();
     });
 

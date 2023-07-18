@@ -1,0 +1,10 @@
+node_modules
+examples
+docs
+
+# Ignore artifacts:
+coverage/
+dist/
+.pnpm-store
+pnpm-lock.yaml
+**/*.md

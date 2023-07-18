@@ -1,19 +1,21 @@
-import { TestCase } from '../../../test-case';
-import { Helpers } from '~/internal/helpers';
-import { AuthenticateTranslator } from '~/services/authenticate/authenticate-translator';
-import { DateTime } from '~/shared/date-time';
+import { useTestCase } from '../../../test-case';
+import { Helpers } from 'src/internal/helpers';
+import { AuthenticateTranslator } from 'src/services/authenticate/authenticate-translator';
+import { DateTime } from 'src/shared/date-time';
+
 describe('Authenticate translator', () => {
+    const { createFielRequestBuilderUsingTestingFiles, xmlFormat, fileContents } = useTestCase();
     test('create soap request', () => {
         const translator = new AuthenticateTranslator();
-        const requestBuilder = TestCase.createFielRequestBuilderUsingTestingFiles();
+        const requestBuilder = createFielRequestBuilderUsingTestingFiles();
 
         const since = DateTime.create('2019-07-31 22:38:19', 'America/Mexico_City');
         const until = DateTime.create('2019-07-31 22:43:19', 'America/Mexico_City');
         const securityTokenId = 'uuid-cf6c80fb-00ae-44c0-af56-54ec65decbaa-1';
         const requestBody = translator.createSoapRequestWithData(requestBuilder, since, until, securityTokenId);
 
-        expect(Helpers.nospaces(TestCase.xmlFormat(requestBody))).toBe(
-            Helpers.nospaces(TestCase.fileContents('authenticate/request.xml'))
+        expect(Helpers.nospaces(xmlFormat(requestBody))).toBe(
+            Helpers.nospaces(fileContents('authenticate/request.xml')),
         );
     });
 
@@ -22,7 +24,7 @@ describe('Authenticate translator', () => {
         const expectedExpires = DateTime.create('2019-08-01T03:43:20.044Z');
 
         const translator = new AuthenticateTranslator();
-        const responseBody = Helpers.nospaces(TestCase.fileContents('authenticate/response-with-token.xml'));
+        const responseBody = Helpers.nospaces(fileContents('authenticate/response-with-token.xml'));
         const token = translator.createTokenFromSoapResponse(responseBody);
 
         expect(token.isValueEmpty()).toBeFalsy();
@@ -34,7 +36,7 @@ describe('Authenticate translator', () => {
 
     test('create token from soap response with error', () => {
         const translator = new AuthenticateTranslator();
-        const responseBody = Helpers.nospaces(TestCase.fileContents('authenticate/response-with-error.xml'));
+        const responseBody = Helpers.nospaces(fileContents('authenticate/response-with-error.xml'));
 
         const token = translator.createTokenFromSoapResponse(responseBody);
 

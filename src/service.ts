@@ -1,19 +1,19 @@
 import { ServiceConsumer } from './internal/service-consumer';
-import { RequestBuilderInterface } from './request-builder/request-builder-interface';
+import { type RequestBuilderInterface } from './request-builder/request-builder-interface';
 import { AuthenticateTranslator } from './services/authenticate/authenticate-translator';
-import { DownloadResult } from './services/download/download-result';
+import { type DownloadResult } from './services/download/download-result';
 import { DownloadTranslator } from './services/download/download-translator';
-import { QueryParameters } from './services/query/query-parameters';
-import { QueryResult } from './services/query/query-result';
+import { type QueryParameters } from './services/query/query-parameters';
+import { type QueryResult } from './services/query/query-result';
 import { QueryTranslator } from './services/query/query-translator';
-import { VerifyResult } from './services/verify/verify-result';
+import { type VerifyResult } from './services/verify/verify-result';
 import { VerifyTranslator } from './services/verify/verify-translator';
 import { ServiceEndpoints } from './shared/service-endpoints';
-import { Token } from './shared/token';
-import { WebClientInterface } from './web-client/web-client-interface';
+import { type Token } from './shared/token';
+import { type WebClientInterface } from './web-client/web-client-interface';
 
 export class Service {
-    private _endpoints: ServiceEndpoints;
+    private readonly _endpoints: ServiceEndpoints;
 
     /**
      * Client constructor of "servicio de consulta y recuperación de comprobantes"
@@ -21,10 +21,10 @@ export class Service {
      * @param endpoints - endpoints If undefined uses CFDI endpoints
      */
     constructor(
-        private _requestBuilder: RequestBuilderInterface,
-        private _webClient: WebClientInterface,
+        private readonly _requestBuilder: RequestBuilderInterface,
+        private readonly _webClient: WebClientInterface,
         public _currentToken?: Token,
-        endpoints?: ServiceEndpoints
+        endpoints?: ServiceEndpoints,
     ) {
         this._endpoints = endpoints ?? ServiceEndpoints.cfdi();
     }
@@ -34,7 +34,7 @@ export class Service {
      * it will create a new one if there is none or the current token is no longer valid
      */
     public async obtainCurrentToken(): Promise<Token> {
-        if (!this._currentToken || !this._currentToken.isValid()) {
+        if (!this._currentToken?.isValid()) {
             this._currentToken = await this.authenticate();
         }
 
@@ -50,7 +50,7 @@ export class Service {
         const responseBody = await this.consume(
             'http://DescargaMasivaTerceros.gob.mx/IAutenticacion/Autentica',
             this._endpoints.getAuthenticate(),
-            soapBody
+            soapBody,
         );
 
         return authenticateTranslator.createTokenFromSoapResponse(responseBody);
@@ -64,13 +64,15 @@ export class Service {
         if (!parameters.hasServiceType()) {
             parameters = parameters.withServiceType(this._endpoints.getServiceType());
         }
+
         if (!this._endpoints.getServiceType().equalTo(parameters.getServiceType())) {
             throw new Error(
                 `The service type endpoints ${parameters
                     .getServiceType()
-                    .value()} does not match with the service type query ${this._endpoints.getServiceType().value()}`
+                    .value()} does not match with the service type query ${this._endpoints.getServiceType().value()}`,
             );
         }
+
         const queryTranslator = new QueryTranslator();
         const soapBody = queryTranslator.createSoapRequest(this._requestBuilder, parameters);
 
@@ -79,7 +81,7 @@ export class Service {
             'http://DescargaMasivaTerceros.sat.gob.mx/ISolicitaDescargaService/SolicitaDescarga',
             this._endpoints.getQuery(),
             soapBody,
-            currentToken
+            currentToken,
         );
 
         return queryTranslator.createQueryResultFromSoapResponse(responseBody);
@@ -96,7 +98,7 @@ export class Service {
             'http://DescargaMasivaTerceros.sat.gob.mx/IVerificaSolicitudDescargaService/VerificaSolicitudDescarga',
             this._endpoints.getVerify(),
             soapBody,
-            currentToken
+            currentToken,
         );
 
         return verifyTranslator.createVerifyResultFromSoapResponse(responseBody);
@@ -110,13 +112,13 @@ export class Service {
             'http://DescargaMasivaTerceros.sat.gob.mx/IDescargaMasivaTercerosService/Descargar',
             this._endpoints.getDownload(),
             soapBody,
-            currentToken
+            currentToken,
         );
 
         return downloadTranslator.createDownloadResultFromSoapResponse(responseBody);
     }
 
     private async consume(soapAction: string, uri: string, body: string, token?: Token): Promise<string> {
-        return await ServiceConsumer.consume(this._webClient, soapAction, uri, body, token);
+        return ServiceConsumer.consume(this._webClient, soapAction, uri, body, token);
     }
 }
