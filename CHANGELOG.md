@@ -1,5 +1,11 @@
 # @nodecfdi/sat-ws-descarga-masiva ChangeLog
 
+## 0.1.4
+
+### Sonar lint errors and fix docs generation
+
+- fix: sonar lint errors and fix docs generation
+
 ## 0.1.3
 
 ### update dependencies and lint errors
