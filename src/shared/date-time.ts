@@ -32,20 +32,7 @@ export class DateTime {
         }
 
         if (typeof value === 'string') {
-            if (value === 'now') {
-                value = DateTimeImmutable.fromISO(DateTimeImmutable.now().toISO() ?? '', {
-                    zone: this._defaultTimeZone,
-                });
-            } else {
-                const temporary = DateTimeImmutable.fromSQL(value, {
-                    zone: this._defaultTimeZone,
-                });
-                value = temporary.isValid ? temporary : DateTimeImmutable.fromISO(value);
-            }
-
-            if (!value.isValid) {
-                throw new Error(`Unable to create a Datetime("${originalValue as string}")`);
-            }
+            value = this.castStringToDateTimeImmutable(value, originalValue as string);
         }
 
         if (!(value instanceof DateTimeImmutable) || !value.isValid) {
@@ -111,5 +98,24 @@ export class DateTime {
 
     public toJSON(): number {
         return this._value.toSeconds();
+    }
+
+    private castStringToDateTimeImmutable(value: string, originalValue: string): DateTimeImmutable {
+        if (value === 'now') {
+            return DateTimeImmutable.fromISO(DateTimeImmutable.now().toISO() ?? '', {
+                zone: this._defaultTimeZone,
+            });
+        }
+
+        const temporary = DateTimeImmutable.fromSQL(value, {
+            zone: this._defaultTimeZone,
+        });
+        const newValue = temporary.isValid ? temporary : DateTimeImmutable.fromISO(value);
+
+        if (!newValue.isValid) {
+            throw new Error(`Unable to create a Datetime("${originalValue}")`);
+        }
+
+        return newValue;
     }
 }

@@ -29,8 +29,6 @@ export class CodeRequest {
         },
     ];
 
-    private readonly index?: number;
-
     private readonly value!: { code?: number; name: string; message: string };
 
     /**
@@ -47,7 +45,6 @@ export class CodeRequest {
             }
 
             this.value = value;
-            this.index = value.code;
         }
     }
 
@@ -80,7 +77,7 @@ export class CodeRequest {
     }
 
     public getValue(): number | undefined {
-        return this.index;
+        return this.value.code;
     }
 
     public isTypeOf(type: CodeRequestTypes): boolean {

@@ -30,6 +30,12 @@ o
 yarn add @nodecfdi/sat-ws-descarga-masiva
 ```
 
+o
+
+```shell
+pnpm add @nodecfdi/sat-ws-descarga-masiva
+```
+
 ## Ejemplos de uso
 
 Todos los objetos de entrada y salida se pueden exportar como JSON para su fácil depuración.
