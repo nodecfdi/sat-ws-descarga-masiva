@@ -1,10 +1,18 @@
 # @nodecfdi/sat-ws-descarga-masiva ChangeLog
 
+## 0.1.3
+
+### update dependencies and lint errors
+
+- update dependencies `@nodecfdi/cfdiutils-common`, `@nodecfdi/credentials`, `@nodecfdi/rfc`, etc.
+- more stricts lint check
+- add `esm` module support
+
 ## 0.1.2
 
 ### Remove `@internal`
 
-- se remueve  `@internal` de los módulos internos para permitir que se exporten de manera correcta.
+- se remueve `@internal` de los módulos internos para permitir que se exporten de manera correcta.
 
 ## 0.1.1
 

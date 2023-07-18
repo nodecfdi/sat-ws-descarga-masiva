@@ -1,6 +1,6 @@
 {
     "name": "@nodecfdi/sat-ws-descarga-masiva",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "description": "Librería para usar el servicio web del SAT de Descarga Masiva",
     "keywords": [
         "sat",
@@ -33,8 +33,6 @@
     ],
     "scripts": {
         "prepare": "is-ci || husky install",
-        "format": "prettier --write --ignore-unknown '**/*'",
-        "format:check": "prettier --check --ignore-unknown '**/*'",
         "lint": "eslint . --fix --ext .ts,.js",
         "lint:check": "eslint . --ext .ts,.js",
         "test": "vitest",
