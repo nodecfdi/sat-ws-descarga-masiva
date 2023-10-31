@@ -89,11 +89,11 @@ devDependencies:
     specifier: ^7.1.0
     version: 7.1.0(ts-node@10.9.1)(typescript@5.1.6)
   typedoc:
-    specifier: ^0.24.8
-    version: 0.24.8(typescript@5.1.6)
+    specifier: ^0.25.0
+    version: 0.25.3(typescript@5.1.6)
   typedoc-theme-hierarchy:
     specifier: ^4.0.0
-    version: 4.0.0(typedoc@0.24.8)
+    version: 4.0.0(typedoc@0.25.3)
   typescript:
     specifier: ^5.1.6
     version: 5.1.6
@@ -3904,13 +3904,6 @@ packages:
       brace-expansion: 1.1.11
     dev: true
 
-  /minimatch@9.0.0:
-    resolution: {integrity: sha512-0jJj8AvgKqWN05mrwuqi8QYKx1WmYSUoKSxu5Qhs9prezTz10sxAHGNZe9J9cqIJzta8DWsleh2KaVaLl6Ru2w==}
-    engines: {node: '>=16 || 14 >=14.17'}
-    dependencies:
-      brace-expansion: 2.0.1
-    dev: true
-
   /minimatch@9.0.3:
     resolution: {integrity: sha512-RHiac9mvaRw0x3AYRgDC1CxAP7HTcNrrECeA8YYJeWnpo+2Q5CegtZjaotWTWxDG3UeGA1coE05iH1mPjT/2mg==}
     engines: {node: '>=16 || 14 >=14.17'}
@@ -5270,25 +5263,25 @@ packages:
       is-typed-array: 1.1.10
     dev: true
 
-  /typedoc-theme-hierarchy@4.0.0(typedoc@0.24.8):
+  /typedoc-theme-hierarchy@4.0.0(typedoc@0.25.3):
     resolution: {integrity: sha512-/y8QfmkLN+NS57hoxsS/vD1fdAPdkd7JtC7xWp2Lk3rE6/cRweFdEfaKD6GJCQMD3CuSD7Ldcc5vjwwrF4UqyQ==}
     peerDependencies:
       typedoc: ^0.24.0
     dependencies:
       fs-extra: 10.1.0
-      typedoc: 0.24.8(typescript@5.1.6)
+      typedoc: 0.25.3(typescript@5.1.6)
     dev: true
 
-  /typedoc@0.24.8(typescript@5.1.6):
-    resolution: {integrity: sha512-ahJ6Cpcvxwaxfu4KtjA8qZNqS43wYt6JL27wYiIgl1vd38WW/KWX11YuAeZhuz9v+ttrutSsgK+XO1CjL1kA3w==}
-    engines: {node: '>= 14.14'}
+  /typedoc@0.25.3(typescript@5.1.6):
+    resolution: {integrity: sha512-Ow8Bo7uY1Lwy7GTmphRIMEo6IOZ+yYUyrc8n5KXIZg1svpqhZSWgni2ZrDhe+wLosFS8yswowUzljTAV/3jmWw==}
+    engines: {node: '>= 16'}
     hasBin: true
     peerDependencies:
-      typescript: 4.6.x || 4.7.x || 4.8.x || 4.9.x || 5.0.x || 5.1.x
+      typescript: 4.6.x || 4.7.x || 4.8.x || 4.9.x || 5.0.x || 5.1.x || 5.2.x
     dependencies:
       lunr: 2.3.9
       marked: 4.3.0
-      minimatch: 9.0.0
+      minimatch: 9.0.3
       shiki: 0.14.1
       typescript: 5.1.6
     dev: true
