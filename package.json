@@ -72,7 +72,7 @@
         "typedoc": "^0.25.0",
         "typedoc-theme-hierarchy": "^4.0.0",
         "typescript": "^5.1.6",
-        "vite": "^4.4.3",
+        "vite": "^5.0.0",
         "vitest": "^0.34.0",
         "vitest-mock-extended": "^1.1.4",
         "xadesjs": "^2.4.4",
