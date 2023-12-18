@@ -110,8 +110,8 @@ devDependencies:
     specifier: ^2.4.4
     version: 2.4.4
   xpath:
-    specifier: ^0.0.33
-    version: 0.0.33
+    specifier: ^0.0.34
+    version: 0.0.34
 
 packages:
 
@@ -5650,8 +5650,8 @@ packages:
     engines: {node: '>=0.6.0'}
     dev: true
 
-  /xpath@0.0.33:
-    resolution: {integrity: sha512-NNXnzrkDrAzalLhIUc01jO2mOzXGXh1JwPgkihcLLzw98c0WgYDmmjSh1Kl3wzaxSVWMuA+fe0WTWOBDWCBmNA==}
+  /xpath@0.0.34:
+    resolution: {integrity: sha512-FxF6+rkr1rNSQrhUNYrAFJpRXNzlDoMxeXN5qI84939ylEv3qqPFKa85Oxr6tDaJKqwW6KKyo2v26TSv3k6LeA==}
     engines: {node: '>=0.6.0'}
     dev: true
 

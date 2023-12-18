@@ -76,7 +76,7 @@
         "vitest": "^0.34.0",
         "vitest-mock-extended": "^1.1.4",
         "xadesjs": "^2.4.4",
-        "xpath": "^0.0.33"
+        "xpath": "^0.0.34"
     },
     "dependencies": {
         "@nodecfdi/cfdiutils-common": "^1.2.4",
