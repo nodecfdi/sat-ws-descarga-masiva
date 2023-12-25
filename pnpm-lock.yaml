@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@nodecfdi/cfdiutils-common':
-    specifier: ^1.2.4
-    version: 1.2.4
+    specifier: ^2.0.0
+    version: 2.0.1
   '@nodecfdi/credentials':
     specifier: ^2.0.3
     version: 2.0.3
@@ -1045,10 +1045,9 @@ packages:
     engines: {node: '>=16.0.0'}
     dev: false
 
-  /@nodecfdi/cfdiutils-common@1.2.4:
-    resolution: {integrity: sha512-fU2Yy2qnyiE9415Ihnu+ZvyBaoBkxkM7BqjeSiGGqRqHtCmgWPfqGfQWWdbCZ5tEZPMTcXLPbcyDopwFsFClVw==}
-    engines: {node: '>=14.16.0'}
-    requiresBuild: true
+  /@nodecfdi/cfdiutils-common@2.0.1:
+    resolution: {integrity: sha512-U6KNaU2lhgoP8QYpKOgoXXqemXzgCOTeqGgtyIICpZKfr9W5UjVxlqfKNe7sZ8VbvA7JsnS4rkEAk+IEITw+vA==}
+    engines: {node: '>=16.0.0'}
     dev: false
 
   /@nodecfdi/credentials@2.0.3:

@@ -79,7 +79,7 @@
         "xpath": "^0.0.34"
     },
     "dependencies": {
-        "@nodecfdi/cfdiutils-common": "^1.2.4",
+        "@nodecfdi/cfdiutils-common": "^2.0.0",
         "@nodecfdi/credentials": "^2.0.3",
         "@nodecfdi/rfc": "^1.3.2",
         "jszip": "^3.10.1",
