@@ -61,6 +61,6 @@ describe('filtered package reader', () => {
         // zip excludes "empty dir/""
         expect(3).toBe(await packageReader.count());
         unlinkSync(tmpfile);
-        packageReader.destruct();
+        await packageReader.destruct();
     });
 });

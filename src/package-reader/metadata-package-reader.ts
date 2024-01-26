@@ -24,7 +24,7 @@ export class MetadataPackageReader implements PackageReaderInterface {
         const packageReader = await FilteredPackageReader.createFromContents(contents);
         packageReader.setFilter(new MetadataFileFilter());
         // delete temporary file
-        packageReader.destruct();
+        await packageReader.destruct();
 
         const thirdParties = await ThirdPartiesRecords.createFromPackageReader(packageReader);
 

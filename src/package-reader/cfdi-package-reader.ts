@@ -16,7 +16,7 @@ export class CfdiPackageReader implements PackageReaderInterface {
         const packageReader = await FilteredPackageReader.createFromContents(contents);
         packageReader.setFilter(new CfdiFileFilter());
         // delete temporary file
-        packageReader.destruct();
+        await packageReader.destruct();
 
         return new CfdiPackageReader(packageReader);
     }

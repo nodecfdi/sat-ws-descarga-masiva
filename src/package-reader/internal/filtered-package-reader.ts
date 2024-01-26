@@ -1,4 +1,4 @@
-import { unlinkSync, realpathSync, readFileSync, writeFileSync } from 'node:fs';
+import { readFile, writeFile, unlink, realpath } from 'node:fs/promises';
 import os from 'node:os';
 import { join } from 'node:path';
 import { randomUUID } from 'node:crypto';
@@ -31,7 +31,7 @@ export class FilteredPackageReader implements PackageReaderInterface {
         let data: Buffer;
         try {
             // if is directory fails in windows, linux and mac, not fails in BSD
-            data = readFileSync(filename);
+            data = await readFile(filename);
         } catch {
             throw OpenZipFileException.create(filename, -1);
         }
@@ -46,18 +46,18 @@ export class FilteredPackageReader implements PackageReaderInterface {
     }
 
     public static async createFromContents(contents: string): Promise<FilteredPackageReader> {
-        const tmpdir = realpathSync(os.tmpdir());
+        const tmpdir = await realpath(os.tmpdir());
         const tmpfile = join(tmpdir, `${randomUUID()}.zip`);
         // create temp file
         try {
-            writeFileSync(tmpfile, '');
+            await writeFile(tmpfile, '');
         } catch (error) {
             throw CreateTemporaryZipFileException.create('Cannot create a temporary file', error as Error);
         }
 
         // write contents
         try {
-            writeFileSync(tmpfile, contents, { encoding: 'binary' });
+            await writeFile(tmpfile, contents, { encoding: 'binary' });
         } catch (error) {
             throw CreateTemporaryZipFileException.create('Cannot store contents on temporary file', error as Error);
         }
@@ -67,7 +67,7 @@ export class FilteredPackageReader implements PackageReaderInterface {
         try {
             cpackage = await FilteredPackageReader.createFromFile(tmpfile);
         } catch (error) {
-            unlinkSync(tmpfile);
+            await unlink(tmpfile);
             throw error;
         }
 
@@ -76,9 +76,9 @@ export class FilteredPackageReader implements PackageReaderInterface {
         return cpackage;
     }
 
-    public destruct(): void {
+    public async destruct(): Promise<void> {
         if (this._removeOnDestruct) {
-            unlinkSync(this._filename);
+            await unlink(this._filename);
         }
     }
 
