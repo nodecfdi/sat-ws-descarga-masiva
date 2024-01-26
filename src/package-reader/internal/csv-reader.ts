@@ -36,7 +36,7 @@ export class CsvReader {
     public async *records(): AsyncGenerator<Record<string, string>> {
         const headers: string[] = [];
         for await (const line of this._iterator) {
-            const clean = line.split(/[|~]+/g).map((item) => item.trim());
+            const clean = line.split(/[|~]/g).map((item) => item.trim());
 
             if (clean.length === 0 || JSON.stringify(clean) === '[""]') {
                 continue;
