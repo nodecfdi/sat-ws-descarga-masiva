@@ -61,7 +61,7 @@
         "@vitest/coverage-istanbul": "^0.34.0",
         "@xmldom/xmldom": "^0.8.9",
         "eslint": "^8.44.0",
-        "husky": "^8.0.3",
+        "husky": "^9.0.0",
         "is-ci": "^3.0.1",
         "jest-xml-matcher": "^1.2.0",
         "lint-staged": "^13.2.3",
