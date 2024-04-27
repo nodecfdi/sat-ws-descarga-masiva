@@ -415,7 +415,7 @@ try {
 
 for await (const map of cfdiPackageReader.cfdis()) {
     for (const [name, content] of map) {
-        writeFileSync(`cfdis/${name}.xml`, Buffer.from(download.getPackageContent(), 'base64'));
+        writeFileSync(`cfdis/${name}.xml`, Buffer.from(content, 'utf8'));
     }
 }
 ```
