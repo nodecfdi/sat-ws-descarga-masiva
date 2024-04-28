@@ -8,6 +8,16 @@
   "files": [
     "dist"
   ],
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js"
+    },
+    "./types": {
+      "require": "./dist/src/types.cjs",
+      "import": "./dist/src/types.js"
+    }
+  },
   "imports": {
     "#src/*": "./src/*.js",
     "#tests/*": "./tests/*.js"
