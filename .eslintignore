@@ -1,9 +1,0 @@
-node_modules
-coverage
-dist
-docs
-temp
-
-# Config files
-tsup.config.ts
-vitest.config.ts
