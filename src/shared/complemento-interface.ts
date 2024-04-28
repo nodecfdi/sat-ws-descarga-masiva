@@ -1,9 +1,9 @@
 export interface ComplementoInterface<T> {
-    label(): string;
+  label(): string;
 
-    value(): string;
+  value(): string;
 
-    toJSON(): string;
+  toJSON(): string;
 
-    isTypeOf(type: T): boolean;
+  isTypeOf(type: T): boolean;
 }

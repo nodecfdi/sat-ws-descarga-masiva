@@ -1,62 +1,62 @@
 export class CRequest {
-    private readonly _method: string;
+  private readonly _method: string;
 
-    private readonly _uri: string;
+  private readonly _uri: string;
 
-    private readonly _body: string;
+  private readonly _body: string;
 
-    private readonly _headers: Record<string, string>;
+  private readonly _headers: Record<string, string>;
 
-    /**
-     *
-     */
-    constructor(method: string, uri: string, body: string, headers: Record<string, string>) {
-        this._method = method;
-        this._uri = uri;
-        this._body = body;
-        const map = new Map([...Object.entries(this.defaultHeaders()), ...Object.entries(headers)]);
-        this._headers = Object.fromEntries(map);
-    }
+  /**
+   *
+   */
+  constructor(method: string, uri: string, body: string, headers: Record<string, string>) {
+    this._method = method;
+    this._uri = uri;
+    this._body = body;
+    const map = new Map([...Object.entries(this.defaultHeaders()), ...Object.entries(headers)]);
+    this._headers = Object.fromEntries(map);
+  }
 
-    public getMethod(): string {
-        return this._method;
-    }
+  public getMethod(): string {
+    return this._method;
+  }
 
-    public getUri(): string {
-        return this._uri;
-    }
+  public getUri(): string {
+    return this._uri;
+  }
 
-    public getBody(): string {
-        return this._body;
-    }
+  public getBody(): string {
+    return this._body;
+  }
 
-    public getHeaders(): Record<string, string> {
-        return this._headers;
-    }
+  public getHeaders(): Record<string, string> {
+    return this._headers;
+  }
 
-    public defaultHeaders(): {
-        'Content-type': string;
-        'Accept': string;
-        'Cache-Control': string;
-    } {
-        return {
-            'Content-type': 'text/xml; charset="utf-8"',
-            'Accept': 'text/xml',
-            'Cache-Control': 'no-cache',
-        };
-    }
+  public defaultHeaders(): {
+    'Content-type': string;
+    'Accept': string;
+    'Cache-Control': string;
+  } {
+    return {
+      'Content-type': 'text/xml; charset="utf-8"',
+      'Accept': 'text/xml',
+      'Cache-Control': 'no-cache',
+    };
+  }
 
-    public toJSON(): {
-        method: string;
-        uri: string;
-        body: string;
-        headers: Record<string, string>;
-    } {
-        return {
-            method: this._method,
-            uri: this._uri,
-            body: this._body,
-            headers: this._headers,
-        };
-    }
+  public toJSON(): {
+    method: string;
+    uri: string;
+    body: string;
+    headers: Record<string, string>;
+  } {
+    return {
+      method: this._method,
+      uri: this._uri,
+      body: this._body,
+      headers: this._headers,
+    };
+  }
 }

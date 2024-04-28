@@ -1,40 +1,40 @@
-import { type StatusCode } from '../../shared/status-code';
+import { type StatusCode } from '../../shared/status-code.js';
 
 export class DownloadResult {
-    private readonly _packageSize: number;
+  private readonly _packageSize: number;
 
-    constructor(
-        private readonly _status: StatusCode,
-        private readonly _packageContent: string,
-    ) {
-        this._packageSize = _packageContent.length;
-    }
+  constructor(
+    private readonly _status: StatusCode,
+    private readonly _packageContent: string,
+  ) {
+    this._packageSize = _packageContent.length;
+  }
 
-    /**
-     * Status of the download call
-     */
-    public getStatus(): StatusCode {
-        return this._status;
-    }
+  /**
+   * Status of the download call
+   */
+  public getStatus(): StatusCode {
+    return this._status;
+  }
 
-    /**
-     * If available, contains the package contents
-     */
-    public getPackageContent(): string {
-        return this._packageContent;
-    }
+  /**
+   * If available, contains the package contents
+   */
+  public getPackageContent(): string {
+    return this._packageContent;
+  }
 
-    /**
-     * If available, contains the package contents length in bytesF
-     */
-    public getPackageSize(): number {
-        return this._packageSize;
-    }
+  /**
+   * If available, contains the package contents length in bytesF
+   */
+  public getPackageSize(): number {
+    return this._packageSize;
+  }
 
-    public toJSON(): { status: StatusCode; length: number } {
-        return {
-            status: this._status,
-            length: this._packageSize,
-        };
-    }
+  public toJSON(): { status: StatusCode; length: number } {
+    return {
+      status: this._status,
+      length: this._packageSize,
+    };
+  }
 }

@@ -7,47 +7,51 @@ import { Credential } from '@nodecfdi/credentials';
  * @see Credential
  */
 export class Fiel {
-    constructor(private readonly _credential: Credential) {}
+  constructor(private readonly _credential: Credential) {}
 
-    /**
-     * Create a Fiel based on certificate and private key contents
-     */
-    public static create(certificateContents: string, privateKeyContents: string, passPhrase: string): Fiel {
-        const credential = Credential.create(certificateContents, privateKeyContents, passPhrase);
+  /**
+   * Create a Fiel based on certificate and private key contents
+   */
+  public static create(
+    certificateContents: string,
+    privateKeyContents: string,
+    passPhrase: string,
+  ): Fiel {
+    const credential = Credential.create(certificateContents, privateKeyContents, passPhrase);
 
-        return new Fiel(credential);
+    return new Fiel(credential);
+  }
+
+  public sign(toSign: string, algorithm: 'md5' | 'sha1' | 'sha256' | 'sha384' | 'sha512'): string {
+    return this._credential.sign(toSign, algorithm);
+  }
+
+  public isValid(): boolean {
+    if (!this._credential.certificate().satType().isFiel()) {
+      return false;
     }
 
-    public sign(toSign: string, algorithm: 'md5' | 'sha1' | 'sha256' | 'sha384' | 'sha512'): string {
-        return this._credential.sign(toSign, algorithm);
+    if (!this._credential.certificate().validOn()) {
+      return false;
     }
 
-    public isValid(): boolean {
-        if (!this._credential.certificate().satType().isFiel()) {
-            return false;
-        }
+    return true;
+  }
 
-        if (!this._credential.certificate().validOn()) {
-            return false;
-        }
+  public getCertificatePemContents(): string {
+    return this._credential.certificate().pem();
+  }
 
-        return true;
-    }
+  public getRfc(): string {
+    return this._credential.rfc();
+  }
 
-    public getCertificatePemContents(): string {
-        return this._credential.certificate().pem();
-    }
+  public getCertificateSerial(): string {
+    return this._credential.certificate().serialNumber().decimal();
+  }
 
-    public getRfc(): string {
-        return this._credential.rfc();
-    }
-
-    public getCertificateSerial(): string {
-        return this._credential.certificate().serialNumber().decimal();
-    }
-
-    /** missing function this.credential.certificate().issuerAsRfc4514() */
-    public getCertificateIssuerName(): string {
-        return this._credential.certificate().issuerAsRfc4514();
-    }
+  /** missing function this.credential.certificate().issuerAsRfc4514() */
+  public getCertificateIssuerName(): string {
+    return this._credential.certificate().issuerAsRfc4514();
+  }
 }

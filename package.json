@@ -1,91 +1,103 @@
 {
-    "name": "@nodecfdi/sat-ws-descarga-masiva",
-    "version": "0.1.4",
-    "description": "Librería para usar el servicio web del SAT de Descarga Masiva",
-    "keywords": [
-        "sat",
-        "cfdi",
-        "download",
-        "descarga",
-        "webservice"
-    ],
-    "private": false,
-    "author": "OcelotlStudio <contacto@ocelotlstudio.com>",
-    "license": "MIT",
-    "type": "module",
-    "main": "./dist/sat-ws-descarga-masiva.cjs",
-    "module": "./dist/sat-ws-descarga-masiva.js",
-    "types": "./dist/index.d.ts",
-    "exports": {
-        ".": {
-            "import": {
-                "types": "./dist/index.d.ts",
-                "default": "./dist/sat-ws-descarga-masiva.js"
-            },
-            "require": {
-                "types": "./dist/index.d.cts",
-                "default": "./dist/sat-ws-descarga-masiva.cjs"
-            }
-        }
-    },
-    "files": [
-        "dist"
-    ],
-    "scripts": {
-        "prepare": "is-in-ci || husky install",
-        "lint": "eslint . --fix --ext .ts,.js",
-        "lint:check": "eslint . --ext .ts,.js",
-        "test": "vitest",
-        "test:run": "vitest run",
-        "test:coverage": "vitest run --coverage",
-        "build": "rimraf dist && tsup",
-        "gen:docs": "rimraf docs && typedoc --options typedoc.json",
-        "release": "pnpm run build && pnpm changeset publish"
-    },
-    "repository": "https://github.com/nodecfdi/sat-ws-descarga-masiva",
-    "bugs": {
-        "url": "https://github.com/nodecfdi/sat-ws-descarga-masiva/issues"
-    },
-    "homepage": "https://github.com/nodecfdi/sat-ws-descarga-masiva",
-    "devDependencies": {
-        "@changesets/cli": "^2.27.1",
-        "@commitlint/cli": "^19.3.0",
-        "@commitlint/config-conventional": "^19.2.2",
-        "@nodecfdi/eslint-config": "^1.6.6",
-        "@nodecfdi/prettier-config": "^1.1.1",
-        "@nodecfdi/tsconfig": "^1.5.0",
-        "@peculiar/webcrypto": "^1.4.6",
-        "@types/jsrsasign": "^10.5.13",
-        "@types/luxon": "^3.4.2",
-        "@types/node": "^20.12.7",
-        "@types/node-forge": "^1.3.11",
-        "@vitest/coverage-istanbul": "^1.5.2",
-        "conventional-changelog-cli": "^4.1.0",
-        "eslint": "^8.57.0",
-        "husky": "^9.0.11",
-        "is-in-ci": "^0.1.0",
-        "jest-xml-matcher": "^1.2.0",
-        "prettier": "^3.2.5",
-        "rimraf": "^5.0.5",
-        "tsup": "^8.0.2",
-        "typedoc": "^0.25.13",
-        "typedoc-material-theme": "^1.0.2",
-        "typescript": "^5.4.5",
-        "vitest": "^1.5.2",
-        "vitest-mock-extended": "^1.3.1",
-        "xadesjs": "^2.4.4",
-        "xpath": "^0.0.34"
-    },
-    "dependencies": {
-        "@nodecfdi/cfdiutils-common": "^2.0.1",
-        "@nodecfdi/credentials": "^2.0.3",
-        "@nodecfdi/rfc": "^2.0.3",
-        "@xmldom/xmldom": "^0.8.10",
-        "jszip": "^3.10.1",
-        "luxon": "^3.4.4",
-        "node-forge": "^1.3.1"
-    },
-    "engines": {
-        "node": ">= 14.18.0"
+  "name": "@nodecfdi/sat-ws-descarga-masiva",
+  "version": "0.1.4",
+  "description": "Librería para usar el servicio web del SAT de Descarga Masiva",
+  "keywords": [
+    "sat",
+    "cfdi",
+    "download",
+    "descarga",
+    "webservice"
+  ],
+  "imports": {
+    "#src/*": "./src/*.js",
+    "#tests/*": "./tests/*.js"
+  },
+  "private": false,
+  "author": "OcelotlStudio <contacto@ocelotlstudio.com>",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/sat-ws-descarga-masiva.cjs",
+  "module": "./dist/sat-ws-descarga-masiva.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/sat-ws-descarga-masiva.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/sat-ws-descarga-masiva.cjs"
+      }
     }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "del-cli dist",
+    "prepare": "is-in-ci || husky install",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --fix",
+    "lint:check": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "prebuild": "pnpm clean",
+    "build": "tsup",
+    "gen:docs": "del-cli docs && typedoc --options typedoc.json",
+    "version": "conventional-changelog -p conventionalcommits -i CHANGELOG.md -s",
+    "postversion": "pnpm format && git add CHANGELOG.md",
+    "release": "pnpm run build && pnpm changeset publish"
+  },
+  "repository": "https://github.com/nodecfdi/sat-ws-descarga-masiva",
+  "bugs": {
+    "url": "https://github.com/nodecfdi/sat-ws-descarga-masiva/issues"
+  },
+  "homepage": "https://github.com/nodecfdi/sat-ws-descarga-masiva",
+  "devDependencies": {
+    "@changesets/cli": "^2.27.1",
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "@nodecfdi/eslint-config": "^1.6.6",
+    "@nodecfdi/prettier-config": "^1.1.1",
+    "@nodecfdi/tsconfig": "^1.5.0",
+    "@peculiar/webcrypto": "^1.4.6",
+    "@types/jsrsasign": "^10.5.13",
+    "@types/luxon": "^3.4.2",
+    "@types/node": "^20.12.7",
+    "@types/node-forge": "^1.3.11",
+    "@vitest/coverage-istanbul": "^1.5.2",
+    "conventional-changelog-cli": "^4.1.0",
+    "eslint": "^8.57.0",
+    "husky": "^9.0.11",
+    "is-in-ci": "^0.1.0",
+    "jest-xml-matcher": "^1.2.0",
+    "prettier": "^3.2.5",
+    "rimraf": "^5.0.5",
+    "tsup": "^8.0.2",
+    "typedoc": "^0.25.13",
+    "typedoc-material-theme": "^1.0.2",
+    "typescript": "^5.4.5",
+    "vitest": "^1.5.2",
+    "vitest-mock-extended": "^1.3.1",
+    "xadesjs": "^2.4.4",
+    "xpath": "^0.0.34"
+  },
+  "dependencies": {
+    "@nodecfdi/cfdiutils-common": "^2.0.1",
+    "@nodecfdi/credentials": "^2.0.3",
+    "@nodecfdi/rfc": "^2.0.3",
+    "@xmldom/xmldom": "^0.8.10",
+    "jszip": "^3.10.1",
+    "luxon": "^3.4.4",
+    "node-forge": "^1.3.1"
+  },
+  "engines": {
+    "node": ">= 14.18.0"
+  },
+  "prettier": "@nodecfdi/prettier-config"
 }

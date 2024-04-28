@@ -1,200 +1,202 @@
-import { type ComplementoInterface } from '../../shared/complemento-interface';
-import { ComplementoUndefined } from '../../shared/complemento-undefined';
-import { DateTime } from '../../shared/date-time';
-import { DocumentStatus } from '../../shared/document-status';
-import { DocumentType } from '../../shared/document-type';
-import { type RfcMatch } from '../../shared/rfc-match';
-import { RfcMatches } from '../../shared/rfc-matches';
-import { RfcOnBehalf } from '../../shared/rfc-on-behalf';
-import { type ServiceType } from '../../shared/service-type';
-import { Uuid } from '../../shared/uuid';
-import { DateTimePeriod } from '../../shared/date-time-period';
-import { DownloadType } from '../../shared/download-type';
-import { RequestType } from '../../shared/request-type';
-import { type ComplementoCfdiTypes } from '../../shared/complemento-cfdi';
-import { type ComplementoRetencionesTypes } from '../../shared/complemento-retenciones';
+import { type ComplementoInterface } from '../../shared/complemento-interface.js';
+import { ComplementoUndefined } from '../../shared/complemento-undefined.js';
+import { DateTime } from '../../shared/date-time.js';
+import { DocumentStatus } from '../../shared/document-status.js';
+import { DocumentType } from '../../shared/document-type.js';
+import { type RfcMatch } from '../../shared/rfc-match.js';
+import { RfcMatches } from '../../shared/rfc-matches.js';
+import { RfcOnBehalf } from '../../shared/rfc-on-behalf.js';
+import { type ServiceType } from '../../shared/service-type.js';
+import { Uuid } from '../../shared/uuid.js';
+import { DateTimePeriod } from '../../shared/date-time-period.js';
+import { DownloadType } from '../../shared/download-type.js';
+import { RequestType } from '../../shared/request-type.js';
+import { type ComplementoCfdiTypes } from '../../shared/complemento-cfdi.js';
+import { type ComplementoRetencionesTypes } from '../../shared/complemento-retenciones.js';
 
 /**
  * This class contains all the information required to perform a query on the SAT Web Service
  */
 export class QueryParameters {
-    private _serviceType?: ServiceType;
+  private _serviceType?: ServiceType;
 
-    constructor(
-        private _period: DateTimePeriod,
-        private _downloadType: DownloadType,
-        private _requestType: RequestType,
-        private _documentType: DocumentType,
-        private _complement: ComplementoInterface<ComplementoCfdiTypes | ComplementoRetencionesTypes>,
-        private _documentStatus: DocumentStatus,
-        private _uuid: Uuid,
-        private _rfcOnBehalf: RfcOnBehalf,
-        private _rfcMatches: RfcMatches,
-    ) {}
+  constructor(
+    private _period: DateTimePeriod,
+    private _downloadType: DownloadType,
+    private _requestType: RequestType,
+    private _documentType: DocumentType,
+    private _complement: ComplementoInterface<ComplementoCfdiTypes | ComplementoRetencionesTypes>,
+    private _documentStatus: DocumentStatus,
+    private _uuid: Uuid,
+    private _rfcOnBehalf: RfcOnBehalf,
+    private _rfcMatches: RfcMatches,
+  ) {}
 
-    public static create(
-        period?: DateTimePeriod,
-        downloadType?: DownloadType,
-        requestType?: RequestType,
-    ): QueryParameters {
-        downloadType = downloadType ?? new DownloadType('issued');
-        requestType = requestType ?? new RequestType('metadata');
-        const currentTime = DateTime.now().formatSat();
+  public static create(
+    period?: DateTimePeriod,
+    downloadType?: DownloadType,
+    requestType?: RequestType,
+  ): QueryParameters {
+    downloadType = downloadType ?? new DownloadType('issued');
+    requestType = requestType ?? new RequestType('metadata');
+    const currentTime = DateTime.now().formatSat();
 
-        return new QueryParameters(
-            period ?? DateTimePeriod.createFromValues(currentTime, currentTime),
-            downloadType,
-            requestType,
-            new DocumentType('undefined'),
-            new ComplementoUndefined('undefined'),
-            new DocumentStatus('undefined'),
-            Uuid.empty(),
-            RfcOnBehalf.empty(),
-            RfcMatches.create(),
-        );
+    return new QueryParameters(
+      period ?? DateTimePeriod.createFromValues(currentTime, currentTime),
+      downloadType,
+      requestType,
+      new DocumentType('undefined'),
+      new ComplementoUndefined('undefined'),
+      new DocumentStatus('undefined'),
+      Uuid.empty(),
+      RfcOnBehalf.empty(),
+      RfcMatches.create(),
+    );
+  }
+
+  public hasServiceType(): boolean {
+    return undefined !== this._serviceType;
+  }
+
+  public getServiceType(): ServiceType {
+    if (undefined === this._serviceType) {
+      throw new Error('Service type has not been set');
     }
 
-    public hasServiceType(): boolean {
-        return undefined !== this._serviceType;
-    }
+    return this._serviceType;
+  }
 
-    public getServiceType(): ServiceType {
-        if (undefined === this._serviceType) {
-            throw new Error('Service type has not been set');
-        }
+  public getPeriod(): DateTimePeriod {
+    return this._period;
+  }
 
-        return this._serviceType;
-    }
+  public getDownloadType(): DownloadType {
+    return this._downloadType;
+  }
 
-    public getPeriod(): DateTimePeriod {
-        return this._period;
-    }
+  public getRequestType(): RequestType {
+    return this._requestType;
+  }
 
-    public getDownloadType(): DownloadType {
-        return this._downloadType;
-    }
+  public getDocumentType(): DocumentType {
+    return this._documentType;
+  }
 
-    public getRequestType(): RequestType {
-        return this._requestType;
-    }
+  public getComplement(): ComplementoInterface<ComplementoCfdiTypes | ComplementoRetencionesTypes> {
+    return this._complement;
+  }
 
-    public getDocumentType(): DocumentType {
-        return this._documentType;
-    }
+  public getDocumentStatus(): DocumentStatus {
+    return this._documentStatus;
+  }
 
-    public getComplement(): ComplementoInterface<ComplementoCfdiTypes | ComplementoRetencionesTypes> {
-        return this._complement;
-    }
+  public getUuid(): Uuid {
+    return this._uuid;
+  }
 
-    public getDocumentStatus(): DocumentStatus {
-        return this._documentStatus;
-    }
+  public getRfcOnBehalf(): RfcOnBehalf {
+    return this._rfcOnBehalf;
+  }
 
-    public getUuid(): Uuid {
-        return this._uuid;
-    }
+  public getRfcMatches(): RfcMatches {
+    return this._rfcMatches;
+  }
 
-    public getRfcOnBehalf(): RfcOnBehalf {
-        return this._rfcOnBehalf;
-    }
+  public getRfcMatch(): RfcMatch {
+    return this._rfcMatches.getFirst();
+  }
 
-    public getRfcMatches(): RfcMatches {
-        return this._rfcMatches;
-    }
+  public withServiceType(serviceType: ServiceType): this {
+    this._serviceType = serviceType;
 
-    public getRfcMatch(): RfcMatch {
-        return this._rfcMatches.getFirst();
-    }
+    return this;
+  }
 
-    public withServiceType(serviceType: ServiceType): this {
-        this._serviceType = serviceType;
+  public withPeriod(period: DateTimePeriod): this {
+    this._period = period;
 
-        return this;
-    }
+    return this;
+  }
 
-    public withPeriod(period: DateTimePeriod): this {
-        this._period = period;
+  public withDownloadType(downloadType: DownloadType): this {
+    this._downloadType = downloadType;
 
-        return this;
-    }
+    return this;
+  }
 
-    public withDownloadType(downloadType: DownloadType): this {
-        this._downloadType = downloadType;
+  public withRequestType(requestType: RequestType): this {
+    this._requestType = requestType;
 
-        return this;
-    }
+    return this;
+  }
 
-    public withRequestType(requestType: RequestType): this {
-        this._requestType = requestType;
+  public withDocumentType(documentType: DocumentType): this {
+    this._documentType = documentType;
 
-        return this;
-    }
+    return this;
+  }
 
-    public withDocumentType(documentType: DocumentType): this {
-        this._documentType = documentType;
+  public withComplement(
+    complement: ComplementoInterface<ComplementoCfdiTypes | ComplementoRetencionesTypes>,
+  ): this {
+    this._complement = complement;
 
-        return this;
-    }
+    return this;
+  }
 
-    public withComplement(complement: ComplementoInterface<ComplementoCfdiTypes | ComplementoRetencionesTypes>): this {
-        this._complement = complement;
+  public withDocumentStatus(documentStatus: DocumentStatus): this {
+    this._documentStatus = documentStatus;
 
-        return this;
-    }
+    return this;
+  }
 
-    public withDocumentStatus(documentStatus: DocumentStatus): this {
-        this._documentStatus = documentStatus;
+  public withUuid(uuid: Uuid): this {
+    this._uuid = uuid;
 
-        return this;
-    }
+    return this;
+  }
 
-    public withUuid(uuid: Uuid): this {
-        this._uuid = uuid;
+  public withRfcOnBehalf(rfcOnBehalf: RfcOnBehalf): this {
+    this._rfcOnBehalf = rfcOnBehalf;
 
-        return this;
-    }
+    return this;
+  }
 
-    public withRfcOnBehalf(rfcOnBehalf: RfcOnBehalf): this {
-        this._rfcOnBehalf = rfcOnBehalf;
+  public withRfcMatches(rfcMatches: RfcMatches): this {
+    this._rfcMatches = rfcMatches;
 
-        return this;
-    }
+    return this;
+  }
 
-    public withRfcMatches(rfcMatches: RfcMatches): this {
-        this._rfcMatches = rfcMatches;
+  public withRfcMatch(rfcMatch: RfcMatch): this {
+    this._rfcMatches = RfcMatches.create(rfcMatch);
 
-        return this;
-    }
+    return this;
+  }
 
-    public withRfcMatch(rfcMatch: RfcMatch): this {
-        this._rfcMatches = RfcMatches.create(rfcMatch);
-
-        return this;
-    }
-
-    public toJSON(): {
-        serviceType: ServiceType | undefined;
-        period: DateTimePeriod;
-        downloadType: DownloadType;
-        requestType: RequestType;
-        documentType: DocumentType;
-        complement: ComplementoInterface<ComplementoCfdiTypes | ComplementoRetencionesTypes>;
-        documentStatus: DocumentStatus;
-        uuid: Uuid;
-        rfcOnBehalf: RfcOnBehalf;
-        rfcMatches: RfcMatches;
-    } {
-        return {
-            serviceType: this._serviceType,
-            period: this._period,
-            downloadType: this._downloadType,
-            requestType: this._requestType,
-            documentType: this._documentType,
-            complement: this._complement,
-            documentStatus: this._documentStatus,
-            uuid: this._uuid,
-            rfcOnBehalf: this._rfcOnBehalf,
-            rfcMatches: this._rfcMatches,
-        };
-    }
+  public toJSON(): {
+    serviceType: ServiceType | undefined;
+    period: DateTimePeriod;
+    downloadType: DownloadType;
+    requestType: RequestType;
+    documentType: DocumentType;
+    complement: ComplementoInterface<ComplementoCfdiTypes | ComplementoRetencionesTypes>;
+    documentStatus: DocumentStatus;
+    uuid: Uuid;
+    rfcOnBehalf: RfcOnBehalf;
+    rfcMatches: RfcMatches;
+  } {
+    return {
+      serviceType: this._serviceType,
+      period: this._period,
+      downloadType: this._downloadType,
+      requestType: this._requestType,
+      documentType: this._documentType,
+      complement: this._complement,
+      documentStatus: this._documentStatus,
+      uuid: this._uuid,
+      rfcOnBehalf: this._rfcOnBehalf,
+      rfcMatches: this._rfcMatches,
+    };
+  }
 }

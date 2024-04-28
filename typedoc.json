@@ -1,6 +1,6 @@
 {
-    "plugin": ["typedoc-material-theme"],
-    "themeColor": "#badc69",
-    "entryPoints": ["./index.ts", "./src/types.ts"],
-    "out": "./docs"
-  }
+  "plugin": ["typedoc-material-theme"],
+  "themeColor": "#badc69",
+  "entryPoints": ["./index.ts", "./src/types.ts"],
+  "out": "./docs"
+}

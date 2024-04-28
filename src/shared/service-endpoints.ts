@@ -1,4 +1,4 @@
-import { ServiceType } from './service-type';
+import { ServiceType } from './service-type.js';
 
 /**
  * This class contains the end points to consume the service
@@ -9,54 +9,54 @@ import { ServiceType } from './service-type';
  * @see ServiceEndpoints.retenciones()
  */
 export class ServiceEndpoints {
-    constructor(
-        private readonly _authenticate: string,
-        private readonly _query: string,
-        private readonly _verify: string,
-        private readonly _download: string,
-        private readonly _serviceType: ServiceType,
-    ) {}
+  constructor(
+    private readonly _authenticate: string,
+    private readonly _query: string,
+    private readonly _verify: string,
+    private readonly _download: string,
+    private readonly _serviceType: ServiceType,
+  ) {}
 
-    /**
-     * Create an object with known endpoints for "CFDI regulares"
-     */
-    public static cfdi(): ServiceEndpoints {
-        return new ServiceEndpoints(
-            'https://cfdidescargamasivasolicitud.clouda.sat.gob.mx/Autenticacion/Autenticacion.svc',
-            'https://cfdidescargamasivasolicitud.clouda.sat.gob.mx/SolicitaDescargaService.svc',
-            'https://cfdidescargamasivasolicitud.clouda.sat.gob.mx/VerificaSolicitudDescargaService.svc',
-            'https://cfdidescargamasiva.clouda.sat.gob.mx/DescargaMasivaService.svc',
-            new ServiceType('cfdi'),
-        );
-    }
+  /**
+   * Create an object with known endpoints for "CFDI regulares"
+   */
+  public static cfdi(): ServiceEndpoints {
+    return new ServiceEndpoints(
+      'https://cfdidescargamasivasolicitud.clouda.sat.gob.mx/Autenticacion/Autenticacion.svc',
+      'https://cfdidescargamasivasolicitud.clouda.sat.gob.mx/SolicitaDescargaService.svc',
+      'https://cfdidescargamasivasolicitud.clouda.sat.gob.mx/VerificaSolicitudDescargaService.svc',
+      'https://cfdidescargamasiva.clouda.sat.gob.mx/DescargaMasivaService.svc',
+      new ServiceType('cfdi'),
+    );
+  }
 
-    public static retenciones(): ServiceEndpoints {
-        return new ServiceEndpoints(
-            'https://retendescargamasivasolicitud.clouda.sat.gob.mx/Autenticacion/Autenticacion.svc',
-            'https://retendescargamasivasolicitud.clouda.sat.gob.mx/SolicitaDescargaService.svc',
-            'https://retendescargamasivasolicitud.clouda.sat.gob.mx/VerificaSolicitudDescargaService.svc',
-            'https://retendescargamasiva.clouda.sat.gob.mx/DescargaMasivaService.svc',
-            new ServiceType('retenciones'),
-        );
-    }
+  public static retenciones(): ServiceEndpoints {
+    return new ServiceEndpoints(
+      'https://retendescargamasivasolicitud.clouda.sat.gob.mx/Autenticacion/Autenticacion.svc',
+      'https://retendescargamasivasolicitud.clouda.sat.gob.mx/SolicitaDescargaService.svc',
+      'https://retendescargamasivasolicitud.clouda.sat.gob.mx/VerificaSolicitudDescargaService.svc',
+      'https://retendescargamasiva.clouda.sat.gob.mx/DescargaMasivaService.svc',
+      new ServiceType('retenciones'),
+    );
+  }
 
-    public getAuthenticate(): string {
-        return this._authenticate;
-    }
+  public getAuthenticate(): string {
+    return this._authenticate;
+  }
 
-    public getQuery(): string {
-        return this._query;
-    }
+  public getQuery(): string {
+    return this._query;
+  }
 
-    public getVerify(): string {
-        return this._verify;
-    }
+  public getVerify(): string {
+    return this._verify;
+  }
 
-    public getDownload(): string {
-        return this._download;
-    }
+  public getDownload(): string {
+    return this._download;
+  }
 
-    public getServiceType(): ServiceType {
-        return this._serviceType;
-    }
+  public getServiceType(): ServiceType {
+    return this._serviceType;
+  }
 }

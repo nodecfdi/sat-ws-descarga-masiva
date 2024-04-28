@@ -1,33 +1,33 @@
-import { type StatusCode } from '../../shared/status-code';
+import { type StatusCode } from '../../shared/status-code.js';
 
 export class QueryResult {
-    private readonly _status: StatusCode;
+  private readonly _status: StatusCode;
 
-    private readonly _requestId: string;
+  private readonly _requestId: string;
 
-    constructor(statusCode: StatusCode, requestId: string) {
-        this._status = statusCode;
-        this._requestId = requestId;
-    }
+  constructor(statusCode: StatusCode, requestId: string) {
+    this._status = statusCode;
+    this._requestId = requestId;
+  }
 
-    /**
-     * Status of the verification call
-     */
-    public getStatus(): StatusCode {
-        return this._status;
-    }
+  /**
+   * Status of the verification call
+   */
+  public getStatus(): StatusCode {
+    return this._status;
+  }
 
-    /**
-     * If accepted, contains the request identification required for verification
-     */
-    public getRequestId(): string {
-        return this._requestId;
-    }
+  /**
+   * If accepted, contains the request identification required for verification
+   */
+  public getRequestId(): string {
+    return this._requestId;
+  }
 
-    public toJSON(): { status: StatusCode; requestId: string } {
-        return {
-            status: this._status,
-            requestId: this._requestId,
-        };
-    }
+  public toJSON(): { status: StatusCode; requestId: string } {
+    return {
+      status: this._status,
+      requestId: this._requestId,
+    };
+  }
 }
