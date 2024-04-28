@@ -1,14 +1,14 @@
 import { createReadStream } from 'node:fs';
 import * as readline from 'node:readline';
 import { mock } from 'vitest-mock-extended';
-import { useTestCase } from '../../../test-case.js';
 import { CsvReader } from '#src/package-reader/internal/csv-reader';
+import { NullFileFilter } from '#src/package-reader/internal/file-filters/null-file-filter';
+import { FilteredPackageReader } from '#src/package-reader/internal/filtered-package-reader';
 import { ThirdPartiesExtractor } from '#src/package-reader/internal/third-parties-extractor';
 import { type PackageReaderInterface } from '#src/package-reader/package-reader-interface';
-import { FilteredPackageReader } from '#src/package-reader/internal/filtered-package-reader';
-import { NullFileFilter } from '#src/package-reader/internal/file-filters/null-file-filter';
+import { useTestCase } from '../../../test-case.js';
 
-describe('Third parties extractor', () => {
+describe('third parties extractor', () => {
   const { filePath } = useTestCase();
 
   test('extractor', async () => {

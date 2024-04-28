@@ -1,6 +1,6 @@
 import { useTestCase } from '../../test-case.js';
-import { InteractsXmlOverrideTraitSpecimen } from './interacts-xml-trait-override-specimen.js';
 import { InteractsXmlTraitSpecimen } from './interacts-xml-trait.specimen.js';
+import { InteractsXmlOverrideTraitSpecimen } from './interacts-xml-trait-override-specimen.js';
 
 describe('interacts xml trait', () => {
   const { fileContents } = useTestCase();
@@ -12,7 +12,7 @@ describe('interacts xml trait', () => {
 
     const search = ['body', 'verificaSolicitudDescargaResponse', 'verificaSolicitudDescargaResult'];
 
-    expect(specimen.findElements(root, ...search).length).toBe(1);
+    expect(specimen.findElements(root, ...search)).toHaveLength(1);
     expect(specimen.findElements(root, ...search)[0]).toStrictEqual(
       specimen.findElement(root, ...search),
     );
@@ -35,7 +35,7 @@ describe('interacts xml trait', () => {
     const content = fileContents('verify/response-2-packages.xml', 'utf8');
     const root = specimen.readXmlElement(content);
     const search = ['body', 'foo', 'verificaSolicitudDescargaResult'];
-    expect(specimen.findElements(root, ...search).length).toBe(0);
+    expect(specimen.findElements(root, ...search)).toHaveLength(0);
     expect(specimen.findElement(root, ...search)).toBeUndefined();
   });
 
@@ -51,7 +51,7 @@ describe('interacts xml trait', () => {
 
     const root = specimen.readXmlElement(content);
 
-    expect(specimen.findElements(root, ...search).length).toBe(2);
+    expect(specimen.findElements(root, ...search)).toHaveLength(2);
     expect(specimen.findElements(root, ...search)[0]).toStrictEqual(
       specimen.findElement(root, ...search),
     );

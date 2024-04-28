@@ -70,8 +70,8 @@ export class CfdiPackageReader implements PackageReaderInterface {
     };
   }
 
-  public async cfdisToArray(): Promise<Array<{ uuid: string; content: string }>> {
-    const cfdis: Array<{ uuid: string; content: string }> = [];
+  public async cfdisToArray(): Promise<{ uuid: string; content: string }[]> {
+    const cfdis: { uuid: string; content: string }[] = [];
     for await (const item of this.cfdis()) {
       for (const [uuid, content] of item) {
         cfdis.push({ uuid, content });
@@ -81,8 +81,8 @@ export class CfdiPackageReader implements PackageReaderInterface {
     return cfdis;
   }
 
-  public async fileContentsToArray(): Promise<Array<{ name: string; content: string }>> {
-    const contents: Array<{ name: string; content: string }> = [];
+  public async fileContentsToArray(): Promise<{ name: string; content: string }[]> {
+    const contents: { name: string; content: string }[] = [];
     for await (const item of this.fileContents()) {
       for (const [name, content] of item) {
         contents.push({ name, content });

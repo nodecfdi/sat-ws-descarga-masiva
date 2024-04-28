@@ -46,7 +46,7 @@ export class StatusRequest {
     }
   }
 
-  public static getEntriesArray(): Array<{ name: string; message: string }> {
+  public static getEntriesArray(): { name: string; message: string }[] {
     return StatusRequest.VALUES;
   }
 

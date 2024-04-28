@@ -1,5 +1,5 @@
-import { RfcFilterImplementation } from './rfc-filter-implementation.js';
 import { type AbstractRfcFilter } from '#src/shared/abstract-rfc-filter';
+import { RfcFilterImplementation } from './rfc-filter-implementation.js';
 
 describe('abstract rfc filter', () => {
   test('create with correct value', () => {
@@ -30,7 +30,7 @@ describe('abstract rfc filter', () => {
     expect(RfcFilterImplementation.check(value)).toBeFalsy();
   });
 
-  test('Json serialize', () => {
+  test('json serialize', () => {
     const value = 'XXX01010199A';
     const expectedJson = JSON.stringify(value);
     const uuid = RfcFilterImplementation.create(value);

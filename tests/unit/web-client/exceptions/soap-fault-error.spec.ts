@@ -1,8 +1,8 @@
 import { CRequest } from '#src/web-client/crequest';
 import { CResponse } from '#src/web-client/cresponse';
-import { SoapFaultInfo } from '#src/web-client/soap-fault-info';
-import { SoapFaultError } from '#src/web-client/exceptions/soap-fault-error';
 import { HttpClientError } from '#src/web-client/exceptions/http-client-error';
+import { SoapFaultError } from '#src/web-client/exceptions/soap-fault-error';
+import { SoapFaultInfo } from '#src/web-client/soap-fault-info';
 
 describe('soap fault error', () => {
   test('properties', () => {

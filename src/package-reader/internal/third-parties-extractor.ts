@@ -3,10 +3,10 @@ import { CsvReader } from './csv-reader.js';
 import { ThirdPartiesFileFilter } from './file-filters/third-parties-file-filter.js';
 import { FilteredPackageReader } from './filtered-package-reader.js';
 
-export interface ThirdPartiesInterface {
+export type ThirdPartiesInterface = {
   RfcACuentaTerceros: string;
   NombreACuentaTerceros: string;
-}
+};
 
 /**
  * Class to extract the data from a "third parties" file.

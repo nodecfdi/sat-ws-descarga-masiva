@@ -1,14 +1,14 @@
 import { mock, type MockProxy } from 'vitest-mock-extended';
-import { useTestCase } from '../../test-case.js';
-import { CResponse } from '#src/web-client/cresponse';
-import { type WebClientInterface } from '#src/web-client/web-client-interface';
 import { ServiceConsumer } from '#src/internal/service-consumer';
-import { Token } from '#src/shared/token';
 import { DateTime } from '#src/shared/date-time';
+import { Token } from '#src/shared/token';
 import { CRequest } from '#src/web-client/crequest';
-import { WebClientException } from '#src/web-client/exceptions/web-client-exception';
-import { SoapFaultError } from '#src/web-client/exceptions/soap-fault-error';
+import { CResponse } from '#src/web-client/cresponse';
 import { HttpServerError } from '#src/web-client/exceptions/http-server-error';
+import { SoapFaultError } from '#src/web-client/exceptions/soap-fault-error';
+import { WebClientException } from '#src/web-client/exceptions/web-client-exception';
+import { type WebClientInterface } from '#src/web-client/web-client-interface';
+import { useTestCase } from '../../test-case.js';
 
 describe('service consumer', () => {
   let webClient: MockProxy<WebClientInterface>;

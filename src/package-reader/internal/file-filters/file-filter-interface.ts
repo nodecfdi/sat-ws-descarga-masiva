@@ -1,7 +1,7 @@
 /**
  * Filter by filename or content contract
  */
-export interface FileFilterInterface {
+export type FileFilterInterface = {
   /**
    * Filter the file name
    */
@@ -14,4 +14,4 @@ export interface FileFilterInterface {
    * @returns boolean
    */
   filterContents(contents: string): boolean;
-}
+};

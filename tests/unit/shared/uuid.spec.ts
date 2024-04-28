@@ -32,7 +32,7 @@ describe('uuid', () => {
     expect((): Uuid => Uuid.create(value)).toThrow('does not have the correct format');
   });
 
-  test.each(providerInvalidValues)('Check invalid value %s', (value: string) => {
+  test.each(providerInvalidValues)('check invalid value %s', (value: string) => {
     expect(Uuid.check(value)).toBeFalsy();
   });
 

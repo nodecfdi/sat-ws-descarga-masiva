@@ -1,5 +1,5 @@
-import { RfcMatches } from '#src/shared/rfc-matches';
 import { RfcMatch } from '#src/shared/rfc-match';
+import { RfcMatches } from '#src/shared/rfc-matches';
 
 describe('rfc matches', () => {
   test('object definition', () => {

@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { createReadStream, realpathSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
 import os from 'node:os';
+import { join } from 'node:path';
 import * as readline from 'node:readline';
 
 export type ReadLineInterface = {
@@ -36,7 +36,7 @@ export class CsvReader {
   public async *records(): AsyncGenerator<Record<string, string>> {
     const headers: string[] = [];
     for await (const line of this._iterator) {
-      const clean = line.split(/[|~]/g).map((item) => item.trim());
+      const clean = line.split(/[|~]/).map((item) => item.trim());
 
       if (clean.length === 0 || JSON.stringify(clean) === '[""]') {
         continue;

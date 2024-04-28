@@ -1,13 +1,13 @@
+import { randomUUID } from 'node:crypto';
 import { realpathSync, unlinkSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import { dirname, join } from 'node:path';
-import { randomUUID } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import JSZip from 'jszip';
-import { useTestCase } from '../../../test-case.js';
 import { OpenZipFileException } from '#src/package-reader/exceptions/open-zip-file-exception';
-import { FilteredPackageReader } from '#src/package-reader/internal/filtered-package-reader';
 import { NullFileFilter } from '#src/package-reader/internal/file-filters/null-file-filter';
+import { FilteredPackageReader } from '#src/package-reader/internal/filtered-package-reader';
+import { useTestCase } from '../../../test-case.js';
 
 describe('filtered package reader', () => {
   const { filePath } = useTestCase();

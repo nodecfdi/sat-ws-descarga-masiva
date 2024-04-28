@@ -1,6 +1,6 @@
 import { MetadataItem } from '../metadata-item.js';
-import { MetadataPreprocessor } from './metadata-preprocessor.js';
 import { CsvReader } from './csv-reader.js';
+import { MetadataPreprocessor } from './metadata-preprocessor.js';
 import { ThirdPartiesRecords } from './third-parties-records.js';
 
 export class MetadataContent {

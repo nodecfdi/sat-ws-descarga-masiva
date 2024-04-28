@@ -1,6 +1,6 @@
-import { getSerializer, getParser } from '@nodecfdi/cfdi-core';
+import { getParser, getSerializer } from '@nodecfdi/cfdi-core';
 import { Crypto } from '@peculiar/webcrypto';
-import { Parse, Application, SignedXml } from 'xadesjs';
+import { Application, Parse, SignedXml } from 'xadesjs';
 
 export class EnvelopSignatureVerifier {
   public async verify(

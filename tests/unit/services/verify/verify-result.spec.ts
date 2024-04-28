@@ -1,8 +1,8 @@
-import { useTestCase } from '../../../test-case';
+import { VerifyResult } from 'src/services/verify/verify-result';
+import { CodeRequest } from 'src/shared/code-request';
 import { StatusCode } from 'src/shared/status-code';
 import { StatusRequest } from 'src/shared/status-request';
-import { CodeRequest } from 'src/shared/code-request';
-import { VerifyResult } from 'src/services/verify/verify-result';
+import { useTestCase } from '../../../test-case.js';
 
 describe('verify result', () => {
   const { fileContents } = useTestCase();

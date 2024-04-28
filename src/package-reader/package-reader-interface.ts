@@ -1,7 +1,7 @@
 /**
  * Expected behavior of a PackageReader contract
  */
-export interface PackageReaderInterface {
+export type PackageReaderInterface = {
   /**
    * Traverse each file inside the package, with the filename as key and file content as value
    */
@@ -14,4 +14,4 @@ export interface PackageReaderInterface {
    * Retrieve the currently open file name
    */
   getFilename(): string;
-}
+};

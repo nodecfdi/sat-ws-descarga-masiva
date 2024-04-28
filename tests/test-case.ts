@@ -7,12 +7,12 @@ import { Fiel } from '#src/request-builder/fiel-request-builder/fiel';
 import { FielRequestBuilder } from '#src/request-builder/fiel-request-builder/fiel-request-builder';
 
 export const useTestCase = (): {
-  filePath: (append?: string) => string;
-  fileContent: (path: string, encoding?: BufferEncoding) => string;
-  fileContents: (append: string, encoding?: BufferEncoding) => string;
-  createFielUsingTestingFiles: (password?: string) => Fiel;
-  createFielRequestBuilderUsingTestingFiles: (password?: string) => FielRequestBuilder;
-  xmlFormat: (content: string) => string;
+  filePath(append?: string): string;
+  fileContent(path: string, encoding?: BufferEncoding): string;
+  fileContents(append: string, encoding?: BufferEncoding): string;
+  createFielUsingTestingFiles(password?: string): Fiel;
+  createFielRequestBuilderUsingTestingFiles(password?: string): FielRequestBuilder;
+  xmlFormat(content: string): string;
 } => {
   const filePath = (append = ''): string =>
     join(dirname(fileURLToPath(import.meta.url)), '_files', append);

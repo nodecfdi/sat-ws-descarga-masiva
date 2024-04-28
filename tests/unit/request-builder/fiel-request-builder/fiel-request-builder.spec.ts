@@ -1,3 +1,4 @@
+import { getParser } from '@nodecfdi/cfdi-core';
 import {
   type Certificate,
   Credential,
@@ -5,26 +6,25 @@ import {
   type SerialNumber,
 } from '@nodecfdi/credentials';
 import { mock } from 'vitest-mock-extended';
-import { getParser } from '@nodecfdi/cfdi-core';
 import { useNamespaces } from 'xpath';
-import { useTestCase } from '../../../test-case.js';
-import { FielRequestBuilder } from '#src/request-builder/fiel-request-builder/fiel-request-builder';
 import { Helpers } from '#src/internal/helpers';
-import { DateTime } from '#src/shared/date-time';
-import { RequestType } from '#src/shared/request-type';
-import { QueryParameters } from '#src/services/query/query-parameters';
 import { Fiel } from '#src/request-builder/fiel-request-builder/fiel';
-import { DownloadType } from '#src/shared/download-type';
-import { DateTimePeriod } from '#src/shared/date-time-period';
-import { ServiceType } from '#src/shared/service-type';
-import { DocumentType } from '#src/shared/document-type';
+import { FielRequestBuilder } from '#src/request-builder/fiel-request-builder/fiel-request-builder';
+import { QueryParameters } from '#src/services/query/query-parameters';
 import { ComplementoCfdi } from '#src/shared/complemento-cfdi';
+import { DateTime } from '#src/shared/date-time';
+import { DateTimePeriod } from '#src/shared/date-time-period';
 import { DocumentStatus } from '#src/shared/document-status';
-import { RfcOnBehalf } from '#src/shared/rfc-on-behalf';
+import { DocumentType } from '#src/shared/document-type';
+import { DownloadType } from '#src/shared/download-type';
+import { RequestType } from '#src/shared/request-type';
 import { RfcMatch } from '#src/shared/rfc-match';
+import { RfcOnBehalf } from '#src/shared/rfc-on-behalf';
+import { ServiceType } from '#src/shared/service-type';
 import { Uuid } from '#src/shared/uuid';
+import { useTestCase } from '../../../test-case.js';
 
-describe('Fiel request builder', () => {
+describe('fiel request builder', () => {
   const {
     createFielUsingTestingFiles,
     createFielRequestBuilderUsingTestingFiles,
@@ -201,17 +201,17 @@ describe('Fiel request builder', () => {
     });
     let selectedValue = selectValue('//des:solicitud/@IdSolicitud', document.documentElement);
     if (!Array.isArray(selectedValue)) {
-      throw new Error('selected value //des:solicitud/@IdSolicitud not found');
+      throw new TypeError('selected value //des:solicitud/@IdSolicitud not found');
     }
     expect((selectedValue[0] as Attr).value).toBe(requestId);
     selectedValue = selectValue('//des:solicitud/@RfcSolicitante', document.documentElement);
     if (!Array.isArray(selectedValue)) {
-      throw new Error('selected value //des:solicitud/@RfcSolicitante not found');
+      throw new TypeError('selected value //des:solicitud/@RfcSolicitante not found');
     }
     expect((selectedValue[0] as Attr).value).toBe(rfc);
     selectedValue = selectValue('//xd:X509IssuerName/text()', document.documentElement);
     if (!Array.isArray(selectedValue)) {
-      throw new Error('selected value //xd:X509IssuerName/text() not found');
+      throw new TypeError('selected value //xd:X509IssuerName/text() not found');
     }
     expect((selectedValue[0] as Element).nodeValue).toBe(issuerName);
   });
@@ -264,17 +264,17 @@ describe('Fiel request builder', () => {
     });
     let selectedValue = selectValue('//des:peticionDescarga/@idPaquete', document.documentElement);
     if (!Array.isArray(selectedValue)) {
-      throw new Error('selected value //des:peticionDescarga/@idPaquete not found');
+      throw new TypeError('selected value //des:peticionDescarga/@idPaquete not found');
     }
     expect((selectedValue[0] as Attr).value).toBe(packageId);
     selectedValue = selectValue('//des:peticionDescarga/@RfcSolicitante', document.documentElement);
     if (!Array.isArray(selectedValue)) {
-      throw new Error('selected value //des:peticionDescarga/@RfcSolicitante not found');
+      throw new TypeError('selected value //des:peticionDescarga/@RfcSolicitante not found');
     }
     expect((selectedValue[0] as Attr).value).toBe(rfc);
     selectedValue = selectValue('//xd:X509IssuerName/text()', document.documentElement);
     if (!Array.isArray(selectedValue)) {
-      throw new Error('selected value //xd:X509IssuerName/text() not found');
+      throw new TypeError('selected value //xd:X509IssuerName/text() not found');
     }
     expect((selectedValue[0] as Element).nodeValue).toBe(issuerName);
   });

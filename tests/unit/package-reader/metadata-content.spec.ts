@@ -1,6 +1,6 @@
-import { useTestCase } from '../../test-case.js';
 import { MetadataContent } from '#src/package-reader/internal/metadata-content';
 import { type MetadataItem } from '#src/package-reader/metadata-item';
+import { useTestCase } from '../../test-case.js';
 
 describe('metadata content', () => {
   const { fileContents } = useTestCase();
@@ -37,7 +37,7 @@ describe('metadata content', () => {
     ['LFLF at start', 'Receptor\n\nSA', 'ReceptorSA'],
   ];
 
-  it.each(providerReadMetadataWithSpecialCharacters)(
+  test.each(providerReadMetadataWithSpecialCharacters)(
     'read metadata with special chars %s',
     async (_name: string, sourceValue: string, expectedValue: string) => {
       const contents = [

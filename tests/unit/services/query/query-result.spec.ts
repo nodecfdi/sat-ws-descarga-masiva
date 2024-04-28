@@ -1,6 +1,6 @@
-import { useTestCase } from '../../../test-case';
-import { StatusCode } from 'src/shared/status-code';
 import { QueryResult } from 'src/services/query/query-result';
+import { StatusCode } from 'src/shared/status-code';
+import { useTestCase } from '../../../test-case.js';
 
 describe('query result', () => {
   const { fileContents } = useTestCase();

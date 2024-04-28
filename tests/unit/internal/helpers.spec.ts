@@ -1,6 +1,6 @@
 import { Helpers } from '#src/internal/helpers';
 
-describe('Helpers', () => {
+describe('helpers', () => {
   test('no spaces contents', () => {
     const source = `
             <root>

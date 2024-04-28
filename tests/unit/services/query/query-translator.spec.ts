@@ -1,9 +1,9 @@
-import { useTestCase } from '../../../test-case';
 import { Helpers } from 'src/internal/helpers';
-import { QueryTranslator } from 'src/services/query/query-translator';
 import { QueryParameters } from 'src/services/query/query-parameters';
+import { QueryTranslator } from 'src/services/query/query-translator';
 import { DateTimePeriod } from 'src/shared/date-time-period';
 import { ServiceType } from 'src/shared/service-type';
+import { useTestCase } from '../../../test-case.js';
 
 describe('query translator', () => {
   const { fileContents, createFielRequestBuilderUsingTestingFiles, xmlFormat } = useTestCase();

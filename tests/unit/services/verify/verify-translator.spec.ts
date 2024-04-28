@@ -1,6 +1,6 @@
-import { useTestCase } from '../../../test-case';
 import { Helpers } from 'src/internal/helpers';
 import { VerifyTranslator } from 'src/services/verify/verify-translator';
+import { useTestCase } from '../../../test-case.js';
 
 describe('verify translator', () => {
   const { fileContents, createFielRequestBuilderUsingTestingFiles, xmlFormat } = useTestCase();

@@ -1,6 +1,6 @@
-import { useTestCase } from '../../test-case.js';
 import { SoapFaultInfoExtractor } from '#src/internal/soap-fault-info-extractor';
 import { SoapFaultInfo } from '#src/web-client/soap-fault-info';
+import { useTestCase } from '../../test-case.js';
 
 describe('soap fault info extractor', () => {
   const { fileContents } = useTestCase();

@@ -1,7 +1,7 @@
-import { HttpClientError } from '../web-client/exceptions/http-client-error.js';
 import { type Token } from '../shared/token.js';
 import { CRequest } from '../web-client/crequest.js';
 import { type CResponse } from '../web-client/cresponse.js';
+import { HttpClientError } from '../web-client/exceptions/http-client-error.js';
 import { HttpServerError } from '../web-client/exceptions/http-server-error.js';
 import { SoapFaultError } from '../web-client/exceptions/soap-fault-error.js';
 import { type WebClientException } from '../web-client/exceptions/web-client-exception.js';

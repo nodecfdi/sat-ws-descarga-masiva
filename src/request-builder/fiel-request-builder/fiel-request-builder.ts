@@ -1,9 +1,9 @@
 import { createHash, randomUUID } from 'node:crypto';
 import { Helpers } from '../../internal/helpers.js';
-import { type RequestBuilderInterface } from '../request-builder-interface.js';
-import { type DateTime } from '../../shared/date-time.js';
 import { type QueryParameters } from '../../services/query/query-parameters.js';
+import { type DateTime } from '../../shared/date-time.js';
 import { RfcMatches } from '../../shared/rfc-matches.js';
+import { type RequestBuilderInterface } from '../request-builder-interface.js';
 import { type Fiel } from './fiel.js';
 
 export class FielRequestBuilder implements RequestBuilderInterface {

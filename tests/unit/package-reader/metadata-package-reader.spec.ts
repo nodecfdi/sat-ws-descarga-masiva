@@ -1,5 +1,5 @@
-import { useTestCase } from '../../test-case.js';
 import { MetadataPackageReader } from '#src/package-reader/metadata-package-reader';
+import { useTestCase } from '../../test-case.js';
 /**
  * This tests uses the Zip file located at tests/_files/zip/metadata.zip that contains:
  *
@@ -21,8 +21,8 @@ describe('metadata package reader', () => {
 
     const content = await metadataPackageReader.metadataToArray();
 
-    expect(await metadataPackageReader.count()).toBe(expectedNumberFiles);
-    expect(content.length).toBe(expectedNUmberRows);
+    await expect(metadataPackageReader.count()).resolves.toBe(expectedNumberFiles);
+    expect(content).toHaveLength(expectedNUmberRows);
   });
 
   test('retrieve metadata contents', async () => {
@@ -30,7 +30,7 @@ describe('metadata package reader', () => {
     const metadataPackageReader = await MetadataPackageReader.createFromFile(filename);
     const metadata = await metadataPackageReader.metadataToArray();
 
-    expect(metadata.length).toBe(2);
+    expect(metadata).toHaveLength(2);
 
     const extracted: string[] = [];
 
@@ -69,7 +69,7 @@ describe('metadata package reader', () => {
     const zipFilename = filePath('zip/metadata-terceros.zip');
 
     const packageReader = await MetadataPackageReader.createFromFile(zipFilename);
-    const extracted: Array<Record<string, string>> = [];
+    const extracted: Record<string, string>[] = [];
 
     const values = await packageReader.metadataToArray();
 

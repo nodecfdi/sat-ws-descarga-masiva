@@ -1,9 +1,9 @@
-import https from 'node:https';
 import { type ClientRequest } from 'node:http';
+import https from 'node:https';
 import { type CRequest } from './crequest.js';
 import { CResponse } from './cresponse.js';
-import { type WebClientInterface } from './web-client-interface.js';
 import { WebClientException } from './exceptions/web-client-exception.js';
+import { type WebClientInterface } from './web-client-interface.js';
 
 export class HttpsWebClient implements WebClientInterface {
   private readonly _fireRequestClosure?: CallableFunction;

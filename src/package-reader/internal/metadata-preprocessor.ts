@@ -53,7 +53,7 @@ export class MetadataPreprocessor {
 
     const lines = this._contents.split(this.CONTROL_CRLF);
     this._contents = lines
-      .map((line) => line.replaceAll(new RegExp(`${this.CONTROL_LF}`, 'g'), ''))
+      .map((line) => line.replaceAll(new RegExp(this.CONTROL_LF, 'g'), ''))
       .join(this.CONTROL_LF);
   }
 }

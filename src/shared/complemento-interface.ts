@@ -1,4 +1,4 @@
-export interface ComplementoInterface<T> {
+export type ComplementoInterface<T> = {
   label(): string;
 
   value(): string;
@@ -6,4 +6,4 @@ export interface ComplementoInterface<T> {
   toJSON(): string;
 
   isTypeOf(type: T): boolean;
-}
+};

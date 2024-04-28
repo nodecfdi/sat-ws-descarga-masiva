@@ -1,7 +1,7 @@
 import { type CRequest } from './crequest.js';
 import { type CResponse } from './cresponse.js';
 
-export interface WebClientInterface {
+export type WebClientInterface = {
   /**
    * Make the Http call to the web service
    * This method should *not* call fireRequest/fireResponse
@@ -19,4 +19,4 @@ export interface WebClientInterface {
    * Method called after calling the web service
    */
   fireResponse(response: CResponse): void;
-}
+};

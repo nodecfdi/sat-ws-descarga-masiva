@@ -1,18 +1,18 @@
+import { type ComplementoCfdiTypes } from '../../shared/complemento-cfdi.js';
 import { type ComplementoInterface } from '../../shared/complemento-interface.js';
+import { type ComplementoRetencionesTypes } from '../../shared/complemento-retenciones.js';
 import { ComplementoUndefined } from '../../shared/complemento-undefined.js';
 import { DateTime } from '../../shared/date-time.js';
+import { DateTimePeriod } from '../../shared/date-time-period.js';
 import { DocumentStatus } from '../../shared/document-status.js';
 import { DocumentType } from '../../shared/document-type.js';
+import { DownloadType } from '../../shared/download-type.js';
+import { RequestType } from '../../shared/request-type.js';
 import { type RfcMatch } from '../../shared/rfc-match.js';
 import { RfcMatches } from '../../shared/rfc-matches.js';
 import { RfcOnBehalf } from '../../shared/rfc-on-behalf.js';
 import { type ServiceType } from '../../shared/service-type.js';
 import { Uuid } from '../../shared/uuid.js';
-import { DateTimePeriod } from '../../shared/date-time-period.js';
-import { DownloadType } from '../../shared/download-type.js';
-import { RequestType } from '../../shared/request-type.js';
-import { type ComplementoCfdiTypes } from '../../shared/complemento-cfdi.js';
-import { type ComplementoRetencionesTypes } from '../../shared/complemento-retenciones.js';
 
 /**
  * This class contains all the information required to perform a query on the SAT Web Service

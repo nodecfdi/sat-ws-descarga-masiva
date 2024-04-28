@@ -1,16 +1,16 @@
-import { useTestCase } from '../../../test-case';
+import { QueryParameters } from 'src/services/query/query-parameters';
+import { ComplementoCfdi } from 'src/shared/complemento-cfdi';
 import { DateTime } from 'src/shared/date-time';
 import { DateTimePeriod } from 'src/shared/date-time-period';
-import { DownloadType } from 'src/shared/download-type';
-import { RequestType } from 'src/shared/request-type';
-import { QueryParameters } from 'src/services/query/query-parameters';
 import { DocumentStatus } from 'src/shared/document-status';
 import { DocumentType } from 'src/shared/document-type';
-import { Uuid } from 'src/shared/uuid';
-import { RfcOnBehalf } from 'src/shared/rfc-on-behalf';
-import { RfcMatches } from 'src/shared/rfc-matches';
-import { ComplementoCfdi } from 'src/shared/complemento-cfdi';
+import { DownloadType } from 'src/shared/download-type';
+import { RequestType } from 'src/shared/request-type';
 import { RfcMatch } from 'src/shared/rfc-match';
+import { RfcMatches } from 'src/shared/rfc-matches';
+import { RfcOnBehalf } from 'src/shared/rfc-on-behalf';
+import { Uuid } from 'src/shared/uuid';
+import { useTestCase } from '../../../test-case.js';
 
 describe('query parameters', () => {
   const { fileContents } = useTestCase();

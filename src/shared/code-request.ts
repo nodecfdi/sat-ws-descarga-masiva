@@ -55,11 +55,11 @@ export class CodeRequest {
     }
   }
 
-  public static getEntries(): Array<{
+  public static getEntries(): {
     code: number;
     name: string;
     message: string;
-  }> {
+  }[] {
     return CodeRequest.VALUES;
   }
 

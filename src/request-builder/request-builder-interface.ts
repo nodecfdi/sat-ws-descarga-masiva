@@ -1,10 +1,10 @@
-import { type DateTime } from '../shared/date-time.js';
 import { type QueryParameters } from '../services/query/query-parameters.js';
+import { type DateTime } from '../shared/date-time.js';
 /**
  * The implementors must create the request signed ready to send to the SAT Web Service Descarga Masiva
  * The information about owner like RFC, certificate, private key, etc. are outside the scope of this interface
  */
-export interface RequestBuilderInterface {
+export type RequestBuilderInterface = {
   /**
    * Creates an authorization signed xml message
    *
@@ -34,4 +34,4 @@ export interface RequestBuilderInterface {
    * @throws RequestBuilderException
    */
   download(packageId: string): string;
-}
+};

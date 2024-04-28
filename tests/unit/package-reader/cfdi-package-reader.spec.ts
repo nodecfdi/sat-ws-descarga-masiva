@@ -1,8 +1,8 @@
 import { readFileSync } from 'node:fs';
-import { useTestCase } from '../../test-case.js';
-import { CfdiFileFilter } from '#src/package-reader/internal/file-filters/cfdi-file-filter';
 import { CfdiPackageReader } from '#src/package-reader/cfdi-package-reader';
 import { OpenZipFileException } from '#src/package-reader/exceptions/open-zip-file-exception';
+import { CfdiFileFilter } from '#src/package-reader/internal/file-filters/cfdi-file-filter';
+import { useTestCase } from '../../test-case.js';
 /**
  * This tests uses the Zip file located at tests/_files/zip/cfdi.zip that contains:
  *
@@ -28,7 +28,7 @@ describe('cfdi package reader', () => {
     const cfdiPackageReader = await CfdiPackageReader.createFromContents(zipContents);
     const temporaryFileName = cfdiPackageReader.getFilename();
     const cfdiArray = await cfdiPackageReader.cfdisToArray();
-    expect(cfdiArray.length).toBe(2);
+    expect(cfdiArray).toHaveLength(2);
     expect(() => readFileSync(temporaryFileName)).toThrow(
       `ENOENT: no such file or directory, open '${temporaryFileName}'`,
     );
@@ -40,7 +40,7 @@ describe('cfdi package reader', () => {
     const filename = filePath('zip/cfdi.zip');
     const cfdiPackageReader = await CfdiPackageReader.createFromFile(filename);
 
-    expect(await cfdiPackageReader.count()).toBe(expectedNumberCfdis);
+    await expect(cfdiPackageReader.count()).resolves.toBe(expectedNumberCfdis);
   });
 
   test('reader zip with other files and double xml extension', async () => {

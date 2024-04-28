@@ -1,20 +1,20 @@
-import { useTestCase } from '../test-case.js';
 import { type RequestBuilderInterface } from '#src/request-builder/request-builder-interface';
-import { HttpsWebClient } from '#src/web-client/https-web-client';
 import { Service } from '#src/service';
 import { QueryParameters } from '#src/services/query/query-parameters';
-import { ServiceEndpoints } from '#src/shared/service-endpoints';
+import { type QueryResult } from '#src/services/query/query-result';
+import { ComplementoCfdi } from '#src/shared/complemento-cfdi';
 import { DateTimePeriod } from '#src/shared/date-time-period';
+import { DocumentStatus } from '#src/shared/document-status';
+import { DocumentType } from '#src/shared/document-type';
 import { DownloadType} from '#src/shared/download-type';
 import { RequestType } from '#src/shared/request-type';
-import { DocumentType } from '#src/shared/document-type';
-import { ComplementoCfdi } from '#src/shared/complemento-cfdi';
-import { DocumentStatus } from '#src/shared/document-status';
-import { RfcOnBehalf } from '#src/shared/rfc-on-behalf';
 import { RfcMatch } from '#src/shared/rfc-match';
-import { Uuid } from '#src/shared/uuid';
+import { RfcOnBehalf } from '#src/shared/rfc-on-behalf';
+import { ServiceEndpoints } from '#src/shared/service-endpoints';
 import { ServiceType } from '#src/shared/service-type';
-import { type QueryResult } from '#src/services/query/query-result';
+import { Uuid } from '#src/shared/uuid';
+import { HttpsWebClient } from '#src/web-client/https-web-client';
+import { useTestCase } from '../test-case.js';
 
 describe('consume cfdi service using fake fiel', () => {
   let requestBuilder: RequestBuilderInterface;
