@@ -1,4 +1,4 @@
-import { ComplementoRetenciones } from 'src/shared/complemento-retenciones';
+import { ComplementoRetenciones } from '#src/shared/complemento-retenciones';
 
 describe('complemento Retenciones', () => {
   test('create undefined by name', () => {

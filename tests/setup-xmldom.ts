@@ -1,4 +1,4 @@
-import { install } from '@nodecfdi/cfdiutils-common';
+import { install } from '@nodecfdi/cfdi-core';
 import { DOMParser, XMLSerializer, DOMImplementation } from '@xmldom/xmldom';
 
 beforeAll(() => {

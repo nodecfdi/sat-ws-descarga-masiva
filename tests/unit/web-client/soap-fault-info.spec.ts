@@ -1,4 +1,4 @@
-import { SoapFaultInfo } from 'src/web-client/soap-fault-info';
+import { SoapFaultInfo } from '#src/web-client/soap-fault-info';
 
 describe('soap fault info', () => {
   test('data transfer object', () => {

@@ -1,7 +1,7 @@
-import { useTestCase } from '../../../test-case';
-import { Helpers } from 'src/internal/helpers';
-import { AuthenticateTranslator } from 'src/services/authenticate/authenticate-translator';
-import { DateTime } from 'src/shared/date-time';
+import { useTestCase } from '../../../test-case.js';
+import { Helpers } from '#src/internal/helpers';
+import { AuthenticateTranslator } from '#src/services/authenticate/authenticate-translator';
+import { DateTime } from '#src/shared/date-time';
 
 describe('Authenticate translator', () => {
   const { createFielRequestBuilderUsingTestingFiles, xmlFormat, fileContents } = useTestCase();

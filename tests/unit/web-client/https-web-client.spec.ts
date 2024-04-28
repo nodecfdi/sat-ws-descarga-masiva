@@ -1,7 +1,7 @@
-import { CRequest } from 'src/web-client/crequest';
-import { HttpsWebClient } from 'src/web-client/https-web-client';
-import { WebClientException } from 'src/web-client/exceptions/web-client-exception';
-import { CResponse } from 'src/web-client/cresponse';
+import { CRequest } from '#src/web-client/crequest';
+import { HttpsWebClient } from '#src/web-client/https-web-client';
+import { WebClientException } from '#src/web-client/exceptions/web-client-exception';
+import { CResponse } from '#src/web-client/cresponse';
 
 describe('https web client test', () => {
   test('call throws web exception', async () => {

@@ -1,5 +1,5 @@
 import { DateTime as DateTimeImmutable, Settings } from 'luxon';
-import { DateTime } from 'src/shared/date-time';
+import { DateTime } from '#src/shared/date-time';
 
 describe('date time', () => {
   let defaultTimeZone: string;

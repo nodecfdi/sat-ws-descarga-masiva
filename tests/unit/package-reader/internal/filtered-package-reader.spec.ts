@@ -4,10 +4,10 @@ import { dirname, join } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import JSZip from 'jszip';
-import { useTestCase } from '../../../test-case';
-import { OpenZipFileException } from 'src/package-reader/exceptions/open-zip-file-exception';
-import { FilteredPackageReader } from 'src/package-reader/internal/filtered-package-reader';
-import { NullFileFilter } from 'src/package-reader/internal/file-filters/null-file-filter';
+import { useTestCase } from '../../../test-case.js';
+import { OpenZipFileException } from '#src/package-reader/exceptions/open-zip-file-exception';
+import { FilteredPackageReader } from '#src/package-reader/internal/filtered-package-reader';
+import { NullFileFilter } from '#src/package-reader/internal/file-filters/null-file-filter';
 
 describe('filtered package reader', () => {
   const { filePath } = useTestCase();

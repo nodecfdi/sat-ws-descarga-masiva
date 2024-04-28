@@ -1,4 +1,4 @@
-import { CsvReader } from 'src/package-reader/internal/csv-reader';
+import { CsvReader } from '#src/package-reader/internal/csv-reader';
 
 describe('csv reader test', () => {
   test('read with blank lines', async () => {

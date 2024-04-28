@@ -1,6 +1,6 @@
-import { useTestCase } from '../../test-case';
-import { MetadataContent } from 'src/package-reader/internal/metadata-content';
-import { type MetadataItem } from 'src/package-reader/metadata-item';
+import { useTestCase } from '../../test-case.js';
+import { MetadataContent } from '#src/package-reader/internal/metadata-content';
+import { type MetadataItem } from '#src/package-reader/metadata-item';
 
 describe('metadata content', () => {
   const { fileContents } = useTestCase();

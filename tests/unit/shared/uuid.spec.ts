@@ -1,4 +1,4 @@
-import { Uuid } from 'src/shared/uuid';
+import { Uuid } from '#src/shared/uuid';
 
 describe('uuid', () => {
   test('create with correct value', () => {

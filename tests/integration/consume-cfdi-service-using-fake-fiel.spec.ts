@@ -1,18 +1,20 @@
-import { useTestCase } from '../test-case';
-import { type RequestBuilderInterface } from 'src/request-builder/request-builder-interface';
-import { HttpsWebClient } from 'src/web-client/https-web-client';
-import { Service } from 'src/service';
-import { QueryParameters } from 'src/services/query/query-parameters';
-import { ServiceEndpoints } from 'src/shared/service-endpoints';
-import { DateTimePeriod, DownloadType, RequestType } from 'src/index';
-import { DocumentType } from 'src/shared/document-type';
-import { ComplementoCfdi } from 'src/shared/complemento-cfdi';
-import { DocumentStatus } from 'src/shared/document-status';
-import { RfcOnBehalf } from 'src/shared/rfc-on-behalf';
-import { RfcMatch } from 'src/shared/rfc-match';
-import { Uuid } from 'src/shared/uuid';
-import { ServiceType } from 'src/shared/service-type';
-import { type QueryResult } from 'src/services/query/query-result';
+import { useTestCase } from '../test-case.js';
+import { type RequestBuilderInterface } from '#src/request-builder/request-builder-interface';
+import { HttpsWebClient } from '#src/web-client/https-web-client';
+import { Service } from '#src/service';
+import { QueryParameters } from '#src/services/query/query-parameters';
+import { ServiceEndpoints } from '#src/shared/service-endpoints';
+import { DateTimePeriod } from '#src/shared/date-time-period';
+import { DownloadType} from '#src/shared/download-type';
+import { RequestType } from '#src/shared/request-type';
+import { DocumentType } from '#src/shared/document-type';
+import { ComplementoCfdi } from '#src/shared/complemento-cfdi';
+import { DocumentStatus } from '#src/shared/document-status';
+import { RfcOnBehalf } from '#src/shared/rfc-on-behalf';
+import { RfcMatch } from '#src/shared/rfc-match';
+import { Uuid } from '#src/shared/uuid';
+import { ServiceType } from '#src/shared/service-type';
+import { type QueryResult } from '#src/services/query/query-result';
 
 describe('consume cfdi service using fake fiel', () => {
   let requestBuilder: RequestBuilderInterface;

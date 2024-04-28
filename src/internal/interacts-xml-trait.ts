@@ -1,4 +1,4 @@
-import { getParser } from '@nodecfdi/cfdiutils-common';
+import { getParser } from '@nodecfdi/cfdi-core';
 /**
  * Contain functions to interact with XML contents and XML DOM
  *

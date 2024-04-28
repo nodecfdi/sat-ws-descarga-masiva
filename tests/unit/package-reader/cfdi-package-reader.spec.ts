@@ -1,8 +1,8 @@
 import { readFileSync } from 'node:fs';
-import { useTestCase } from '../../test-case';
-import { CfdiFileFilter } from 'src/package-reader/internal/file-filters/cfdi-file-filter';
-import { CfdiPackageReader } from 'src/package-reader/cfdi-package-reader';
-import { OpenZipFileException } from 'src/package-reader/exceptions/open-zip-file-exception';
+import { useTestCase } from '../../test-case.js';
+import { CfdiFileFilter } from '#src/package-reader/internal/file-filters/cfdi-file-filter';
+import { CfdiPackageReader } from '#src/package-reader/cfdi-package-reader';
+import { OpenZipFileException } from '#src/package-reader/exceptions/open-zip-file-exception';
 /**
  * This tests uses the Zip file located at tests/_files/zip/cfdi.zip that contains:
  *

@@ -1,4 +1,4 @@
-import { getSerializer, getParser } from '@nodecfdi/cfdiutils-common';
+import { getSerializer, getParser } from '@nodecfdi/cfdi-core';
 import { Crypto } from '@peculiar/webcrypto';
 import { Parse, Application, SignedXml } from 'xadesjs';
 

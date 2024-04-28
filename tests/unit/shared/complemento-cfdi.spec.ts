@@ -1,4 +1,4 @@
-import { ComplementoCfdi } from 'src/shared/complemento-cfdi';
+import { ComplementoCfdi } from '#src/shared/complemento-cfdi';
 
 describe('complemento CFDI', () => {
   test('create undefined by name', () => {

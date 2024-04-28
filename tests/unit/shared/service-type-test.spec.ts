@@ -1,4 +1,4 @@
-import { ServiceType } from 'src/shared/service-type';
+import { ServiceType } from '#src/shared/service-type';
 
 describe('service type', () => {
   test('equal to', () => {

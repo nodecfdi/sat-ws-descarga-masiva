@@ -1,6 +1,6 @@
-import { useTestCase } from '../../../test-case';
-import { StatusCode } from 'src/shared/status-code';
-import { DownloadResult } from 'src/services/download/download-result';
+import { useTestCase } from '../../../test-case.js';
+import { StatusCode } from '#src/shared/status-code';
+import { DownloadResult } from '#src/services/download/download-result';
 
 describe('download result', () => {
   const { fileContents } = useTestCase();

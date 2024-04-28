@@ -1,7 +1,7 @@
 import { type Certificate, type PrivateKey, SatTypeEnum, Credential } from '@nodecfdi/credentials';
 import { mock } from 'vitest-mock-extended';
-import { useTestCase } from '../../../test-case';
-import { Fiel } from 'src/index';
+import { useTestCase } from '../../../test-case.js';
+import { Fiel } from '#src/request-builder/fiel-request-builder/fiel';
 
 describe('Fiel', () => {
   const { createFielUsingTestingFiles, fileContents } = useTestCase();

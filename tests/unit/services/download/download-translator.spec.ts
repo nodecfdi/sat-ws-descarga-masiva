@@ -1,6 +1,6 @@
-import { useTestCase } from '../../../test-case';
-import { Helpers } from 'src/internal/helpers';
-import { DownloadTranslator } from 'src/services/download/download-translator';
+import { useTestCase } from '../../../test-case.js';
+import { Helpers } from '#src/internal/helpers';
+import { DownloadTranslator } from '#src/services/download/download-translator';
 
 describe('download translator', () => {
   const { fileContents, createFielRequestBuilderUsingTestingFiles, xmlFormat } = useTestCase();

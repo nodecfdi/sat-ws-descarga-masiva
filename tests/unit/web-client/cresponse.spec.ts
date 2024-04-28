@@ -1,5 +1,5 @@
-import { useTestCase } from '../../test-case';
-import { CResponse } from 'src/web-client/cresponse';
+import { useTestCase } from '../../test-case.js';
+import { CResponse } from '#src/web-client/cresponse';
 
 describe('cresponse', () => {
   const { fileContents } = useTestCase();

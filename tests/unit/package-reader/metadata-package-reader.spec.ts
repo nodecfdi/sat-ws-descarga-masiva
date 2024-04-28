@@ -1,5 +1,5 @@
-import { useTestCase } from '../../test-case';
-import { MetadataPackageReader } from 'src/package-reader/metadata-package-reader';
+import { useTestCase } from '../../test-case.js';
+import { MetadataPackageReader } from '#src/package-reader/metadata-package-reader';
 /**
  * This tests uses the Zip file located at tests/_files/zip/metadata.zip that contains:
  *

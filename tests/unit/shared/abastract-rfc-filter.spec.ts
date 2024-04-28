@@ -1,5 +1,5 @@
-import { RfcFilterImplementation } from './rfc-filter-implementation';
-import { type AbstractRfcFilter } from 'src/shared/abstract-rfc-filter';
+import { RfcFilterImplementation } from './rfc-filter-implementation.js';
+import { type AbstractRfcFilter } from '#src/shared/abstract-rfc-filter';
 
 describe('abstract rfc filter', () => {
   test('create with correct value', () => {

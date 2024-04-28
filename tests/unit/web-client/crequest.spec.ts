@@ -1,5 +1,5 @@
-import { useTestCase } from '../../test-case';
-import { CRequest } from 'src/web-client/crequest';
+import { useTestCase } from '../../test-case.js';
+import { CRequest } from '#src/web-client/crequest';
 
 describe('crequest', () => {
   const { fileContents } = useTestCase();
