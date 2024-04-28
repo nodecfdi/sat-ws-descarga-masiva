@@ -1,4 +1,4 @@
-import { DateTime } from './date-time.js';
+import { DateTime } from './date_time.js';
 
 export class Token {
   private readonly _created: DateTime;

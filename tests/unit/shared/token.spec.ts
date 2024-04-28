@@ -1,7 +1,7 @@
 import { type DurationLike } from 'luxon';
-import { DateTime } from '#src/shared/date-time';
+import { DateTime } from '#src/shared/date_time';
 import { Token } from '#src/shared/token';
-import { useTestCase } from '../../test-case.js';
+import { useTestCase } from '../../test_case.js';
 
 describe('token', () => {
   const { fileContents } = useTestCase();

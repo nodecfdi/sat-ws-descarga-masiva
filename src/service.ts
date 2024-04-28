@@ -1,16 +1,16 @@
-import { ServiceConsumer } from './internal/service-consumer.js';
-import { type RequestBuilderInterface } from './request-builder/request-builder-interface.js';
-import { AuthenticateTranslator } from './services/authenticate/authenticate-translator.js';
-import { type DownloadResult } from './services/download/download-result.js';
-import { DownloadTranslator } from './services/download/download-translator.js';
-import { type QueryParameters } from './services/query/query-parameters.js';
-import { type QueryResult } from './services/query/query-result.js';
-import { QueryTranslator } from './services/query/query-translator.js';
-import { type VerifyResult } from './services/verify/verify-result.js';
-import { VerifyTranslator } from './services/verify/verify-translator.js';
-import { ServiceEndpoints } from './shared/service-endpoints.js';
+import { ServiceConsumer } from './internal/service_consumer.js';
+import { type RequestBuilderInterface } from './request_builder/request_builder_interface.js';
+import { AuthenticateTranslator } from './services/authenticate/authenticate_translator.js';
+import { type DownloadResult } from './services/download/download_result.js';
+import { DownloadTranslator } from './services/download/download_translator.js';
+import { type QueryParameters } from './services/query/query_parameters.js';
+import { type QueryResult } from './services/query/query_result.js';
+import { QueryTranslator } from './services/query/query_translator.js';
+import { type VerifyResult } from './services/verify/verify_result.js';
+import { VerifyTranslator } from './services/verify/verify_translator.js';
+import { ServiceEndpoints } from './shared/service_endpoints.js';
 import { type Token } from './shared/token.js';
-import { type WebClientInterface } from './web-client/web-client-interface.js';
+import { type WebClientInterface } from './web_client/web_client_interface.js';
 
 export class Service {
   private readonly _endpoints: ServiceEndpoints;
