@@ -55,6 +55,7 @@
     "@vitest/coverage-istanbul": "^1.5.2",
     "conventional-changelog-cli": "^4.1.0",
     "eslint": "^8.57.0",
+    "eslint-define-config": "^2.1.0",
     "husky": "^9.0.11",
     "is-in-ci": "^0.1.0",
     "jest-xml-matcher": "^1.2.0",
@@ -97,7 +98,7 @@
     "webservice"
   ],
   "engines": {
-    "node": ">= 14.18.0"
+    "node": "^21 || ^20 || ^19 || ^18 || ^16"
   },
   "prettier": "@nodecfdi/prettier-config"
 }
