@@ -20,7 +20,7 @@ import { Uuid } from '../../shared/uuid.js';
 export class QueryParameters {
   private _serviceType?: ServiceType;
 
-  constructor(
+  public constructor(
     private _period: DateTimePeriod,
     private _downloadType: DownloadType,
     private _requestType: RequestType,
@@ -37,14 +37,14 @@ export class QueryParameters {
     downloadType?: DownloadType,
     requestType?: RequestType,
   ): QueryParameters {
-    downloadType = downloadType ?? new DownloadType('issued');
-    requestType = requestType ?? new RequestType('metadata');
+    const defaultDownloadType = downloadType ?? new DownloadType('issued');
+    const defaultRequestType = requestType ?? new RequestType('metadata');
     const currentTime = DateTime.now().formatSat();
 
     return new QueryParameters(
       period ?? DateTimePeriod.createFromValues(currentTime, currentTime),
-      downloadType,
-      requestType,
+      defaultDownloadType,
+      defaultRequestType,
       new DocumentType('undefined'),
       new ComplementoUndefined('undefined'),
       new DocumentStatus('undefined'),

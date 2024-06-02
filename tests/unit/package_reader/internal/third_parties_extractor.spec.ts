@@ -6,10 +6,9 @@ import { NullFileFilter } from '#src/package_reader/internal/file_filters/null_f
 import { FilteredPackageReader } from '#src/package_reader/internal/filtered_package_reader';
 import { ThirdPartiesExtractor } from '#src/package_reader/internal/third_parties_extractor';
 import { type PackageReaderInterface } from '#src/package_reader/package_reader_interface';
-import { useTestCase } from '../../../test_case.js';
+import { filePath } from '#tests/test_utils';
 
 describe('third parties extractor', () => {
-  const { filePath } = useTestCase();
 
   test('extractor', async () => {
     const sourcePath = filePath('zip/metadata-extractor.txt');
@@ -39,8 +38,8 @@ describe('third parties extractor', () => {
     });
     const extractor = new ThirdPartiesExtractor(new CsvReader(iterator));
     const resultArray = [];
-    for await (const iterator of extractor.eachRecord()) {
-      for (const [key, value] of iterator) {
+    for await (const forIterator of extractor.eachRecord()) {
+      for (const [key, value] of forIterator) {
         resultArray.push({ [key]: value });
       }
     }
@@ -57,8 +56,8 @@ describe('third parties extractor', () => {
     });
     const extractor = new ThirdPartiesExtractor(new CsvReader(iterator));
     const result = new Map();
-    for await (const iterator of extractor.eachRecord()) {
-      for (const item of iterator) {
+    for await (const forIterator of extractor.eachRecord()) {
+      for (const item of forIterator) {
         result.set(...item);
       }
     }

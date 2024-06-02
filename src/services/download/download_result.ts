@@ -3,7 +3,7 @@ import { type StatusCode } from '../../shared/status_code.js';
 export class DownloadResult {
   private readonly _packageSize: number;
 
-  constructor(
+  public constructor(
     private readonly _status: StatusCode,
     private readonly _packageContent: string,
   ) {

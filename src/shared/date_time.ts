@@ -15,13 +15,13 @@ export class DateTime {
    *
    * @throws Error if unable to create a DateTime
    */
-  constructor(value?: number | string | DateTimeImmutable, defaultTimeZone?: string) {
-    value = value ?? 'now';
+  public constructor(value?: number | string | DateTimeImmutable, defaultTimeZone?: string) {
+    let newValue = value ?? 'now';
 
-    const originalValue = value;
+    const originalValue = newValue;
     this._defaultTimeZone = defaultTimeZone ?? DateTimeImmutable.now().zone.name;
-    if (typeof value === 'number') {
-      this._value = DateTimeImmutable.fromSeconds(value, {
+    if (typeof newValue === 'number') {
+      this._value = DateTimeImmutable.fromSeconds(newValue, {
         zone: this._defaultTimeZone,
       });
       if (!this._value.isValid) {
@@ -31,15 +31,15 @@ export class DateTime {
       return;
     }
 
-    if (typeof value === 'string') {
-      value = this.castStringToDateTimeImmutable(value, originalValue as string);
+    if (typeof newValue === 'string') {
+      newValue = this.castStringToDateTimeImmutable(newValue, originalValue as string);
     }
 
-    if (!(value instanceof DateTimeImmutable) || !value.isValid) {
+    if (!(newValue instanceof DateTimeImmutable) || !newValue.isValid) {
       throw new Error('Unable to create a Datetime');
     }
 
-    this._value = value;
+    this._value = newValue;
   }
 
   /**
@@ -64,11 +64,12 @@ export class DateTime {
   }
 
   public format(format: string, timezone = ''): string {
-    if (timezone === '') {
-      timezone = this._defaultTimeZone;
+    let clonedTimeZone = timezone;
+    if (clonedTimeZone === '') {
+      clonedTimeZone = this._defaultTimeZone;
     }
 
-    this._value = this._value.setZone(timezone);
+    this._value = this._value.setZone(clonedTimeZone);
 
     return this._value.toFormat(format);
   }
@@ -105,7 +106,7 @@ export class DateTime {
 
   private castStringToDateTimeImmutable(value: string, originalValue: string): DateTimeImmutable {
     if (value === 'now') {
-      return DateTimeImmutable.fromISO(DateTimeImmutable.now().toISO() ?? '', {
+      return DateTimeImmutable.fromISO(DateTimeImmutable.now().toISO(), {
         zone: this._defaultTimeZone,
       });
     }

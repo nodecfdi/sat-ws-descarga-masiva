@@ -1,9 +1,8 @@
 import { DownloadResult } from '#src/services/download/download_result';
 import { StatusCode } from '#src/shared/status_code';
-import { useTestCase } from '../../../test_case.js';
+import { fileContents } from '#tests/test_utils';
 
 describe('download result', () => {
-  const { fileContents } = useTestCase();
   test('properties', () => {
     const statusCode = new StatusCode(5000, 'Solicitud recibida con éxito');
     const packageContent = 'x-content';

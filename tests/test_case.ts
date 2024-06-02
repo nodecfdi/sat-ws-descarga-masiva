@@ -1,10 +1,10 @@
 import { existsSync, readFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { getParser, getSerializer } from '@nodecfdi/cfdi-core';
 import { Credential } from '@nodecfdi/credentials';
 import { Fiel } from '#src/request_builder/fiel_request_builder/fiel';
-import { FielRequestBuilder } from '#src/request_builder/fiel_request_builder/fiel-request-builder';
+import { FielRequestBuilder } from '#src/request_builder/fiel_request_builder/fiel_request_builder';
 
 export const useTestCase = (): {
   filePath(append?: string): string;
@@ -15,14 +15,14 @@ export const useTestCase = (): {
   xmlFormat(content: string): string;
 } => {
   const filePath = (append = ''): string =>
-    join(dirname(fileURLToPath(import.meta.url)), '_files', append);
+    path.join(path.dirname(fileURLToPath(import.meta.url)), '_files', append);
 
-  const fileContent = (path: string, encoding?: BufferEncoding): string => {
-    if (!existsSync(path)) {
+  const fileContent = (stringPath: string, encoding?: BufferEncoding): string => {
+    if (!existsSync(stringPath)) {
       return '';
     }
 
-    return readFileSync(path, encoding ?? 'binary');
+    return readFileSync(stringPath, encoding ?? 'binary');
   };
 
   const fileContents = (append: string, encoding?: BufferEncoding): string =>

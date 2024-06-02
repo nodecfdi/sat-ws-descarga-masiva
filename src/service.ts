@@ -20,7 +20,7 @@ export class Service {
    *
    * @param endpoints - endpoints If undefined uses CFDI endpoints
    */
-  constructor(
+  public constructor(
     private readonly _requestBuilder: RequestBuilderInterface,
     private readonly _webClient: WebClientInterface,
     public _currentToken?: Token,
@@ -60,21 +60,21 @@ export class Service {
    * Consume the "SolicitaDescarga" web service
    */
   public async query(parameters: QueryParameters): Promise<QueryResult> {
-    // fix parameters service type
-    if (!parameters.hasServiceType()) {
-      parameters = parameters.withServiceType(this._endpoints.getServiceType());
+    let defaultParameters = parameters;
+    if (!defaultParameters.hasServiceType()) {
+      defaultParameters = defaultParameters.withServiceType(this._endpoints.getServiceType());
     }
 
-    if (!this._endpoints.getServiceType().equalTo(parameters.getServiceType())) {
+    if (!this._endpoints.getServiceType().equalTo(defaultParameters.getServiceType())) {
       throw new Error(
-        `The service type endpoints ${parameters
+        `The service type endpoints ${defaultParameters
           .getServiceType()
           .value()} does not match with the service type query ${this._endpoints.getServiceType().value()}`,
       );
     }
 
     const queryTranslator = new QueryTranslator();
-    const soapBody = queryTranslator.createSoapRequest(this._requestBuilder, parameters);
+    const soapBody = queryTranslator.createSoapRequest(this._requestBuilder, defaultParameters);
 
     const currentToken = await this.obtainCurrentToken();
     const responseBody = await this.consume(

@@ -8,11 +8,10 @@ import { HttpServerError } from '#src/web_client/exceptions/http_server_error';
 import { SoapFaultError } from '#src/web_client/exceptions/soap_fault_error';
 import { WebClientException } from '#src/web_client/exceptions/web_client_exception';
 import { type WebClientInterface } from '#src/web_client/web_client_interface';
-import { useTestCase } from '../../test_case.js';
+import { fileContents } from '#tests/test_utils';
 
 describe('service consumer', () => {
   let webClient: MockProxy<WebClientInterface>;
-  const { fileContents } = useTestCase();
 
   test('execute', async () => {
     const responseBody = fileContents('authenticate/response-with-token.xml');
@@ -103,6 +102,7 @@ describe('service consumer', () => {
     try {
       await consumer.runRequest(webClient, request);
     } catch (error) {
+      // eslint-disable-next-line vitest/no-conditional-expect
       expect((error as WebClientException).getResponse()).toStrictEqual(response);
     }
   });

@@ -14,18 +14,16 @@ import { ServiceEndpoints } from '#src/shared/service_endpoints';
 import { ServiceType } from '#src/shared/service_type';
 import { Uuid } from '#src/shared/uuid';
 import { HttpsWebClient } from '#src/web_client/https_web_client';
-import { useTestCase } from '../test_case.js';
+import { createFielRequestBuilderUsingTestingFiles } from '#tests/test_utils';
 
 describe('consume cfdi service using fake fiel', () => {
   let requestBuilder: RequestBuilderInterface;
   let webClient: HttpsWebClient;
   let service: Service;
 
-  const { createFielRequestBuilderUsingTestingFiles } = useTestCase();
-
-  function getServiceEndpoints(): ServiceEndpoints {
+  const getServiceEndpoints = (): ServiceEndpoints => {
     return ServiceEndpoints.cfdi();
-  }
+  };
 
   beforeEach(() => {
     requestBuilder = createFielRequestBuilderUsingTestingFiles();

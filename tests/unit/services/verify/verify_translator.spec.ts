@@ -1,9 +1,8 @@
 import { Helpers } from '#src/internal/helpers';
 import { VerifyTranslator } from '#src/services/verify/verify_translator';
-import { useTestCase } from '../../../test_case.js';
+import { createFielRequestBuilderUsingTestingFiles, fileContents, xmlFormat } from '#tests/test_utils';
 
 describe('verify translator', () => {
-  const { fileContents, createFielRequestBuilderUsingTestingFiles, xmlFormat } = useTestCase();
   test('create verify result from soap response with zero packages', () => {
     const expectedStatusCode = 5000;
     const expectedStatusRequest = 5;

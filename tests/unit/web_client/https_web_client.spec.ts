@@ -1,31 +1,18 @@
 import { CRequest } from '#src/web_client/crequest';
 import { CResponse } from '#src/web_client/cresponse';
-import { WebClientException } from '#src/web_client/exceptions/web_client_exception';
 import { HttpsWebClient } from '#src/web_client/https_web_client';
 
 describe('https web client test', () => {
   test('call throws web exception', async () => {
     const request = new CRequest('GET', 'unknown://invalid uri/', '', {});
     const webClient = new HttpsWebClient();
-    let exception: WebClientException;
-    try {
-      await webClient.call(request);
-    } catch (error) {
-      exception = error as WebClientException;
-      expect(exception).toBeInstanceOf(WebClientException);
-      expect(exception.getRequest()).toBe(request);
-
-      return;
-    }
-
-    // if doesn't throw errors fails.
-    expect(false).toBeTruthy();
+    await expect(() => webClient.call(request)).rejects.toThrowError('Invalid URL');
   });
 
   test('fire request', () => {
     const captured: CRequest[] = [];
-    const observer = (request: CRequest): void => {
-      captured.push(request);
+    const observer = (requestCaptured: CRequest): void => {
+      captured.push(requestCaptured);
     };
 
     const request = new CRequest('GET', 'unknown://invalid uri/', '', {});
@@ -36,8 +23,8 @@ describe('https web client test', () => {
 
   test('fire response', () => {
     const captured: CResponse[] = [];
-    const observer = (response: CResponse): void => {
-      captured.push(response);
+    const observer = (capturedResponse: CResponse): void => {
+      captured.push(capturedResponse);
     };
 
     const response = new CResponse(200, '', {});

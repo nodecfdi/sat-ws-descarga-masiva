@@ -1,8 +1,7 @@
 import { CRequest } from '#src/web_client/crequest';
-import { useTestCase } from '../../test_case.js';
+import { fileContents } from '#tests/test_utils';
 
 describe('crequest', () => {
-  const { fileContents } = useTestCase();
   test('properties', () => {
     const method = 'POST';
     const uri = 'http://localhost';

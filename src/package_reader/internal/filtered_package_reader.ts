@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { readFile, realpath, unlink, writeFile } from 'node:fs/promises';
 import os from 'node:os';
-import { join } from 'node:path';
+import path from 'node:path';
 import JSZip from 'jszip';
 import { CreateTemporaryZipFileException } from '../exceptions/create_temporary_file_zip_exception.js';
 import { OpenZipFileException } from '../exceptions/open_zip_file_exception.js';
@@ -18,10 +18,7 @@ export class FilteredPackageReader implements PackageReaderInterface {
 
   private _filter!: FileFilterInterface;
 
-  /**
-   *
-   */
-  constructor(filename: string, archive: JSZip) {
+  public constructor(filename: string, archive: JSZip) {
     this._filename = filename;
     this._archive = archive;
   }
@@ -47,7 +44,7 @@ export class FilteredPackageReader implements PackageReaderInterface {
 
   public static async createFromContents(contents: string): Promise<FilteredPackageReader> {
     const tmpdir = await realpath(os.tmpdir());
-    const tmpfile = join(tmpdir, `${randomUUID()}.zip`);
+    const tmpfile = path.join(tmpdir, `${randomUUID()}.zip`);
     // create temp file
     try {
       await writeFile(tmpfile, '');
@@ -111,7 +108,7 @@ export class FilteredPackageReader implements PackageReaderInterface {
   public async count(): Promise<number> {
     let count = 0;
     for await (const [,] of this.fileContents()) {
-      count++;
+      count += 1;
     }
 
     return count;

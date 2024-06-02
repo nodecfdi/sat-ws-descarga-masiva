@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { CfdiPackageReader } from '#src/package_reader/cfdi_package_reader';
 import { OpenZipFileException } from '#src/package_reader/exceptions/open_zip_file_exception';
 import { CfdiFileFilter } from '#src/package_reader/internal/file_filters/cfdi_file_filter';
-import { useTestCase } from '../../test_case.js';
+import { fileContents, filePath } from '#tests/test_utils';
 /**
  * This tests uses the Zip file located at tests/_files/zip/cfdi.zip that contains:
  *
@@ -16,7 +16,6 @@ import { useTestCase } from '../../test_case.js';
  *
  */
 describe('cfdi package reader', () => {
-  const { fileContents, filePath } = useTestCase();
   test('reader zip when the content is invalid', async () => {
     const zipContents = 'INVALID_ZIP_CONTENT';
     await expect(CfdiPackageReader.createFromContents(zipContents)).rejects.toBeInstanceOf(
@@ -59,7 +58,7 @@ describe('cfdi package reader', () => {
   });
 
   test('cfdi reader obtain first file as expected', async () => {
-    const expectedCfdi = fileContents('zip/cfdi.xml', 'utf8');
+    const expectedCfdi = fileContents('zip/cfdi.xml');
 
     const zipFileName = filePath('zip/cfdi.zip');
     const cfdiPackageReader = await CfdiPackageReader.createFromFile(zipFileName);

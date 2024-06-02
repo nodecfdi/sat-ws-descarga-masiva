@@ -2,10 +2,9 @@ import { VerifyResult } from '#src/services/verify/verify_result';
 import { CodeRequest } from '#src/shared/code_request';
 import { StatusCode } from '#src/shared/status_code';
 import { StatusRequest } from '#src/shared/status_request';
-import { useTestCase } from '../../../test_case.js';
+import { fileContents } from '#tests/test_utils';
 
 describe('verify result', () => {
-  const { fileContents } = useTestCase();
   test('properties', () => {
     const statusCode = new StatusCode(5000, 'Solicitud recibida con éxito');
     const statusRequest = new StatusRequest(2);
@@ -44,7 +43,7 @@ describe('verify result', () => {
       ...packageIds,
     );
 
-    const expectedFile = fileContents('json/verify-result.json', 'utf8');
+    const expectedFile = fileContents('json/verify-result.json');
 
     expect(JSON.stringify(result)).toBe(JSON.stringify(JSON.parse(expectedFile)));
   });

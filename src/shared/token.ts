@@ -3,7 +3,7 @@ import { DateTime } from './date_time.js';
 export class Token {
   private readonly _created: DateTime;
 
-  constructor(
+  public constructor(
     created: DateTime,
     private readonly _expires: DateTime,
     private readonly _value: string,

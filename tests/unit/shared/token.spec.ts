@@ -1,10 +1,9 @@
 import { type DurationLike } from 'luxon';
 import { DateTime } from '#src/shared/date_time';
 import { Token } from '#src/shared/token';
-import { useTestCase } from '../../test_case.js';
+import { fileContents } from '#tests/test_utils';
 
 describe('token', () => {
-  const { fileContents } = useTestCase();
   test('create token with invalid dates', () => {
     const created = DateTime.create();
     const expires = created.modify({ minutes: -1 });

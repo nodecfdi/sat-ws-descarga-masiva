@@ -7,7 +7,7 @@ import { Credential } from '@nodecfdi/credentials';
  * @see Credential
  */
 export class Fiel {
-  constructor(private readonly _credential: Credential) {}
+  public constructor(private readonly _credential: Credential) {}
 
   /**
    * Create a Fiel based on certificate and private key contents
@@ -31,11 +31,7 @@ export class Fiel {
       return false;
     }
 
-    if (!this._credential.certificate().validOn()) {
-      return false;
-    }
-
-    return true;
+    return this._credential.certificate().validOn();
   }
 
   public getCertificatePemContents(): string {

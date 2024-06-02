@@ -1,9 +1,8 @@
 import { QueryResult } from '#src/services/query/query_result';
 import { StatusCode } from '#src/shared/status_code';
-import { useTestCase } from '../../../test_case.js';
+import { fileContents } from '#tests/test_utils';
 
 describe('query result', () => {
-  const { fileContents } = useTestCase();
   test('properties', () => {
     const statusCode = new StatusCode(9, 'foo');
     const requestId = 'x-request-id';

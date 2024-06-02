@@ -1,13 +1,12 @@
 import { MetadataItem } from '#src/package_reader/metadata_item';
 import { MetadataPackageReader } from '#src/package_reader/metadata_package_reader';
-import { useTestCase } from '../../test_case.js';
+import { fileContents, filePath } from '#tests/test_utils';
 
 describe('metadata item', () => {
-  const { fileContents, filePath } = useTestCase();
   test('with empty data', () => {
     const metadata = new MetadataItem({});
     expect(metadata.get('uuid')).toBe('');
-    expect([...metadata]).toEqual([]);
+    expect([...metadata]).toStrictEqual([]);
     expect(metadata.all()).toStrictEqual({});
   });
 

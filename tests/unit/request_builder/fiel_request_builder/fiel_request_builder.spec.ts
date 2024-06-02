@@ -9,7 +9,7 @@ import { mock } from 'vitest-mock-extended';
 import { useNamespaces } from 'xpath';
 import { Helpers } from '#src/internal/helpers';
 import { Fiel } from '#src/request_builder/fiel_request_builder/fiel';
-import { FielRequestBuilder } from '#src/request_builder/fiel_request_builder/fiel-request-builder';
+import { FielRequestBuilder } from '#src/request_builder/fiel_request_builder/fiel_request_builder';
 import { QueryParameters } from '#src/services/query/query_parameters';
 import { ComplementoCfdi } from '#src/shared/complemento_cfdi';
 import { DateTime } from '#src/shared/date_time';
@@ -22,15 +22,14 @@ import { RfcMatch } from '#src/shared/rfc_match';
 import { RfcOnBehalf } from '#src/shared/rfc_on_behalf';
 import { ServiceType } from '#src/shared/service_type';
 import { Uuid } from '#src/shared/uuid';
-import { useTestCase } from '../../../test_case.js';
+import {
+  createFielRequestBuilderUsingTestingFiles,
+  createFielUsingTestingFiles,
+  fileContents,
+  xmlFormat,
+} from '#tests/test_utils';
 
 describe('fiel request builder', () => {
-  const {
-    createFielUsingTestingFiles,
-    createFielRequestBuilderUsingTestingFiles,
-    fileContents,
-    xmlFormat,
-  } = useTestCase();
   test('construct fiel', () => {
     const fiel = createFielUsingTestingFiles();
     const requestBuilder = new FielRequestBuilder(fiel);
@@ -59,6 +58,12 @@ describe('fiel request builder', () => {
     // expect(xmlSecVeritifaction).toBeTruthy();
   });
 
+  const extractSecurityTokenFromXml = (requestBody: string): string => {
+    const matches = /o:BinarySecurityToken u:Id="(?<id>.*?)"/u.exec(requestBody);
+
+    return matches?.groups?.id ?? '';
+  };
+
   test('authorization without security token uuid creates random', () => {
     const requestBuilder = createFielRequestBuilderUsingTestingFiles();
     const created = DateTime.create('2019-08-01T03:38:19.000Z');
@@ -75,13 +80,6 @@ describe('fiel request builder', () => {
     expect(securityTokenId).not.toBe('');
     expect(otherSecurityTokenId).not.toBe(securityTokenId);
   });
-
-  function extractSecurityTokenFromXml(requestBody: string): string {
-    const matches = /o:BinarySecurityToken u:Id="(?<id>.*?)"/u.exec(requestBody);
-
-    return matches?.groups?.id ?? '';
-  }
-
   test('query received filters', () => {
     const requestBuilder = createFielRequestBuilderUsingTestingFiles();
     const parameters = QueryParameters.create()
@@ -217,6 +215,7 @@ describe('fiel request builder', () => {
   });
 
   test('download', () => {
+    console.log(fileContents('fake-fiel/EKU9003173C9-password.txt'));
     const fiel = Fiel.create(
       fileContents('fake-fiel/EKU9003173C9.cer'),
       fileContents('fake-fiel/EKU9003173C9.key'),

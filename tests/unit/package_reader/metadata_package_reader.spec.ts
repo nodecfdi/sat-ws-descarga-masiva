@@ -1,5 +1,5 @@
 import { MetadataPackageReader } from '#src/package_reader/metadata_package_reader';
-import { useTestCase } from '../../test_case.js';
+import { fileContents, filePath } from '#tests/test_utils';
 /**
  * This tests uses the Zip file located at tests/_files/zip/metadata.zip that contains:
  *
@@ -11,7 +11,6 @@ import { useTestCase } from '../../test_case.js';
  * other.txt // file with incorrect extension and incorrect content
  */
 describe('metadata package reader', () => {
-  const { filePath, fileContents } = useTestCase();
   test('count all contents', async () => {
     const expectedNumberFiles = 1;
     const expectedNUmberRows = 2;
@@ -146,7 +145,7 @@ describe('metadata package reader', () => {
     for (const item of metadata) {
       expect(map[i][0]).toBe(item.get('uuid'));
       expect(map[i][1]).toStrictEqual(item.all());
-      i++;
+      i += 1;
     }
   });
 });

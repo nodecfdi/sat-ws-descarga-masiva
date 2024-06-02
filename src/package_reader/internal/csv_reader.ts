@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { createReadStream, realpathSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
-import { join } from 'node:path';
+import path from 'node:path';
 import * as readline from 'node:readline';
 
 export type ReadLineInterface = {
@@ -14,11 +14,11 @@ export type ReadLineInterface = {
  * The file uses "~" as separator and "|" as text delimiter.
  */
 export class CsvReader {
-  constructor(private readonly _iterator: ReadLineInterface) {}
+  public constructor(private readonly _iterator: ReadLineInterface) {}
 
   public static createIteratorFromContents(contents: string): ReadLineInterface {
     const tmpdir = realpathSync(os.tmpdir());
-    const filePath = join(tmpdir, `${randomUUID()}.csv`);
+    const filePath = path.join(tmpdir, `${randomUUID()}.csv`);
     writeFileSync(filePath, contents);
 
     const iterator = readline.createInterface({
@@ -57,20 +57,21 @@ export class CsvReader {
   public combine(keys: string[], values: string[]): Record<string, string> {
     const countValues = values.length;
     const countKeys = keys.length;
+    let newValues = values;
     if (countKeys > countValues) {
       const emptyArray: string[] = Array.from({ length: countKeys - countValues });
-      values = [...values, ...emptyArray.fill('')];
+      newValues = [...values, ...emptyArray.fill('')];
     }
 
     if (countValues > countKeys) {
-      for (let i = 1; i <= countValues - countKeys; i++) {
+      for (let i = 1; i <= countValues - countKeys; i += 1) {
         const string_ = i.toString().padStart(2, '0');
         keys.push(`#extra-${string_}`);
       }
     }
 
     const map = new Map();
-    for (const [index, value] of values.entries()) {
+    for (const [index, value] of newValues.entries()) {
       map.set(keys[index], value);
     }
 

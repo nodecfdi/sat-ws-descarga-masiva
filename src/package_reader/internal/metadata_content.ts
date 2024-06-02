@@ -9,7 +9,7 @@ export class MetadataContent {
    * The first iteration must contain an array of header names that will be renames to lower case first letter
    * The next iterations must contain an array with data
    */
-  constructor(
+  public constructor(
     private readonly _csvReader: CsvReader,
     private readonly _thirdParties: ThirdPartiesRecords,
   ) {}
@@ -21,14 +21,14 @@ export class MetadataContent {
     contents: string,
     thirdParties?: ThirdPartiesRecords | undefined,
   ): MetadataContent {
-    thirdParties = thirdParties ?? ThirdPartiesRecords.createEmpty();
+    const defaultThirdParties = thirdParties ?? ThirdPartiesRecords.createEmpty();
     // fix known errors on metadata text file
     const preprocessor = new MetadataPreprocessor(contents);
     preprocessor.fix();
 
     const csvReader = CsvReader.createFromContents(preprocessor.getContents());
 
-    return new MetadataContent(csvReader, thirdParties);
+    return new MetadataContent(csvReader, defaultThirdParties);
   }
 
   public async *eachItem(): AsyncGenerator<MetadataItem> {

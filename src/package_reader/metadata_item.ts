@@ -23,7 +23,7 @@ import { type MetadataItemInterface } from './metadata_item_interface.js';
 export class MetadataItem {
   private readonly _data: MetadataItemInterface[];
 
-  constructor(data: Record<string, string>) {
+  public constructor(data: Record<string, string>) {
     this._data = Object.entries(data).map(([key, value]) => ({
       key,
       value,

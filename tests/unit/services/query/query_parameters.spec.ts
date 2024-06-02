@@ -10,10 +10,9 @@ import { RfcMatch } from '#src/shared/rfc_match';
 import { RfcMatches } from '#src/shared/rfc_matches';
 import { RfcOnBehalf } from '#src/shared/rfc_on_behalf';
 import { Uuid } from '#src/shared/uuid';
-import { useTestCase } from '../../../test_case.js';
+import { fileContents } from '#tests/test_utils';
 
 describe('query parameters', () => {
-  const { fileContents } = useTestCase();
   test('all properties', () => {
     const period = DateTimePeriod.create(
       DateTime.create('2019-01-01 00:00:00'),

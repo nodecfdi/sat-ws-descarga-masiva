@@ -1,9 +1,8 @@
 import { Helpers } from '#src/internal/helpers';
 import { DownloadTranslator } from '#src/services/download/download_translator';
-import { useTestCase } from '../../../test_case.js';
+import { createFielRequestBuilderUsingTestingFiles, fileContents, xmlFormat } from '#tests/test_utils';
 
 describe('download translator', () => {
-  const { fileContents, createFielRequestBuilderUsingTestingFiles, xmlFormat } = useTestCase();
   test('create download result from soap response with package', () => {
     const expectedStatusCode = 5000;
     const expectedMessage = 'Solicitud Aceptada';

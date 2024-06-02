@@ -1,9 +1,8 @@
 import { MetadataContent } from '#src/package_reader/internal/metadata_content';
 import { type MetadataItem } from '#src/package_reader/metadata_item';
-import { useTestCase } from '../../test_case.js';
+import { fileContents } from '#tests/test_utils';
 
 describe('metadata content', () => {
-  const { fileContents } = useTestCase();
   test('read metadata', async () => {
     const contents = fileContents('zip/metadata.txt');
     const reader = MetadataContent.createFromContents(contents);

@@ -1,10 +1,9 @@
 import { Helpers } from '#src/internal/helpers';
 import { AuthenticateTranslator } from '#src/services/authenticate/authenticate_translator';
 import { DateTime } from '#src/shared/date_time';
-import { useTestCase } from '../../../test_case.js';
+import { createFielRequestBuilderUsingTestingFiles, fileContents, xmlFormat } from '#tests/test_utils';
 
 describe('authenticate translator', () => {
-  const { createFielRequestBuilderUsingTestingFiles, xmlFormat, fileContents } = useTestCase();
   test('create soap request', () => {
     const translator = new AuthenticateTranslator();
     const requestBuilder = createFielRequestBuilderUsingTestingFiles();

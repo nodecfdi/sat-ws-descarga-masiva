@@ -5,7 +5,7 @@ export class QueryResult {
 
   private readonly _requestId: string;
 
-  constructor(statusCode: StatusCode, requestId: string) {
+  public constructor(statusCode: StatusCode, requestId: string) {
     this._status = statusCode;
     this._requestId = requestId;
   }

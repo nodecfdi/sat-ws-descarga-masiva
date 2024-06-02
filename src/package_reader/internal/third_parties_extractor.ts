@@ -12,7 +12,7 @@ export type ThirdPartiesInterface = {
  * Class to extract the data from a "third parties" file.
  */
 export class ThirdPartiesExtractor {
-  constructor(private readonly _csvReader: CsvReader) {}
+  public constructor(private readonly _csvReader: CsvReader) {}
 
   public static async createFromPackageReader(
     packageReader: PackageReaderInterface,

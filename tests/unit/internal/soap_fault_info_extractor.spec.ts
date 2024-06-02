@@ -1,9 +1,8 @@
 import { SoapFaultInfoExtractor } from '#src/internal/soap_fault_info_extractor';
 import { SoapFaultInfo } from '#src/web_client/soap_fault_info';
-import { useTestCase } from '../../test_case.js';
+import { fileContents } from '#tests/test_utils';
 
 describe('soap fault info extractor', () => {
-  const { fileContents } = useTestCase();
   test('extract on faulty response', () => {
     const source = fileContents('authenticate/response-with-error.xml');
     const fault = SoapFaultInfoExtractor.extract(source);

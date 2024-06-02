@@ -1,5 +1,5 @@
 export abstract class BaseEnum<T extends string> {
-  constructor(public readonly _id: T) {}
+  public constructor(public readonly _id: T) {}
 
   public index(): string {
     return this._id;

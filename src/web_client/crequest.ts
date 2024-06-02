@@ -7,10 +7,7 @@ export class CRequest {
 
   private readonly _headers: Record<string, string>;
 
-  /**
-   *
-   */
-  constructor(method: string, uri: string, body: string, headers: Record<string, string>) {
+  public constructor(method: string, uri: string, body: string, headers: Record<string, string>) {
     this._method = method;
     this._uri = uri;
     this._body = body;

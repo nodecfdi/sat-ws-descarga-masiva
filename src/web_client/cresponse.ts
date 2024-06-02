@@ -5,7 +5,7 @@ export class CResponse {
 
   private readonly _headers: Record<string, string>;
 
-  constructor(statuscode: number, body: string, headers: Record<string, string> = {}) {
+  public constructor(statuscode: number, body: string, headers: Record<string, string> = {}) {
     this._statusCode = statuscode;
     this._body = body;
     this._headers = headers;

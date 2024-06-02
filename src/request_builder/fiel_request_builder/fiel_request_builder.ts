@@ -7,7 +7,7 @@ import { type RequestBuilderInterface } from '../request_builder_interface.js';
 import { type Fiel } from './fiel.js';
 
 export class FielRequestBuilder implements RequestBuilderInterface {
-  constructor(private readonly _fiel: Fiel) {}
+  public constructor(private readonly _fiel: Fiel) {}
 
   private static createXmlSecurityToken(): string {
     const md5 = createHash('md5').update(randomUUID()).digest('hex');
@@ -206,8 +206,8 @@ export class FielRequestBuilder implements RequestBuilderInterface {
   }
 
   private createSignature(toDigest: string, signedInfoUri = '', keyInfo = ''): string {
-    toDigest = Helpers.nospaces(toDigest);
-    const digested = createHash('sha1').update(toDigest).digest('base64');
+    const cleanToDigest = Helpers.nospaces(toDigest);
+    const digested = createHash('sha1').update(cleanToDigest).digest('base64');
     let signedInfo = this.createSignedInfoCanonicalExclusive(digested, signedInfoUri);
     const signatureValue = Buffer.from(this.getFiel().sign(signedInfo, 'sha1'), 'binary').toString(
       'base64',
@@ -216,16 +216,16 @@ export class FielRequestBuilder implements RequestBuilderInterface {
       '<SignedInfo xmlns="http://www.w3.org/2000/09/xmldsig#">',
       '<SignedInfo>',
     );
-
-    if (keyInfo === '') {
-      keyInfo = this.createKeyInfoData();
+    let newKeyInfo = keyInfo;
+    if (newKeyInfo === '') {
+      newKeyInfo = this.createKeyInfoData();
     }
 
     return `
             <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
                 ${signedInfo}
                 <SignatureValue>${signatureValue}</SignatureValue>
-                ${keyInfo}
+                ${newKeyInfo}
             </Signature>
         `;
   }

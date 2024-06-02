@@ -42,17 +42,14 @@ export class CodeRequest {
    *
    * @param index - if assign by Values.code
    */
-  constructor(index: number) {
-    if (typeof index === 'number') {
+  public constructor(index: number) {
       const value = CodeRequest.VALUES.find((element) => index === element.code);
       if (!value) {
         this.value = this.getEntryValueOnUndefined();
 
         return;
       }
-
       this.value = value;
-    }
   }
 
   public static getEntries(): {

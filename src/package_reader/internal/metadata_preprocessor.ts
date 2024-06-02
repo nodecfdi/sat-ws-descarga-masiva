@@ -8,21 +8,15 @@ export class MetadataPreprocessor {
   /** The data to process */
   private _contents: string;
 
-  constructor(contents: string) {
+  public constructor(contents: string) {
     this._contents = contents;
   }
 
-  private get CONTROL_CR(): string {
-    return '\r';
-  }
+  private readonly CONTROL_CR = '\r';
 
-  private get CONTROL_LF(): string {
-    return '\n';
-  }
+  private readonly CONTROL_LF = '\n';
 
-  private get CONTROL_CRLF(): string {
-    return '\r\n';
-  }
+  private readonly CONTROL_CRLF = '\r\n';
 
   public getContents(): string {
     return this._contents;
@@ -53,7 +47,7 @@ export class MetadataPreprocessor {
 
     const lines = this._contents.split(this.CONTROL_CRLF);
     this._contents = lines
-      .map((line) => line.replaceAll(new RegExp(this.CONTROL_LF, 'g'), ''))
+      .map((line) => line.replaceAll(new RegExp(/\n/, 'g'), ''))
       .join(this.CONTROL_LF);
   }
 }

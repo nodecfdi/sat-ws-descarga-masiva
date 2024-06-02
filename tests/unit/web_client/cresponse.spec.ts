@@ -1,8 +1,7 @@
 import { CResponse } from '#src/web_client/cresponse';
-import { useTestCase } from '../../test_case.js';
+import { fileContents } from '#tests/test_utils';
 
 describe('cresponse', () => {
-  const { fileContents } = useTestCase();
   test('properties', () => {
     const statusCode = 200;
     const body = 'this is the body';

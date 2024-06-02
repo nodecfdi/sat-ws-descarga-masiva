@@ -13,7 +13,7 @@ export class VerifyResult {
 
   private readonly _packagesIds: string[];
 
-  constructor(
+  public constructor(
     statusCode: StatusCode,
     statusRequest: StatusRequest,
     codeRequest: CodeRequest,

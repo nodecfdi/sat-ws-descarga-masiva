@@ -1,5 +1,5 @@
 export class StatusCode {
-  constructor(
+  public constructor(
     private readonly _code: number,
     private readonly _message: string,
   ) {}

@@ -6,7 +6,7 @@ import { type MetadataItem } from './metadata_item.js';
 import { type PackageReaderInterface } from './package_reader_interface.js';
 
 export class MetadataPackageReader implements PackageReaderInterface {
-  constructor(
+  public constructor(
     private readonly _packageReader: PackageReaderInterface,
     private _thirdParties?: ThirdPartiesRecords,
   ) {}
@@ -59,7 +59,7 @@ export class MetadataPackageReader implements PackageReaderInterface {
   public async count(): Promise<number> {
     let count = 0;
     for await (const [,] of this.fileContents()) {
-      count++;
+      count += 1;
     }
 
     return count;

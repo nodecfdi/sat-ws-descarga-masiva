@@ -1,19 +1,18 @@
 import { randomUUID } from 'node:crypto';
 import { realpathSync, unlinkSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
-import { dirname, join } from 'node:path';
+import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import JSZip from 'jszip';
 import { OpenZipFileException } from '#src/package_reader/exceptions/open_zip_file_exception';
 import { NullFileFilter } from '#src/package_reader/internal/file_filters/null_file_filter';
 import { FilteredPackageReader } from '#src/package_reader/internal/filtered_package_reader';
-import { useTestCase } from '../../../test_case.js';
+import { filePath } from '#tests/test_utils';
 
 describe('filtered package reader', () => {
-  const { filePath } = useTestCase();
 
   test('create from file with invalid file', async () => {
-    const filename = dirname(fileURLToPath(import.meta.url));
+    const filename = path.dirname(fileURLToPath(import.meta.url));
     await expect(FilteredPackageReader.createFromFile(filename)).rejects.toBeInstanceOf(
       OpenZipFileException,
     );
@@ -34,7 +33,7 @@ describe('filtered package reader', () => {
   test('file contents and count with file', async () => {
     const zip = new JSZip();
     const tmpdir = realpathSync(os.tmpdir());
-    const tmpfile = join(tmpdir, `${randomUUID()}.zip`);
+    const tmpfile = path.join(tmpdir, `${randomUUID()}.zip`);
     // create temp file
     writeFileSync(tmpfile, '');
     zip.folder('empty dir');

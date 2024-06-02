@@ -7,7 +7,7 @@ export class OpenZipFileException extends PackageReaderException {
 
   private readonly _code: number;
 
-  constructor(message: string, code: number, filename: string, previous?: Error) {
+  public constructor(message: string, code: number, filename: string, previous?: Error) {
     super(message);
     this._filename = filename;
     this._previous = previous;

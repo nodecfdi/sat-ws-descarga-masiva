@@ -9,7 +9,7 @@ import { ServiceType } from './service_type.js';
  * @see ServiceEndpoints.retenciones()
  */
 export class ServiceEndpoints {
-  constructor(
+  public constructor(
     private readonly _authenticate: string,
     private readonly _query: string,
     private readonly _verify: string,

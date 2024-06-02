@@ -1,10 +1,9 @@
 import { type Certificate, Credential, type PrivateKey, SatTypeEnum } from '@nodecfdi/credentials';
 import { mock } from 'vitest-mock-extended';
 import { Fiel } from '#src/request_builder/fiel_request_builder/fiel';
-import { useTestCase } from '../../../test_case.js';
+import { createFielUsingTestingFiles, fileContents } from '#tests/test_utils';
 
 describe('fiel', () => {
-  const { createFielUsingTestingFiles, fileContents } = useTestCase();
   test('fiel with incorrect password create an error', () => {
     expect(() => createFielUsingTestingFiles('invalid password')).toThrow(Error);
   });

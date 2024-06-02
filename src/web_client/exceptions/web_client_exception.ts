@@ -8,7 +8,7 @@ export class WebClientException extends Error {
 
   private readonly _previous?: Error;
 
-  constructor(message: string, request: CRequest, response: CResponse, previous?: Error) {
+  public constructor(message: string, request: CRequest, response: CResponse, previous?: Error) {
     super(message);
     this._request = request;
     this._response = response;

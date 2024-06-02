@@ -5,7 +5,7 @@ export class RfcMatches {
 
   private readonly _count: number;
 
-  constructor(...items: RfcMatch[]) {
+  public constructor(...items: RfcMatch[]) {
     this._items = items;
     this._count = items.length;
   }

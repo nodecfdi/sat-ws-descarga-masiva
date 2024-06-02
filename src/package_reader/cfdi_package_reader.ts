@@ -3,7 +3,7 @@ import { FilteredPackageReader } from './internal/filtered_package_reader.js';
 import { type PackageReaderInterface } from './package_reader_interface.js';
 
 export class CfdiPackageReader implements PackageReaderInterface {
-  constructor(private readonly _packageReader: PackageReaderInterface) {}
+  public constructor(private readonly _packageReader: PackageReaderInterface) {}
 
   public static async createFromFile(filename: string): Promise<CfdiPackageReader> {
     const packageReader = await FilteredPackageReader.createFromFile(filename);
@@ -40,7 +40,7 @@ export class CfdiPackageReader implements PackageReaderInterface {
     let count = 0;
 
     for await (const [,] of this.fileContents()) {
-      count++;
+      count += 1;
     }
 
     return count;

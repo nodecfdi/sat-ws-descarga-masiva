@@ -22,7 +22,7 @@ export class StatusRequest {
    *
    * @param index - if number is send assign value by array index of VALUES, values from 0 to 5 if string is send find value by Values.name
    */
-  constructor(index: number | string) {
+  public constructor(index: number | string) {
     if (typeof index === 'number') {
       const value = StatusRequest.VALUES.find((element) => index === element.code);
       if (!value) {

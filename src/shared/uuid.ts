@@ -1,13 +1,14 @@
 export class Uuid {
-  constructor(private readonly _value: string) {}
+  public constructor(private readonly _value: string) {}
 
   public static create(value: string): Uuid {
-    value = value.toLowerCase();
-    if (!/^[\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12}$/.test(value)) {
+    const newValue = value.toLowerCase();
+    // eslint-disable-next-line security/detect-unsafe-regex
+    if (!/^[\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12}$/.test(newValue)) {
       throw new Error('UUID does not have the correct format');
     }
 
-    return new Uuid(value);
+    return new Uuid(newValue);
   }
 
   public static empty(): Uuid {

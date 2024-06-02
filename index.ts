@@ -22,7 +22,7 @@ export * from './src/package_reader/metadata_item_interface.js';
 export * from './src/package_reader/metadata_package_reader.js';
 export * from './src/package_reader/package_reader_interface.js';
 export * from './src/request_builder/fiel_request_builder/fiel.js';
-export * from './src/request_builder/fiel_request_builder/fiel-request-builder.js';
+export * from './src/request_builder/fiel_request_builder/fiel_request_builder.js';
 export * from './src/request_builder/request_builder_exception.js';
 export * from './src/request_builder/request_builder_interface.js';
 export * from './src/service.js';

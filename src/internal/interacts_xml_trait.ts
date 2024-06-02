@@ -27,7 +27,7 @@ export class InteractsXmlTrait {
     const children = element.childNodes;
 
     let index = 0;
-    for (index; index < children.length; index++) {
+    for (index; index < children.length; index += 1) {
       const child = children[index];
       if (child.nodeType === child.ELEMENT_NODE) {
         const localName = (child as Element).localName.toLowerCase();
@@ -55,7 +55,7 @@ export class InteractsXmlTrait {
     const buffer: string[] = [];
     const children = element.childNodes;
     let index = 0;
-    for (index; index < children.length; index++) {
+    for (index; index < children.length; index += 1) {
       const child = children[index];
       // of type Node.TEXT_NODE
       if ((child as Element).nodeType === 3) {
@@ -77,12 +77,12 @@ export class InteractsXmlTrait {
       return [];
     }
 
-    element = temporaryElement;
+    const tempElement = temporaryElement;
 
     const found: Element[] = [];
-    const children = element.childNodes;
+    const children = tempElement.childNodes;
     let index = 0;
-    for (index; index < children.length; index++) {
+    for (index; index < children.length; index += 1) {
       const child = children[index];
       if (child.nodeType === child.ELEMENT_NODE) {
         const localName = (child as Element).localName.toLowerCase();
@@ -96,8 +96,8 @@ export class InteractsXmlTrait {
   }
 
   public findContents(element: Element, ...names: string[]): string[] {
-    return this.findElements(element, ...names).map((element) =>
-      this.extractElementContent(element),
+    return this.findElements(element, ...names).map((elementItem) =>
+      this.extractElementContent(elementItem),
     );
   }
 
@@ -114,7 +114,7 @@ export class InteractsXmlTrait {
     const attributes = new Map();
     const elementAttributes = found.attributes;
     let index = 0;
-    for (index; index < elementAttributes.length; index++) {
+    for (index; index < elementAttributes.length; index += 1) {
       attributes.set(
         elementAttributes[index].localName.toLowerCase(),
         elementAttributes[index].value,

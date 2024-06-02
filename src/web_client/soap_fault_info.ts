@@ -3,7 +3,7 @@ export class SoapFaultInfo {
 
   private readonly _message: string;
 
-  constructor(code: string, message: string) {
+  public constructor(code: string, message: string) {
     this._code = code;
     this._message = message;
   }

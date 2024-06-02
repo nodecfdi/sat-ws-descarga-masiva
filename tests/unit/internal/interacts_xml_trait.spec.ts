@@ -1,13 +1,12 @@
-import { useTestCase } from '../../test_case.js';
+import { fileContents } from '#tests/test_utils';
 import { InteractsXmlTraitSpecimen } from './interacts_xml_trait.specimen.js';
 import { InteractsXmlOverrideTraitSpecimen } from './interacts_xml_trait_override_specimen.js';
 
 describe('interacts xml trait', () => {
-  const { fileContents } = useTestCase();
 
   test('find element expecting one', () => {
     const specimen = new InteractsXmlTraitSpecimen();
-    const content = fileContents('verify/response-2-packages.xml', 'utf8');
+    const content = fileContents('verify/response-2-packages.xml');
     const root = specimen.readXmlElement(content);
 
     const search = ['body', 'verificaSolicitudDescargaResponse', 'verificaSolicitudDescargaResult'];
@@ -32,7 +31,7 @@ describe('interacts xml trait', () => {
 
   test('find element expecting none', () => {
     const specimen = new InteractsXmlTraitSpecimen();
-    const content = fileContents('verify/response-2-packages.xml', 'utf8');
+    const content = fileContents('verify/response-2-packages.xml');
     const root = specimen.readXmlElement(content);
     const search = ['body', 'foo', 'verificaSolicitudDescargaResult'];
     expect(specimen.findElements(root, ...search)).toHaveLength(0);
@@ -41,7 +40,7 @@ describe('interacts xml trait', () => {
 
   test('find element expecting two', () => {
     const specimen = new InteractsXmlTraitSpecimen();
-    const content = fileContents('verify/response-2-packages.xml', 'utf8');
+    const content = fileContents('verify/response-2-packages.xml');
     const search = [
       'body',
       'verificaSolicitudDescargaResponse',
@@ -59,7 +58,7 @@ describe('interacts xml trait', () => {
 
   test('find content with known data', () => {
     const specimen = new InteractsXmlTraitSpecimen();
-    const content = fileContents('verify/response-2-packages.xml', 'utf8');
+    const content = fileContents('verify/response-2-packages.xml');
     const search = [
       'body',
       'verificaSolicitudDescargaResponse',
@@ -75,7 +74,7 @@ describe('interacts xml trait', () => {
 
   test('find content with not found element', () => {
     const specimen = new InteractsXmlTraitSpecimen();
-    const content = fileContents('verify/response-2-packages.xml', 'utf8');
+    const content = fileContents('verify/response-2-packages.xml');
     const search = ['body', 'verificaSolicitudDescargaResponse', 'FOO', 'idsPaquetes'];
 
     const root = specimen.readXmlElement(content);
@@ -85,7 +84,7 @@ describe('interacts xml trait', () => {
 
   test('find contents', () => {
     const specimen = new InteractsXmlTraitSpecimen();
-    const content = fileContents('verify/response-2-packages.xml', 'utf8');
+    const content = fileContents('verify/response-2-packages.xml');
     const search = [
       'body',
       'verificaSolicitudDescargaResponse',
@@ -104,7 +103,7 @@ describe('interacts xml trait', () => {
 
   test('find attributes expecting results', () => {
     const specimen = new InteractsXmlTraitSpecimen();
-    const content = fileContents('verify/response-2-packages.xml', 'utf8');
+    const content = fileContents('verify/response-2-packages.xml');
     const search = ['body', 'verificaSolicitudDescargaResponse', 'verificaSolicitudDescargaResult'];
     const expectedContent = {
       codestatus: '5000',
@@ -121,7 +120,7 @@ describe('interacts xml trait', () => {
 
   test('find attributes on non existing node', () => {
     const specimen = new InteractsXmlTraitSpecimen();
-    const content = fileContents('verify/response-2-packages.xml', 'utf8');
+    const content = fileContents('verify/response-2-packages.xml');
     const search = ['body', 'FOO', 'verificaSolicitudDescargaResult'];
 
     const root = specimen.readXmlElement(content);

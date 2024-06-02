@@ -10,7 +10,7 @@ export class HttpsWebClient implements WebClientInterface {
 
   private readonly _fireResponseClosure?: CallableFunction;
 
-  constructor(onFireRequest?: CallableFunction, onFireResponse?: CallableFunction) {
+  public constructor(onFireRequest?: CallableFunction, onFireResponse?: CallableFunction) {
     this._fireRequestClosure = onFireRequest;
     this._fireResponseClosure = onFireResponse;
   }
@@ -34,9 +34,9 @@ export class HttpsWebClient implements WebClientInterface {
     };
 
     return new Promise((resolve, reject) => {
-      let request_: ClientRequest;
+      let clientRequest: ClientRequest;
       try {
-        request_ = https.request(request.getUri(), options, (response) => {
+        clientRequest = https.request(request.getUri(), options, (response) => {
           const code = response.statusCode ?? 0;
           const body: Uint8Array[] = [];
           response.on('data', (chunk: Uint8Array) => body.push(chunk));
@@ -46,23 +46,23 @@ export class HttpsWebClient implements WebClientInterface {
           });
         });
       } catch (error) {
-        const error_ = error as Error;
-        const errorResponse = new CResponse(0, error_.message, {});
-        throw new WebClientException(error_.message, request, errorResponse);
+        const catchedError = error as Error;
+        const errorResponse = new CResponse(0, catchedError.message, {});
+        throw new WebClientException(catchedError.message, request, errorResponse);
       }
 
-      request_.on('error', (error) => {
+      clientRequest.on('error', (error) => {
         const errorResponse = new CResponse(0, error.message, {});
         reject(new WebClientException(error.message, request, errorResponse));
       });
 
-      request_.on('timeout', () => {
-        request_.destroy();
+      clientRequest.on('timeout', () => {
+        clientRequest.destroy();
         reject(new Error('Request time out'));
       });
 
-      request_.write(request.getBody());
-      request_.end();
+      clientRequest.write(request.getBody());
+      clientRequest.end();
     });
   }
 }
