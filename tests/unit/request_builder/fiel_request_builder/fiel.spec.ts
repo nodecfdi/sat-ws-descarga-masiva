@@ -22,6 +22,7 @@ describe('fiel', () => {
     expect(fiel.isValid()).toBeTruthy();
   });
   test('fiel creating from contents', () => {
+
     const fiel = Fiel.create(
       fileContents('fake-fiel/EKU9003173C9.cer'),
       fileContents('fake-fiel/EKU9003173C9.key'),

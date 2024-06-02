@@ -23,16 +23,16 @@ const getDirname = (url: string | URL): string => {
 export const filePath = (append = ''): string =>
   path.join(getDirname(import.meta.url), '_files', append);
 
-export const fileContent = (file: string): string => {
+export const fileContent = (file: string, encoding?: BufferEncoding): string => {
   if (!existsSync(file)) {
     return '';
   }
 
-  return readFileSync(file).toString();
+  return readFileSync(file, encoding ?? 'binary').toString();
 };
 
 
-export const fileContents = (append: string): string => fileContent(filePath(append));
+export const fileContents = (append: string, encoding?: BufferEncoding): string => fileContent(filePath(append), encoding);
 
 export const createFielUsingTestingFiles = (password?: string): Fiel =>
   new Fiel(

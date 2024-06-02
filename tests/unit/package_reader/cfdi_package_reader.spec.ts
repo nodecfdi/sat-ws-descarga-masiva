@@ -58,7 +58,7 @@ describe('cfdi package reader', () => {
   });
 
   test('cfdi reader obtain first file as expected', async () => {
-    const expectedCfdi = fileContents('zip/cfdi.xml');
+    const expectedCfdi = fileContents('zip/cfdi.xml', 'utf8');
 
     const zipFileName = filePath('zip/cfdi.zip');
     const cfdiPackageReader = await CfdiPackageReader.createFromFile(zipFileName);

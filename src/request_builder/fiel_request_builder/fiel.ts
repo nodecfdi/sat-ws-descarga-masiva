@@ -17,6 +17,7 @@ export class Fiel {
     privateKeyContents: string,
     passPhrase: string,
   ): Fiel {
+
     const credential = Credential.create(certificateContents, privateKeyContents, passPhrase);
 
     return new Fiel(credential);

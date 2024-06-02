@@ -43,7 +43,7 @@ describe('verify result', () => {
       ...packageIds,
     );
 
-    const expectedFile = fileContents('json/verify-result.json');
+    const expectedFile = fileContents('json/verify-result.json', 'utf8');
 
     expect(JSON.stringify(result)).toBe(JSON.stringify(JSON.parse(expectedFile)));
   });
