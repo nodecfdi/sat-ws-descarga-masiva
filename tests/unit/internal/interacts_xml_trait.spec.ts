@@ -3,7 +3,6 @@ import { InteractsXmlTraitSpecimen } from './interacts_xml_trait.specimen.js';
 import { InteractsXmlOverrideTraitSpecimen } from './interacts_xml_trait_override_specimen.js';
 
 describe('interacts xml trait', () => {
-
   test('find element expecting one', () => {
     const specimen = new InteractsXmlTraitSpecimen();
     const content = fileContents('verify/response-2-packages.xml');

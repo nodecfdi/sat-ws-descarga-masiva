@@ -2,7 +2,9 @@ import { type PackageReaderInterface } from '../package_reader_interface.js';
 import { ThirdPartiesExtractor, type ThirdPartiesInterface } from './third_parties_extractor.js';
 
 export class ThirdPartiesRecords {
-  public constructor(private readonly _records: Record<string, ThirdPartiesInterface | undefined>) {}
+  public constructor(
+    private readonly _records: Record<string, ThirdPartiesInterface | undefined>,
+  ) {}
 
   public static createEmpty(): ThirdPartiesRecords {
     return new ThirdPartiesRecords({});

@@ -31,8 +31,8 @@ export const fileContent = (file: string, encoding?: BufferEncoding): string => 
   return readFileSync(file, encoding ?? 'binary').toString();
 };
 
-
-export const fileContents = (append: string, encoding?: BufferEncoding): string => fileContent(filePath(append), encoding);
+export const fileContents = (append: string, encoding?: BufferEncoding): string =>
+  fileContent(filePath(append), encoding);
 
 export const createFielUsingTestingFiles = (password?: string): Fiel =>
   new Fiel(
@@ -43,7 +43,9 @@ export const createFielUsingTestingFiles = (password?: string): Fiel =>
     ),
   );
 
-export const createFielRequestBuilderUsingTestingFiles = (password?: string): FielRequestBuilder => {
+export const createFielRequestBuilderUsingTestingFiles = (
+  password?: string,
+): FielRequestBuilder => {
   const fiel = createFielUsingTestingFiles(password);
 
   return new FielRequestBuilder(fiel);

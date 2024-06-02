@@ -1,7 +1,11 @@
 import { Helpers } from '#src/internal/helpers';
 import { AuthenticateTranslator } from '#src/services/authenticate/authenticate_translator';
 import { DateTime } from '#src/shared/date_time';
-import { createFielRequestBuilderUsingTestingFiles, fileContents, xmlFormat } from '#tests/test_utils';
+import {
+  createFielRequestBuilderUsingTestingFiles,
+  fileContents,
+  xmlFormat,
+} from '#tests/test_utils';
 
 describe('authenticate translator', () => {
   test('create soap request', () => {

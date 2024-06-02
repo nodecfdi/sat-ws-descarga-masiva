@@ -10,7 +10,6 @@ import { FilteredPackageReader } from '#src/package_reader/internal/filtered_pac
 import { filePath } from '#tests/test_utils';
 
 describe('filtered package reader', () => {
-
   test('create from file with invalid file', async () => {
     const filename = path.dirname(fileURLToPath(import.meta.url));
     await expect(FilteredPackageReader.createFromFile(filename)).rejects.toBeInstanceOf(

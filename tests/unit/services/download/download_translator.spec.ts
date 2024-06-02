@@ -1,6 +1,10 @@
 import { Helpers } from '#src/internal/helpers';
 import { DownloadTranslator } from '#src/services/download/download_translator';
-import { createFielRequestBuilderUsingTestingFiles, fileContents, xmlFormat } from '#tests/test_utils';
+import {
+  createFielRequestBuilderUsingTestingFiles,
+  fileContents,
+  xmlFormat,
+} from '#tests/test_utils';
 
 describe('download translator', () => {
   test('create download result from soap response with package', () => {

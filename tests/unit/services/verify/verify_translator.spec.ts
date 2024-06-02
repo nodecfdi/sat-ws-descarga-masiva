@@ -1,6 +1,10 @@
 import { Helpers } from '#src/internal/helpers';
 import { VerifyTranslator } from '#src/services/verify/verify_translator';
-import { createFielRequestBuilderUsingTestingFiles, fileContents, xmlFormat } from '#tests/test_utils';
+import {
+  createFielRequestBuilderUsingTestingFiles,
+  fileContents,
+  xmlFormat,
+} from '#tests/test_utils';
 
 describe('verify translator', () => {
   test('create verify result from soap response with zero packages', () => {

@@ -6,7 +6,7 @@ import { ComplementoCfdi } from '#src/shared/complemento_cfdi';
 import { DateTimePeriod } from '#src/shared/date_time_period';
 import { DocumentStatus } from '#src/shared/document_status';
 import { DocumentType } from '#src/shared/document_type';
-import { DownloadType} from '#src/shared/download_type';
+import { DownloadType } from '#src/shared/download_type';
 import { RequestType } from '#src/shared/request_type';
 import { RfcMatch } from '#src/shared/rfc_match';
 import { RfcOnBehalf } from '#src/shared/rfc_on_behalf';

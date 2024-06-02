@@ -9,7 +9,6 @@ import { type PackageReaderInterface } from '#src/package_reader/package_reader_
 import { filePath } from '#tests/test_utils';
 
 describe('third parties extractor', () => {
-
   test('extractor', async () => {
     const sourcePath = filePath('zip/metadata-extractor.txt');
     const expected = [
