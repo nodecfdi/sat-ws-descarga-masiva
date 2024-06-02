@@ -215,7 +215,6 @@ describe('fiel request builder', () => {
   });
 
   test('download', () => {
-    console.log(fileContents('fake-fiel/EKU9003173C9-password.txt'));
     const fiel = Fiel.create(
       fileContents('fake-fiel/EKU9003173C9.cer'),
       fileContents('fake-fiel/EKU9003173C9.key'),
