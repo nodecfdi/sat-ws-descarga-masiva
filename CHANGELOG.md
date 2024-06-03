@@ -2,7 +2,7 @@
 
 ## 1.0.1
 
-### Patch Changes
+### Fix missing types
 
 - added missing types in bundle generation
 
