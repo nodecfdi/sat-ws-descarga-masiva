@@ -1,33 +1,14 @@
-# Editor directories and files
-.vscode/*
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-# Optional tool caches
-.eslintcache
-.stylelintcache
-
-# Dependency directories
 node_modules
-jspm_packages
-
-# Optional npm cache directory
-.npm
-
-# Typescript
-*.tsbuildinfo
-
-# Testing
 coverage
-
-# Pnpm
-.pnpm-debug.log
-
-# Production files
+.DS_STORE
+.nyc_output
+.idea
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.log
+build
 dist
-temp
+yarn.lock
+shrinkwrap.yaml
+package-lock.json

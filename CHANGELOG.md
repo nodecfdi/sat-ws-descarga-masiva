@@ -1,5 +1,14 @@
 # @nodecfdi/sat-ws-descarga-masiva ChangeLog
 
+## 1.0.0
+
+### Drop @nodecfdi/cfdiutils-common dependency
+
+- update base dependencies.
+- drop `@nodecfdi/cfdiutils-common` dependency.
+- install from DOMParser, XMLSerializer, DOMImplementation now is made internally by the library.
+- fix for metadata download when some fields are not present.
+
 ## 0.1.4
 
 ### Sonar lint errors and fix docs generation

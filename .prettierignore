@@ -1,10 +1,7 @@
-node_modules
 examples
+build
+dist
 docs
-
-# Ignore artifacts:
-coverage/
-dist/
-.pnpm-store
-pnpm-lock.yaml
-**/*.md
+coverage
+*.html
+tests/_files

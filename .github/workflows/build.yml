@@ -1,78 +1,49 @@
 name: build
 on:
-    workflow_dispatch: {}
-    push:
-        branches:
-            - main
-            - dev
-    pull_request:
-        branches:
-            - main
-            - dev
-    schedule:
-        - cron: '0 16 * * 0' # sunday 16:00
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
+  schedule:
+    - cron: '0 16 * * 0' # sunday 16:00
 
 jobs:
-    build:
-        name: Node unit tests
-        runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                node: ['16', '17', '18', '19', '20']
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v3
+  quality_code:
+    uses: nodecfdi/.github/.github/workflows/quality_code.yml@main
 
-            - name: Cache .pnpm-store
-              uses: actions/cache@v3
-              with:
-                  path: ~/.pnpm-store
-                  key: ${{ runner.os }}-node${{ matrix.node }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+  tests:
+    uses: nodecfdi/.github/.github/workflows/tests.yml@main
 
-            - name: Setup node
-              uses: actions/setup-node@v3
-              with:
-                  node-version: ${{ matrix.node }}
-
-            - name: Install dependencies
-              uses: pnpm/action-setup@v2
-              with:
-                  version: 8
-                  run_install: true
-
-            - name: Lint source
-              run: |
-                  pnpm lint:check
-
-            - name: Build package
-              run: |
-                  pnpm build
-
-            - name: Run tests
-              run: |
-                  pnpm test:run
-              env:
-                  CI: true
-
-            - name: 'Consume changesets'
-              if: github.event_name == 'push' && github.repository == 'nodecfdi/sat-ws-descarga-masiva' && matrix.node == 16 && github.ref == 'refs/heads/main'
-              uses: changesets/action@v1
-              id: 'changesets'
-              with:
-                  # This expects you to have a script called release which does a build for your packages and calls changeset publish
-                  publish: pnpm release
-                  commit: 'chore: version bump'
-                  title: Next release
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-            - name: 'Generate docs'
-              if: steps.changesets.outputs.published == 'true'
-              run: pnpm gen:docs
-
-            - name: Commit docs
-              if: steps.changesets.outputs.published == 'true'
-              uses: stefanzweifel/git-auto-commit-action@v4
-              with:
-                  commit_message: 'docs: generate docs'
+  publish:
+    name: Check for publish
+    needs: ['quality_code', 'tests']
+    if: github.event_name == 'push' && github.repository == 'nodecfdi/sat-ws-descarga-masiva' && github.ref == 'refs/heads/main'
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: latest
+          standalone: true
+          run_install: true
+      - name: 'Consume changesets'
+        uses: changesets/action@v1
+        id: 'changesets'
+        with:
+          publish: pnpm release
+          commit: 'chore: :rocket: version bump'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Generate docs
+        if: steps.changesets.outputs.published == 'true'
+        run: pnpm gen:docs
+      - name: Commit docs
+        if: steps.changesets.outputs.published == 'true'
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'docs: :memo: generate docs'

@@ -1,92 +1,105 @@
 {
-    "name": "@nodecfdi/sat-ws-descarga-masiva",
-    "version": "0.1.4",
-    "description": "Librería para usar el servicio web del SAT de Descarga Masiva",
-    "keywords": [
-        "sat",
-        "cfdi",
-        "download",
-        "descarga",
-        "webservice"
-    ],
-    "private": false,
-    "author": "OcelotlStudio <contacto@ocelotlstudio.com>",
-    "license": "MIT",
-    "type": "module",
-    "main": "./dist/sat-ws-descarga-masiva.cjs",
-    "module": "./dist/sat-ws-descarga-masiva.js",
-    "types": "./dist/index.d.ts",
-    "exports": {
-        ".": {
-            "import": {
-                "types": "./dist/index.d.ts",
-                "default": "./dist/sat-ws-descarga-masiva.js"
-            },
-            "require": {
-                "types": "./dist/index.d.cts",
-                "default": "./dist/sat-ws-descarga-masiva.cjs"
-            }
-        }
+  "name": "@nodecfdi/sat-ws-descarga-masiva",
+  "version": "1.0.0",
+  "description": "Librería para usar el servicio web del SAT de Descarga Masiva",
+  "type": "module",
+  "main": "./dist/sat-ws-descarga-masiva.cjs",
+  "module": "./dist/sat-ws-descarga-masiva.js",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js"
     },
-    "files": [
-        "dist"
-    ],
-    "scripts": {
-        "prepare": "is-ci || husky install",
-        "lint": "eslint . --fix --ext .ts,.js",
-        "lint:check": "eslint . --ext .ts,.js",
-        "test": "vitest",
-        "test:run": "vitest run",
-        "test:coverage": "vitest run --coverage",
-        "build": "rimraf dist && tsup",
-        "gen:docs": "rimraf docs && typedoc --options typedoc.json",
-        "release": "pnpm run build && pnpm changeset publish"
-    },
-    "repository": "https://github.com/nodecfdi/sat-ws-descarga-masiva",
-    "bugs": {
-        "url": "https://github.com/nodecfdi/sat-ws-descarga-masiva/issues"
-    },
-    "homepage": "https://github.com/nodecfdi/sat-ws-descarga-masiva",
-    "devDependencies": {
-        "@changesets/cli": "^2.26.2",
-        "@commitlint/cli": "^17.6.6",
-        "@nodecfdi/eslint-config-nodecfdi": "^0.1.4",
-        "@nrsk/config-conventional": "^1.0.0",
-        "@peculiar/webcrypto": "^1.4.3",
-        "@types/is-ci": "^3.0.0",
-        "@types/jsrsasign": "^10.5.8",
-        "@types/luxon": "^3.3.0",
-        "@types/node": "^20.4.2",
-        "@types/node-forge": "^1.3.3",
-        "@vitest/coverage-istanbul": "^0.34.0",
-        "@xmldom/xmldom": "^0.8.9",
-        "eslint": "^8.44.0",
-        "husky": "^8.0.3",
-        "is-ci": "^3.0.1",
-        "jest-xml-matcher": "^1.2.0",
-        "lint-staged": "^13.2.3",
-        "prettier": "^3.0.0",
-        "rimraf": "^5.0.1",
-        "ts-mixer": "^6.0.3",
-        "tsup": "^7.1.0",
-        "typedoc": "^0.25.0",
-        "typedoc-theme-hierarchy": "^4.0.0",
-        "typescript": "^5.1.6",
-        "vite": "^4.4.3",
-        "vitest": "^0.34.0",
-        "vitest-mock-extended": "^1.1.4",
-        "xadesjs": "^2.4.4",
-        "xpath": "^0.0.34"
-    },
-    "dependencies": {
-        "@nodecfdi/cfdiutils-common": "^1.2.4",
-        "@nodecfdi/credentials": "^2.0.3",
-        "@nodecfdi/rfc": "^1.3.2",
-        "jszip": "^3.10.1",
-        "luxon": "^3.3.0",
-        "node-forge": "^1.3.1"
-    },
-    "engines": {
-        "node": ">= 14.18.0"
+    "./types": {
+      "require": "./dist/src/types.cjs",
+      "import": "./dist/src/types.js"
     }
+  },
+  "imports": {
+    "#src/*": "./src/*.js",
+    "#tests/*": "./tests/*.js"
+  },
+  "scripts": {
+    "clean": "del-cli dist",
+    "prepare": "is-in-ci || husky",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --fix",
+    "lint:check": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "prebuild": "pnpm clean",
+    "build": "tsup",
+    "gen:docs": "del-cli docs && typedoc --options typedoc.json",
+    "version": "conventional-changelog -p conventionalcommits -i CHANGELOG.md -s",
+    "postversion": "pnpm format && git add CHANGELOG.md",
+    "release": "pnpm run build && pnpm changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.5",
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "@nodecfdi/eslint-config": "^1.6.7",
+    "@nodecfdi/prettier-config": "^1.1.1",
+    "@nodecfdi/tsconfig": "^1.5.0",
+    "@peculiar/webcrypto": "^1.5.0",
+    "@types/jsrsasign": "^10.5.14",
+    "@types/luxon": "^3.4.2",
+    "@types/node": "^20.13.0",
+    "@types/node-forge": "^1.3.11",
+    "@vitest/coverage-istanbul": "^1.6.0",
+    "conventional-changelog-cli": "^5.0.0",
+    "del-cli": "^5.1.0",
+    "eslint": "^8.57.0",
+    "eslint-define-config": "^2.1.0",
+    "husky": "^9.0.11",
+    "is-in-ci": "^0.1.0",
+    "jest-xml-matcher": "^1.2.0",
+    "prettier": "^3.3.0",
+    "rimraf": "^5.0.7",
+    "tsup": "^8.0.2",
+    "typedoc": "^0.25.13",
+    "typedoc-material-theme": "^1.0.2",
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.0",
+    "vitest-mock-extended": "^1.3.1",
+    "xadesjs": "^2.4.4",
+    "xpath": "^0.0.34"
+  },
+  "dependencies": {
+    "@nodecfdi/credentials": "^2.0.3",
+    "@nodecfdi/rfc": "^2.0.3",
+    "jszip": "^3.10.1",
+    "luxon": "^3.4.4",
+    "node-forge": "^1.3.1"
+  },
+  "peerDependencies": {
+    "@nodecfdi/cfdi-core": "^0.1.0"
+  },
+  "author": "OcelotlStudio <contacto@ocelotlstudio.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/nodecfdi/sat-ws-descarga-masiva",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nodecfdi/sat-ws-descarga-masiva"
+  },
+  "bugs": {
+    "url": "https://github.com/nodecfdi/sat-ws-descarga-masiva/issues"
+  },
+  "keywords": [
+    "sat",
+    "cfdi",
+    "download",
+    "descarga",
+    "webservice"
+  ],
+  "engines": {
+    "node": "^21 || ^20 || ^19 || ^18 || ^16"
+  },
+  "prettier": "@nodecfdi/prettier-config"
 }

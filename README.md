@@ -44,22 +44,22 @@ Todos los objetos de entrada y salida se pueden exportar como JSON para su fáci
 
 ```ts
 import { readFileSync } from 'fs';
-import { Fiel, HttpsWebClient, FielRequestBuilder, Service } from '@nodecfdi/sat-ws-descarga-masiva';
-import { install } from '@nodecfdi/cfdiutils-common';
-import { DOMParser, XMLSerializer, DOMImplementation } from '@xmldom/xmldom';
-
-//instala tu gestor de DOM preferido para este ejemplo se usa @xmldom/xmldom
-install(new DOMParser(), new XMLSerializer(), new DOMImplementation());
+import {
+  Fiel,
+  HttpsWebClient,
+  FielRequestBuilder,
+  Service,
+} from '@nodecfdi/sat-ws-descarga-masiva';
 
 // Creación de la FIEL, puede leer archivos DER (como los envía el SAT) o PEM (convertidos con openssl)
 const fiel = Fiel.create(
-    readFileSync('fake-fiel/EKU9003173C9.cer', 'binary'),
-    readFileSync('fake-fiel/EKU9003173C9.key', 'binary'),
-    '12345678a'
+  readFileSync('fake-fiel/EKU9003173C9.cer', 'binary'),
+  readFileSync('fake-fiel/EKU9003173C9.key', 'binary'),
+  '12345678a',
 );
 // verificar que la FIEL sea válida (no sea CSD y sea vigente acorde a la fecha del sistema)
 if (!fiel.isValid()) {
-    return;
+  return;
 }
 
 // Creación del cliente web se usa el cliente incluido en nodeJS.
@@ -81,13 +81,18 @@ Puede utilizar esta librería para consumir los CFDI de Retenciones. Para lograr
 Los constructores `ServiceEndpoints.cfdi()` y `ServiceEndpoints.retenciones()` agregan automáticamente la propiedad `ServiceType` al objeto. Esta propiedad será después utilizada el servicio para especificar el valor en la consulta antes de consumirla.
 
 ```ts
-import { HttpsWebClient, RequestBuilderInterface, ServiceEndpoints, Service } from '@nodecfdi/sat-ws-descarga-masiva';
+import {
+  HttpsWebClient,
+  RequestBuilderInterface,
+  ServiceEndpoints,
+  Service,
+} from '@nodecfdi/sat-ws-descarga-masiva';
 /**
  * @var webClient: HttpsWebClient
  * @var requestBuilder: RequestBuilderInterface
  */
 // Creación del servicio
-const service = new Service(requestBuilder, webClient, undefined, ServiceEndpoints.retenciones());
+const service = new Service(requestBuilder, webClient, undefined, ServiceEndpoints.cfdi());
 ```
 
 Aunque no es recomendado, también puedes construir el objeto ServiceEndpoints con direcciones URL del servicio personalizadas utilizando el constructor del objeto en lugar de los métodos estáticos.
@@ -109,15 +114,16 @@ import { QueryParameters, DateTimePeriod } from '@nodecfdi/sat-ws-descarga-masiv
  */
 
 const request = QueryParameters.create(
-    DateTimePeriod.createFromValues('2022-01-01 00:00:00', '2022-02-28 23:59:59'));
+  DateTimePeriod.createFromValues('2022-01-01 00:00:00', '2022-02-28 23:59:59'),
+);
 
 // presentar la consulta
 const query = await service.query(request);
 
 // verificar que el proceso de consulta fue correcto
 if (!query.getStatus().isAccepted()) {
-    console.log(`Fallo al presentar la consulta: ${query.getStatus().getMessage()}`);
-    return;
+  console.log(`Fallo al presentar la consulta: ${query.getStatus().getMessage()}`);
+  return;
 }
 console.log(`Se generó la solicitud ${query.getRequestId()}`);
 ```
@@ -216,11 +222,11 @@ Sin embargo, si fuera necesario especificar el listado de RFC, se puede realizar
 
 ```ts
 parameters = parameters.withRfcMatches(
-    RfcMatches.create(
-        RfcMatch.create('AAA010101000'),
-        RfcMatch.create('AAA010101001'),
-        RfcMatch.create('AAA010101002')
-    )
+  RfcMatches.create(
+    RfcMatch.create('AAA010101000'),
+    RfcMatch.create('AAA010101001'),
+    RfcMatch.create('AAA010101002'),
+  ),
 );
 ```
 
@@ -228,7 +234,7 @@ O bien, utilizar una lista de RFC como cadenas de texto:
 
 ```ts
 parameters = parameters.withRfcMatches(
-    RfcMatches.createFromValues('AAA010101000', 'AAA010101001', 'AAA010101002')
+  RfcMatches.createFromValues('AAA010101000', 'AAA010101001', 'AAA010101002'),
 );
 ```
 
@@ -236,10 +242,10 @@ parameters = parameters.withRfcMatches(
 
 Este objeto mantiene una lista de `RfcMatches`, pero con características especiales:
 
-- Los objetos `RfcMatch` *vacíos* o *repetidos* son ignorados, solo se mantienen valores no vacíos únicos.
+- Los objetos `RfcMatch` _vacíos_ o _repetidos_ son ignorados, solo se mantienen valores no vacíos únicos.
 - El método `RfcMatch.getFirst()` devuelve siempre el primer elemento, si no existe entonces devuelve uno vacío.
-- La clase `RfcMatch` es *iterable*, se puede hacer `forof()` sobre los elementos.
-- La clase `RfcMatch` es *contable*, se puede usar el método `count()` sobre los elementos.
+- La clase `RfcMatch` es _iterable_, se puede hacer `forof()` sobre los elementos.
+- La clase `RfcMatch` es _contable_, se puede usar el método `count()` sobre los elementos.
 
 ### Tipo de servicio (`ServiceType`)
 
@@ -272,21 +278,29 @@ Puede que los cambios del ejemplo no sean lógicos, es solo para ilustrar cómo 
 - Filtrando por el UUID `96623061-61fe-49de-b298-c7156476aa8b`.
 
 ```ts
-import { QueryParameters, DateTimePeriod, DownloadType, RequestType,
-DocumentType, ComplementoCfdi, DocumentStatus, RfcOnBehalf, RfcMatch, Uuid
- } from '@nodecfdi/sat-ws-descarga-masiva';
+import {
+  QueryParameters,
+  DateTimePeriod,
+  DownloadType,
+  RequestType,
+  DocumentType,
+  ComplementoCfdi,
+  DocumentStatus,
+  RfcOnBehalf,
+  RfcMatch,
+  Uuid,
+} from '@nodecfdi/sat-ws-descarga-masiva';
 
 const query = QueryParameters.create()
-    .withPeriod(DateTimePeriod.createFromValues('2019-01-13 00:00:00', '2019-01-13 23:59:59'))
-    .withDownloadType(DownloadType.received())
-    .withRequestType(RequestType.xml())
-    .withDocumentType(DocumentType.ingreso())
-    .withComplement(ComplementoCfdi.leyendasFiscales10())
-    .withDocumentStatus(DocumentStatus.active())
-    .withRfcOnBehalf(RfcOnBehalf.create('XXX01010199A'))
-    .withRfcMatch(RfcMatch.create('MAG041126GT8'))
-    .withUuid(Uuid.create('96623061-61fe-49de-b298-c7156476aa8b'))
-;
+  .withPeriod(DateTimePeriod.createFromValues('2019-01-13 00:00:00', '2019-01-13 23:59:59'))
+  .withDownloadType(DownloadType.received())
+  .withRequestType(RequestType.xml())
+  .withDocumentType(DocumentType.ingreso())
+  .withComplement(ComplementoCfdi.leyendasFiscales10())
+  .withDocumentStatus(DocumentStatus.active())
+  .withRfcOnBehalf(RfcOnBehalf.create('XXX01010199A'))
+  .withRfcMatch(RfcMatch.create('MAG041126GT8'))
+  .withUuid(Uuid.create('96623061-61fe-49de-b298-c7156476aa8b'));
 ```
 
 ### Ejemplo de consulta por UUID
@@ -298,9 +312,7 @@ Nota: **Todos los demás argumentos de la consulta son ignorados**.
 ```ts
 import { QueryParameters, Uuid } from '@nodecfdi/sat-ws-descarga-masiva';
 
-$query = QueryParameters.create()
-    .withUuid(Uuid.create('96623061-61fe-49de-b298-c7156476aa8b'))
-;
+$query = QueryParameters.create().withUuid(Uuid.create('96623061-61fe-49de-b298-c7156476aa8b'));
 ```
 
 ## Verificar una consulta
@@ -318,28 +330,32 @@ const verify = await service.verify(requestId);
 
 // revisar que el proceso de verificación fue correcto
 if (!verify.getStatus().isAccepted()) {
-    console.log(`Fallo al verificar la consulta ${requestId}: ${verify.getStatus().getMessage()}`);
-    return;
+  console.log(`Fallo al verificar la consulta ${requestId}: ${verify.getStatus().getMessage()}`);
+  return;
 }
 
 // revisar el progreso de la generación de los paquetes
 const statusRequest = verify.getStatusRequest();
-if (statusRequest.isTypeOf('Expired') || statusRequest.isTypeOf('Failure') || statusRequest.isTypeOf('Rejected')) {
-    console.log(`La solicitud ${requestId} no se puede completar`);
-    return;
+if (
+  statusRequest.isTypeOf('Expired') ||
+  statusRequest.isTypeOf('Failure') ||
+  statusRequest.isTypeOf('Rejected')
+) {
+  console.log(`La solicitud ${requestId} no se puede completar`);
+  return;
 }
 
 if (statusRequest.isTypeOf('InProgress') || statusRequest.isTypeOf('Accepted')) {
-    console.log(`La solicitud ${requestId} se está procesando`);
-    return;
+  console.log(`La solicitud ${requestId} se está procesando`);
+  return;
 }
 if (statusRequest.isTypeOf('Finished')) {
-    console.log(`La solicitud ${requestId} está lista`);
+  console.log(`La solicitud ${requestId} está lista`);
 }
 
 console.log(`Se encontraron ${verify.countPackages()} paquetes`);
 for (const packageId of verify.getPackageIds()) {
-    console.log(` > ${packageId}`)
+  console.log(` > ${packageId}`);
 }
 ```
 
@@ -357,13 +373,15 @@ import { writeFileSync } from 'fs';
  * @var packagesIds: string[] El listado de identificadores de paquetes generado en la (correcta) verificación
  */
 for (const packageId of packagesIds) {
-    const download = await service.download(packageId);
-    if (!download.getStatus().isAccepted()) {
-        console.log(`El paquete ${packageId} no se ha podido descargar: ${download.getStatus().getMessage()}`);
-        continue;
-    }
-    writeFileSync(`${packageId}.zip`, Buffer.from(download.getPackageContent(), 'base64'));
-    console.log(`el paquete ${packageId} se ha almacenado`);
+  const download = await service.download(packageId);
+  if (!download.getStatus().isAccepted()) {
+    console.log(
+      `El paquete ${packageId} no se ha podido descargar: ${download.getStatus().getMessage()}`,
+    );
+    continue;
+  }
+  writeFileSync(`${packageId}.zip`, Buffer.from(download.getPackageContent(), 'base64'));
+  console.log(`el paquete ${packageId} se ha almacenado`);
 }
 ```
 
@@ -383,15 +401,15 @@ import { MetadataPackageReader, OpenZipFileException } from '@nodecfdi/sat-ws-de
 let metadataReader: MetadataPackageReader;
 // abrir el archivo de Metadata
 try {
-    metadataReader = await MetadataPackageReader.createFromFile(zipFile);
+  metadataReader = await MetadataPackageReader.createFromFile(zipFile);
 } catch (error) {
-    const zipError = error as OpenZipFileException;
-    console.log(zipError.message);
-    return;
+  const zipError = error as OpenZipFileException;
+  console.log(zipError.message);
+  return;
 }
 
 for await (const item of metadataReader.metadata()) {
-    console.log(`${item.get('uuid')}   ${item.get('fechaEmision')}`);
+  console.log(`${item.get('uuid')}   ${item.get('fechaEmision')}`);
 }
 ```
 
@@ -406,17 +424,17 @@ import { writeFileSync } from 'fs';
 
 let cfdiReader: CfdiPackageReader;
 try {
-    cfdiReader = await CfdiPackageReader.createFromFile(zipFile);
+  cfdiReader = await CfdiPackageReader.createFromFile(zipFile);
 } catch (error) {
-    const zipError = error as OpenZipFileException;
-    console.log(zipError.message);
-    return;
+  const zipError = error as OpenZipFileException;
+  console.log(zipError.message);
+  return;
 }
 
 for await (const map of cfdiPackageReader.cfdis()) {
-    for (const [name, content] of map) {
-        writeFileSync(`cfdis/${name}.xml`, Buffer.from(content, 'utf8'));
-    }
+  for (const [name, content] of map) {
+    writeFileSync(`cfdis/${name}.xml`, Buffer.from(content, 'utf8'));
+  }
 }
 ```
 
@@ -435,12 +453,11 @@ and licensed for use under the MIT License (MIT). Please see [LICENSE][] for mor
 [release]: https://www.npmjs.com/package/@nodecfdi/sat-ws-descarga-masiva
 [license]: https://github.com/nodecfdi/sat-ws-descarga-masiva/blob/main/LICENSE
 [build]: https://github.com/nodecfdi/sat-ws-descarga-masiva/actions/workflows/build.yml?query=branch:main
-[reliability]:https://sonarcloud.io/component_measures?id=nodecfdi_sat-ws-descarga-masiva&metric=Reliability
+[reliability]: https://sonarcloud.io/component_measures?id=nodecfdi_sat-ws-descarga-masiva&metric=Reliability
 [maintainability]: https://sonarcloud.io/component_measures?id=nodecfdi_sat-ws-descarga-masiva&metric=Maintainability
 [coverage]: https://sonarcloud.io/component_measures?id=nodecfdi_sat-ws-descarga-masiva&metric=Coverage
 [violations]: https://sonarcloud.io/project/issues?id=nodecfdi_sat-ws-descarga-masiva&resolved=false
 [downloads]: https://www.npmjs.com/package/@nodecfdi/sat-ws-descarga-masiva
-
 [badge-source]: https://img.shields.io/badge/source-nodecfdi/sat--ws--descarga--masiva-blue.svg?logo=github
 [badge-node-version]: https://img.shields.io/node/v/@nodecfdi/sat-ws-descarga-masiva.svg?logo=nodedotjs
 [badge-discord]: https://img.shields.io/discord/459860554090283019?logo=discord
