@@ -1,5 +1,11 @@
 # @nodecfdi/sat-ws-descarga-masiva ChangeLog
 
+## 1.0.1
+
+### Patch Changes
+
+- added missing types in bundle generation
+
 ## 1.0.0
 
 ### Drop @nodecfdi/cfdiutils-common dependency
