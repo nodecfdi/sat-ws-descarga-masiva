@@ -50,11 +50,6 @@ import {
   FielRequestBuilder,
   Service,
 } from '@nodecfdi/sat-ws-descarga-masiva';
-import { install } from '@nodecfdi/cfdiutils-common';
-import { DOMParser, XMLSerializer, DOMImplementation } from '@xmldom/xmldom';
-
-//instala tu gestor de DOM preferido para este ejemplo se usa @xmldom/xmldom
-install(new DOMParser(), new XMLSerializer(), new DOMImplementation());
 
 // Creación de la FIEL, puede leer archivos DER (como los envía el SAT) o PEM (convertidos con openssl)
 const fiel = Fiel.create(
@@ -97,7 +92,7 @@ import {
  * @var requestBuilder: RequestBuilderInterface
  */
 // Creación del servicio
-const service = new Service(requestBuilder, webClient, undefined, ServiceEndpoints.retenciones());
+const service = new Service(requestBuilder, webClient, undefined, ServiceEndpoints.cfdi());
 ```
 
 Aunque no es recomendado, también puedes construir el objeto ServiceEndpoints con direcciones URL del servicio personalizadas utilizando el constructor del objeto en lugar de los métodos estáticos.
