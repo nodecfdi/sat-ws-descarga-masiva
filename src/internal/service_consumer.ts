@@ -4,9 +4,10 @@ import { type CResponse } from '../web_client/cresponse.js';
 import { HttpClientError } from '../web_client/exceptions/http_client_error.js';
 import { HttpServerError } from '../web_client/exceptions/http_server_error.js';
 import { SoapFaultError } from '../web_client/exceptions/soap_fault_error.js';
-import { type WebClientException } from '../web_client/exceptions/web_client_exception.js';
+import { WebClientException } from '../web_client/exceptions/web_client_exception.js';
 import { type WebClientInterface } from '../web_client/web_client_interface.js';
 import { SoapFaultInfoExtractor } from './soap_fault_info_extractor.js';
+import { HttpTimeoutError } from '#src/web_client/exceptions/http_timeout_error';
 
 export class ServiceConsumer {
   public static async consume(
@@ -74,6 +75,11 @@ export class ServiceConsumer {
   }
 
   public checkErrors(request: CRequest, response: CResponse, exception?: Error): void {
+    if (response.statusCodeIsTimeoutError()) {
+      const message = `Unexpected timeout error: ${response.getBody()}`;
+      throw new HttpTimeoutError(message, request, response, exception);
+    }
+
     const fault = SoapFaultInfoExtractor.extract(response.getBody());
     // evaluate SoapFaultInfo
     if (fault) {

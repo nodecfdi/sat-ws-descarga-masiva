@@ -9,6 +9,12 @@ describe('https web client test', () => {
     await expect(() => webClient.call(request)).rejects.toThrowError('Invalid URL');
   });
 
+  test('call throws timeout', async () => {
+    const request = new CRequest('GET', 'https://localhost', '', {});
+    const webClient = new HttpsWebClient(undefined, undefined, 1);
+    await expect(() => webClient.call(request)).rejects.toThrowError('Request time out');
+  });
+
   test('fire request', () => {
     const captured: CRequest[] = [];
     const observer = (requestCaptured: CRequest): void => {
