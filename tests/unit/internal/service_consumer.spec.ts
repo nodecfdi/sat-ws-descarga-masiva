@@ -6,7 +6,7 @@ import { CRequest } from '#src/web_client/crequest';
 import { CResponse } from '#src/web_client/cresponse';
 import { HttpServerError } from '#src/web_client/exceptions/http_server_error';
 import { SoapFaultError } from '#src/web_client/exceptions/soap_fault_error';
-import { WebClientException } from '#src/web_client/exceptions/web_client_exception';
+import { type WebClientException } from '#src/web_client/exceptions/web_client_exception';
 import { type WebClientInterface } from '#src/web_client/web_client_interface';
 import { fileContents } from '#tests/test_utils';
 import { HttpTimeoutError } from '#src/web_client/exceptions/http_timeout_error';
