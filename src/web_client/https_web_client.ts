@@ -66,12 +66,15 @@ export class HttpsWebClient implements WebClientInterface {
 
       clientRequest.on('timeout', () => {
         clientRequest.destroy();
-        const errorResponse = CResponse.timeout(this._timeout);
 
         const rejectReason =
           this._timeout === undefined
             ? new Error('Request time out')
-            : new WebClientException('Request time out', request, errorResponse);
+            : new WebClientException(
+              'Request time out',
+              request,
+              CResponse.timeout(this._timeout)
+            );
 
         reject(rejectReason);
       });
