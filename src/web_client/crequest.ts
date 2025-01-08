@@ -7,12 +7,21 @@ export class CRequest {
 
   private readonly _headers: Record<string, string>;
 
-  public constructor(method: string, uri: string, body: string, headers: Record<string, string>) {
+  private readonly _timeout?: number;
+
+  public constructor(
+    method: string,
+    uri: string,
+    body: string,
+    headers: Record<string, string>,
+    timeout?: number,
+  ) {
     this._method = method;
     this._uri = uri;
     this._body = body;
     const map = new Map([...Object.entries(this.defaultHeaders()), ...Object.entries(headers)]);
     this._headers = Object.fromEntries(map);
+    this._timeout = timeout;
   }
 
   public getMethod(): string {
@@ -29,6 +38,10 @@ export class CRequest {
 
   public getHeaders(): Record<string, string> {
     return this._headers;
+  }
+
+  public getTimeout(): number | undefined {
+    return this._timeout;
   }
 
   public defaultHeaders(): {
@@ -48,12 +61,14 @@ export class CRequest {
     uri: string;
     body: string;
     headers: Record<string, string>;
+    timeout?: number;
   } {
     return {
       method: this._method,
       uri: this._uri,
       body: this._body,
       headers: this._headers,
+      timeout: this._timeout,
     };
   }
 }

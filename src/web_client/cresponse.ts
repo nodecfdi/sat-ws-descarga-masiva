@@ -5,7 +5,7 @@ export class CResponse {
 
   private readonly _headers: Record<string, string>;
 
-  static TIMEOUT_CODE = 1;
+  private static TIMEOUT_CODE = 1;
 
   public constructor(statuscode: number, body: string, headers: Record<string, string> = {}) {
     this._statusCode = statuscode;

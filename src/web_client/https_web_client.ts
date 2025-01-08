@@ -38,7 +38,7 @@ export class HttpsWebClient implements WebClientInterface {
     const options = {
       method: request.getMethod(),
       headers: request.getHeaders(),
-      timeout: this._timeout,
+      timeout: this._timeout ?? request.getTimeout() ?? undefined,
     };
 
     return new Promise((resolve, reject) => {
@@ -67,7 +67,13 @@ export class HttpsWebClient implements WebClientInterface {
       clientRequest.on('timeout', () => {
         clientRequest.destroy();
         const errorResponse = CResponse.timeout(this._timeout);
-        reject(new WebClientException('Request time out', request, errorResponse));
+
+        const rejectReason =
+          this._timeout === undefined
+            ? new Error('Request time out')
+            : new WebClientException('Request time out', request, errorResponse);
+
+        reject(rejectReason);
       });
 
       clientRequest.write(request.getBody());

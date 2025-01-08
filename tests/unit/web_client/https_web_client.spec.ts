@@ -1,5 +1,6 @@
 import { CRequest } from '#src/web_client/crequest';
 import { CResponse } from '#src/web_client/cresponse';
+import { WebClientException } from '#src/web_client/exceptions/web_client_exception';
 import { HttpsWebClient } from '#src/web_client/https_web_client';
 
 describe('https web client test', () => {
@@ -13,6 +14,14 @@ describe('https web client test', () => {
     const request = new CRequest('GET', 'https://localhost', '', {});
     const webClient = new HttpsWebClient(undefined, undefined, 1);
     await expect(() => webClient.call(request)).rejects.toThrowError('Request time out');
+    await expect(() => webClient.call(request)).rejects.toBeInstanceOf(WebClientException);
+  });
+
+  test('call keeps existing timeout behavior', async () => {
+    const request = new CRequest('GET', 'https://localhost', '', {}, 1);
+    const webClient = new HttpsWebClient(undefined, undefined);
+    await expect(() => webClient.call(request)).rejects.toBeInstanceOf(Error);
+    await expect(() => webClient.call(request)).rejects.not.toBeInstanceOf(WebClientException);
   });
 
   test('fire request', () => {
