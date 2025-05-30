@@ -1,6 +1,10 @@
 {
-  "plugin": ["typedoc-material-theme"],
-  "themeColor": "#badc69",
-  "entryPoints": ["./index.ts", "./src/types.ts"],
+  "plugin": [
+    "typedoc-github-theme"
+  ],
+  "entryPoints": [
+    "./src"
+  ],
+  "entryPointStrategy": "expand",
   "out": "./docs"
 }
