@@ -1,4 +1,4 @@
-import { type StatusCode } from '../../shared/status_code.js';
+import { type StatusCode } from '#src/shared/status_code';
 
 export class DownloadResult {
   private readonly _packageSize: number;

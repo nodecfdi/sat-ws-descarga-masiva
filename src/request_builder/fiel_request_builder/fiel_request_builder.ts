@@ -1,10 +1,10 @@
 import { createHash, randomUUID } from 'node:crypto';
-import { Helpers } from '../../internal/helpers.js';
-import { type QueryParameters } from '../../services/query/query_parameters.js';
-import { type DateTime } from '../../shared/date_time.js';
-import { RfcMatches } from '../../shared/rfc_matches.js';
-import { type RequestBuilderInterface } from '../request_builder_interface.js';
-import { type Fiel } from './fiel.js';
+import { Helpers } from '#src/internal/helpers';
+import { type QueryParameters } from '#src/services/query/query_parameters';
+import { type DateTime } from '#src/shared/date_time';
+import { RfcMatches } from '#src/shared/rfc_matches';
+import { type RequestBuilderInterface } from '#src/request_builder/request_builder_interface';
+import { type Fiel } from '#src/request_builder/fiel_request_builder/fiel';
 
 export class FielRequestBuilder implements RequestBuilderInterface {
   public constructor(private readonly _fiel: Fiel) {}

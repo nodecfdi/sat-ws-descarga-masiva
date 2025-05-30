@@ -1,8 +1,8 @@
-import { InteractsXmlTrait } from '../../internal/interacts_xml_trait.js';
-import { type RequestBuilderInterface } from '../../request_builder/request_builder_interface.js';
-import { CodeRequest } from '../../shared/code_request.js';
-import { StatusCode } from '../../shared/status_code.js';
-import { StatusRequest } from '../../shared/status_request.js';
+import { InteractsXmlTrait } from '#src/internal/interacts_xml_trait';
+import { type RequestBuilderInterface } from '#src/request_builder/request_builder_interface';
+import { CodeRequest } from '#src/shared/code_request';
+import { StatusCode } from '#src/shared/status_code';
+import { StatusRequest } from '#src/shared/status_request';
 import { VerifyResult } from './verify_result.js';
 
 export class VerifyTranslator extends InteractsXmlTrait {

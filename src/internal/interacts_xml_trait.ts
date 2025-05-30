@@ -1,4 +1,4 @@
-import { getParser } from '@nodecfdi/cfdi-core';
+import { getParser, type Document, type Element } from '@nodecfdi/cfdi-core';
 /**
  * Contain functions to interact with XML contents and XML DOM
  *
@@ -15,7 +15,7 @@ export class InteractsXmlTrait {
 
   public readXmlElement(source: string): Element {
     const document = this.readXmlDocument(source);
-    const element = document.documentElement;
+    const element = document.documentElement!;
 
     return element;
   }
@@ -30,7 +30,7 @@ export class InteractsXmlTrait {
     for (index; index < children.length; index += 1) {
       const child = children[index];
       if (child.nodeType === child.ELEMENT_NODE) {
-        const localName = (child as Element).localName.toLowerCase();
+        const localName = (child as Element).localName!.toLowerCase();
         if (localName === current) {
           return names.length > 0
             ? this.findElement(child as Element, ...names)
@@ -58,7 +58,7 @@ export class InteractsXmlTrait {
     for (index; index < children.length; index += 1) {
       const child = children[index];
       // of type Node.TEXT_NODE
-      if ((child as Element).nodeType === 3) {
+      if (child.nodeType === 3) {
         const c = child;
         if (c.textContent !== null) {
           buffer.push(c.textContent);
@@ -85,7 +85,7 @@ export class InteractsXmlTrait {
     for (index; index < children.length; index += 1) {
       const child = children[index];
       if (child.nodeType === child.ELEMENT_NODE) {
-        const localName = (child as Element).localName.toLowerCase();
+        const localName = (child as Element).localName!.toLowerCase();
         if (localName === current) {
           found.push(child as Element);
         }
@@ -116,7 +116,7 @@ export class InteractsXmlTrait {
     let index = 0;
     for (index; index < elementAttributes.length; index += 1) {
       attributes.set(
-        elementAttributes[index].localName.toLowerCase(),
+        elementAttributes[index].localName!.toLowerCase(),
         elementAttributes[index].value,
       );
     }

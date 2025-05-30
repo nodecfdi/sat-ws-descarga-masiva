@@ -1,4 +1,4 @@
-import { SoapFaultInfo } from '../web_client/soap_fault_info.js';
+import { SoapFaultInfo } from '#src/web_client/soap_fault_info';
 import { InteractsXmlTrait } from './interacts_xml_trait.js';
 
 export class SoapFaultInfoExtractor extends InteractsXmlTrait {

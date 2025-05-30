@@ -1,11 +1,11 @@
-import { type Token } from '../shared/token.js';
-import { CRequest } from '../web_client/crequest.js';
-import { type CResponse } from '../web_client/cresponse.js';
-import { HttpClientError } from '../web_client/exceptions/http_client_error.js';
-import { HttpServerError } from '../web_client/exceptions/http_server_error.js';
-import { SoapFaultError } from '../web_client/exceptions/soap_fault_error.js';
-import { WebClientException } from '../web_client/exceptions/web_client_exception.js';
-import { type WebClientInterface } from '../web_client/web_client_interface.js';
+import { type Token } from '#src/shared/token';
+import { CRequest } from '#src/web_client/crequest';
+import { type CResponse } from '#src/web_client/cresponse';
+import { HttpClientError } from '#src/web_client/exceptions/http_client_error';
+import { HttpServerError } from '#src/web_client/exceptions/http_server_error';
+import { SoapFaultError } from '#src/web_client/exceptions/soap_fault_error';
+import { WebClientException } from '#src/web_client/exceptions/web_client_exception';
+import { type WebClientInterface } from '#src/web_client/web_client_interface';
 import { SoapFaultInfoExtractor } from './soap_fault_info_extractor.js';
 import { HttpTimeoutError } from '#src/web_client/exceptions/http_timeout_error';
 

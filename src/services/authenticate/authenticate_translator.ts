@@ -1,7 +1,7 @@
-import { InteractsXmlTrait } from '../../internal/interacts_xml_trait.js';
-import { type RequestBuilderInterface } from '../../request_builder/request_builder_interface.js';
-import { DateTime } from '../../shared/date_time.js';
-import { Token } from '../../shared/token.js';
+import { InteractsXmlTrait } from '#src/internal/interacts_xml_trait';
+import { type RequestBuilderInterface } from '#src/request_builder/request_builder_interface';
+import { DateTime } from '#src/shared/date_time';
+import { Token } from '#src/shared/token';
 
 export class AuthenticateTranslator extends InteractsXmlTrait {
   public createTokenFromSoapResponse(content: string): Token {

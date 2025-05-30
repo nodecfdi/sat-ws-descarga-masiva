@@ -13,7 +13,8 @@
     "./types": "./build/src/types.js"
   },
   "imports": {
-    "#src/*": "./src/*.js"
+    "#src/*": "./src/*.js",
+    "#tests/*": "./tests/*.js"
   },
   "scripts": {
     "prepare": "is-in-ci || husky",
@@ -44,6 +45,7 @@
     "@nodecfdi/tsconfig": "^1.5.0",
     "@peculiar/webcrypto": "^1.5.0",
     "@types/jsrsasign": "^10.5.14",
+    "@types/luxon": "^3.6.2",
     "@types/node": "^22.15.29",
     "@vitest/coverage-istanbul": "^3.1.4",
     "auto-changelog": "^2.5.0",

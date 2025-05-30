@@ -1,4 +1,4 @@
-import { type PackageReaderInterface } from '../package_reader_interface.js';
+import { type PackageReaderInterface } from '#src/package_reader/package_reader_interface';
 import { ThirdPartiesExtractor, type ThirdPartiesInterface } from './third_parties_extractor.js';
 
 export class ThirdPartiesRecords {
