@@ -1,4 +1,4 @@
-import { getParser, type Document, type Element } from '@nodecfdi/cfdi-core';
+import { type Document, type Element, getParser } from '@nodecfdi/cfdi-core';
 /**
  * Contain functions to interact with XML contents and XML DOM
  *

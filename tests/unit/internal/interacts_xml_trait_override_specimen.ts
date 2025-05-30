@@ -1,4 +1,4 @@
-import { getParser, Document } from '@nodecfdi/cfdi-core';
+import { type Document, getParser } from '@nodecfdi/cfdi-core';
 import { InteractsXmlTrait } from '#src/internal/interacts_xml_trait';
 
 export class InteractsXmlOverrideTraitSpecimen extends InteractsXmlTrait {

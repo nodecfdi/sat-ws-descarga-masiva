@@ -3,9 +3,6 @@
   "compilerOptions": {
     "rootDir": "./",
     "outDir": "./build",
-    "types": [
-      "vitest/globals",
-      "@types/node"
-    ]
+    "types": ["vitest/globals", "@types/node"]
   }
 }

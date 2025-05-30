@@ -3,11 +3,11 @@ import { CRequest } from '#src/web_client/crequest';
 import { type CResponse } from '#src/web_client/cresponse';
 import { HttpClientError } from '#src/web_client/exceptions/http_client_error';
 import { HttpServerError } from '#src/web_client/exceptions/http_server_error';
+import { HttpTimeoutError } from '#src/web_client/exceptions/http_timeout_error';
 import { SoapFaultError } from '#src/web_client/exceptions/soap_fault_error';
-import { WebClientException } from '#src/web_client/exceptions/web_client_exception';
+import { type WebClientException } from '#src/web_client/exceptions/web_client_exception';
 import { type WebClientInterface } from '#src/web_client/web_client_interface';
 import { SoapFaultInfoExtractor } from './soap_fault_info_extractor.js';
-import { HttpTimeoutError } from '#src/web_client/exceptions/http_timeout_error';
 
 export class ServiceConsumer {
   public static async consume(

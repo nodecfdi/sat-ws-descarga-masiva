@@ -1,15 +1,16 @@
 import { createHash, randomUUID } from 'node:crypto';
 import { Helpers } from '#src/internal/helpers';
+import { type Fiel } from '#src/request_builder/fiel_request_builder/fiel';
+import { type RequestBuilderInterface } from '#src/request_builder/request_builder_interface';
 import { type QueryParameters } from '#src/services/query/query_parameters';
 import { type DateTime } from '#src/shared/date_time';
 import { RfcMatches } from '#src/shared/rfc_matches';
-import { type RequestBuilderInterface } from '#src/request_builder/request_builder_interface';
-import { type Fiel } from '#src/request_builder/fiel_request_builder/fiel';
 
 export class FielRequestBuilder implements RequestBuilderInterface {
   public constructor(private readonly _fiel: Fiel) {}
 
   private static createXmlSecurityToken(): string {
+    // eslint-disable-next-line sonarjs/hashing
     const md5 = createHash('md5').update(randomUUID()).digest('hex');
 
     return `uuid-${md5.slice(0, 8)}-${md5.slice(4, 8)}-${md5.slice(4, 12)}-${md5.slice(4, 16)}-${md5.slice(20)}-1`;
@@ -207,6 +208,7 @@ export class FielRequestBuilder implements RequestBuilderInterface {
 
   private createSignature(toDigest: string, signedInfoUri = '', keyInfo = ''): string {
     const cleanToDigest = Helpers.nospaces(toDigest);
+    // eslint-disable-next-line sonarjs/hashing
     const digested = createHash('sha1').update(cleanToDigest).digest('base64');
     let signedInfo = this.createSignedInfoCanonicalExclusive(digested, signedInfoUri);
     const signatureValue = Buffer.from(this.getFiel().sign(signedInfo, 'sha1'), 'binary').toString(

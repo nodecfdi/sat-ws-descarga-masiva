@@ -4,9 +4,9 @@ import { RfcMatches } from '#src/shared/rfc_matches';
 describe('rfc matches', () => {
   test('object definition', () => {
     const list = RfcMatches.create();
-    // eslint-disable-next-line @typescript-eslint/unbound-method
+
     expect(list.toJSON).toBeDefined();
-    // eslint-disable-next-line @typescript-eslint/unbound-method
+
     expect(list.count).toBeDefined();
     expect(Symbol.iterator in list).toBeTruthy();
   });

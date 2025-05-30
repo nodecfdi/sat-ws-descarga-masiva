@@ -6,15 +6,15 @@ import { WebClientException } from './exceptions/web_client_exception.js';
 import { type WebClientInterface } from './web_client_interface.js';
 
 export class HttpsWebClient implements WebClientInterface {
-  private readonly _fireRequestClosure?: CallableFunction;
+  private readonly _fireRequestClosure?: (request: CRequest) => void;
 
-  private readonly _fireResponseClosure?: CallableFunction;
+  private readonly _fireResponseClosure?: (response: CResponse) => void;
 
   private readonly _timeout?: number;
 
   public constructor(
-    onFireRequest?: CallableFunction,
-    onFireResponse?: CallableFunction,
+    onFireRequest?: (request: CRequest) => void,
+    onFireResponse?: (response: CResponse) => void,
     timeout?: number,
   ) {
     this._fireRequestClosure = onFireRequest;

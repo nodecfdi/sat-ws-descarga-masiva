@@ -34,6 +34,7 @@ export class FilteredPackageReader implements PackageReaderInterface {
     }
 
     try {
+      // eslint-disable-next-line sonarjs/no-unsafe-unzip
       archive = await JSZip.loadAsync(data);
     } catch {
       throw OpenZipFileException.create(filename, -1);
@@ -91,7 +92,7 @@ export class FilteredPackageReader implements PackageReaderInterface {
     const entries = Object.keys(archive.files).map((name) => archive.files[name].name);
     let contents: string | undefined;
 
-    for await (const entry of entries) {
+    for (const entry of entries) {
       if (!filter.filterFilename(entry)) {
         continue;
       }

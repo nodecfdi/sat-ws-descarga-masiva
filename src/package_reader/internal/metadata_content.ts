@@ -19,7 +19,7 @@ export class MetadataContent {
    */
   public static createFromContents(
     contents: string,
-    thirdParties?: ThirdPartiesRecords | undefined,
+    thirdParties?: ThirdPartiesRecords,
   ): MetadataContent {
     const defaultThirdParties = thirdParties ?? ThirdPartiesRecords.createEmpty();
     // fix known errors on metadata text file

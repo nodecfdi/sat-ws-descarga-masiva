@@ -22,9 +22,6 @@ export class EnvelopSignatureVerifier {
       return false;
     }
 
-    mainNode.remove();
-    soapDocument.append(mainNode);
-
     const document = getSerializer().serializeToString(soapDocument);
 
     const crypto = new Crypto();

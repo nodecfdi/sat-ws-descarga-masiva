@@ -9,15 +9,15 @@ export class SoapFaultInfoExtractor extends InteractsXmlTrait {
   public obtainFault(source: string): SoapFaultInfo | undefined {
     let env: Element;
     try {
+      // @ts-expect-error misssing Node properties are not needed
       env = this.readXmlElement(source);
     } catch {
       return;
     }
-
+    // @ts-expect-error misssing Node properties are not needed
     const code = (this.findElement(env, 'body', 'fault', 'faultcode')?.textContent ?? '').trim();
-    const message = (
-      this.findElement(env, 'body', 'fault', 'faultstring')?.textContent ?? ''
-    ).trim();
+    const message = // @ts-expect-error misssing Node properties are not needed
+      (this.findElement(env, 'body', 'fault', 'faultstring')?.textContent ?? '').trim();
     if (code === '' && message === '') {
       return;
     }

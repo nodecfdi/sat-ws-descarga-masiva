@@ -1,4 +1,5 @@
-import { type Certificate, Credential, type PrivateKey, SatTypeEnum } from '@nodecfdi/credentials';
+import { SatTypeEnum } from '@nodecfdi/credentials';
+import { type Certificate, Credential, type PrivateKey } from '@nodecfdi/credentials/node';
 import { mock } from 'vitest-mock-extended';
 import { Fiel } from '#src/request_builder/fiel_request_builder/fiel';
 import { createFielUsingTestingFiles, fileContents } from '#tests/test_utils';
