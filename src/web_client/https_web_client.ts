@@ -10,9 +10,16 @@ export class HttpsWebClient implements WebClientInterface {
 
   private readonly _fireResponseClosure?: CallableFunction;
 
-  public constructor(onFireRequest?: CallableFunction, onFireResponse?: CallableFunction) {
+  private readonly _timeout?: number;
+
+  public constructor(
+    onFireRequest?: CallableFunction,
+    onFireResponse?: CallableFunction,
+    timeout?: number,
+  ) {
     this._fireRequestClosure = onFireRequest;
     this._fireResponseClosure = onFireResponse;
+    this._timeout = timeout;
   }
 
   public fireRequest(request: CRequest): void {
@@ -31,6 +38,7 @@ export class HttpsWebClient implements WebClientInterface {
     const options = {
       method: request.getMethod(),
       headers: request.getHeaders(),
+      timeout: this._timeout ?? request.getTimeout() ?? undefined,
     };
 
     return new Promise((resolve, reject) => {
@@ -58,7 +66,13 @@ export class HttpsWebClient implements WebClientInterface {
 
       clientRequest.on('timeout', () => {
         clientRequest.destroy();
-        reject(new Error('Request time out'));
+
+        const rejectReason =
+          this._timeout === undefined
+            ? new Error('Request time out')
+            : new WebClientException('Request time out', request, CResponse.timeout(this._timeout));
+
+        reject(rejectReason);
       });
 
       clientRequest.write(request.getBody());
