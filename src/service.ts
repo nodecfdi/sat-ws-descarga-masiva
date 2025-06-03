@@ -9,12 +9,10 @@ import { QueryTranslator } from './services/query/query_translator.js';
 import { type VerifyResult } from './services/verify/verify_result.js';
 import { VerifyTranslator } from './services/verify/verify_translator.js';
 import { ServiceEndpoints } from './shared/service_endpoints.js';
-import { type Token } from './shared/token.js';
+import { Token } from './shared/token.js';
 import { type WebClientInterface } from './web_client/web_client_interface.js';
 
 export class Service {
-  private readonly _endpoints: ServiceEndpoints;
-
   /**
    * Client constructor of "servicio de consulta y recuperación de comprobantes"
    *
@@ -23,10 +21,11 @@ export class Service {
   public constructor(
     private readonly _requestBuilder: RequestBuilderInterface,
     private readonly _webClient: WebClientInterface,
-    public _currentToken?: Token,
-    endpoints?: ServiceEndpoints,
+    private _currentToken: Token | null = null,
+    public readonly endpoints: ServiceEndpoints | null = null,
   ) {
-    this._endpoints = endpoints ?? ServiceEndpoints.cfdi();
+    this._currentToken = _currentToken ?? Token.empty();
+    this.endpoints = endpoints ?? ServiceEndpoints.cfdi();
   }
 
   /**
@@ -41,6 +40,14 @@ export class Service {
     return this._currentToken;
   }
 
+  public getToken(): Token | null {
+    return this._currentToken;
+  }
+
+  public setToken(token: Token): void {
+    this._currentToken = token;
+  }
+
   /**
    * Perform authentication and return a Token, the token might be invalid
    */
@@ -49,7 +56,7 @@ export class Service {
     const soapBody = authenticateTranslator.createSoapRequest(this._requestBuilder);
     const responseBody = await this.consume(
       'http://DescargaMasivaTerceros.gob.mx/IAutenticacion/Autentica',
-      this._endpoints.getAuthenticate(),
+      this.endpoints!.getAuthenticate(),
       soapBody,
     );
 
@@ -61,30 +68,34 @@ export class Service {
    */
   public async query(parameters: QueryParameters): Promise<QueryResult> {
     let defaultParameters = parameters;
-    if (!defaultParameters.hasServiceType()) {
-      defaultParameters = defaultParameters.withServiceType(this._endpoints.getServiceType());
-    }
 
-    if (!this._endpoints.getServiceType().equalTo(defaultParameters.getServiceType())) {
-      throw new Error(
-        `The service type endpoints ${defaultParameters
-          .getServiceType()
-          .value()} does not match with the service type query ${this._endpoints.getServiceType().value()}`,
-      );
+    if (!this.endpoints!.getServiceType().equalTo(defaultParameters.getServiceType())) {
+      defaultParameters = defaultParameters.withServiceType(this.endpoints!.getServiceType());
     }
 
     const queryTranslator = new QueryTranslator();
     const soapBody = queryTranslator.createSoapRequest(this._requestBuilder, defaultParameters);
+    const soapAction = this.resolveSoapAction(defaultParameters);
 
     const currentToken = await this.obtainCurrentToken();
     const responseBody = await this.consume(
-      'http://DescargaMasivaTerceros.sat.gob.mx/ISolicitaDescargaService/SolicitaDescarga',
-      this._endpoints.getQuery(),
+      `http://DescargaMasivaTerceros.sat.gob.mx/ISolicitaDescargaService/${soapAction}`,
+      this.endpoints!.getQuery(),
       soapBody,
       currentToken,
     );
 
     return queryTranslator.createQueryResultFromSoapResponse(responseBody);
+  }
+
+  private resolveSoapAction(parameters: QueryParameters): string {
+    if (!parameters.getUuid().isEmpty()) {
+      return 'SolicitaDescargaFolio';
+    }
+
+    return parameters.getDownloadType().isTypeOf('received')
+      ? 'SolicitaDescargaRecibidos'
+      : 'SolicitaDescargaEmitidos';
   }
 
   /**
@@ -96,7 +107,7 @@ export class Service {
     const currentToken = await this.obtainCurrentToken();
     const responseBody = await this.consume(
       'http://DescargaMasivaTerceros.sat.gob.mx/IVerificaSolicitudDescargaService/VerificaSolicitudDescarga',
-      this._endpoints.getVerify(),
+      this.endpoints!.getVerify(),
       soapBody,
       currentToken,
     );
@@ -110,7 +121,7 @@ export class Service {
     const currentToken = await this.obtainCurrentToken();
     const responseBody = await this.consume(
       'http://DescargaMasivaTerceros.sat.gob.mx/IDescargaMasivaTercerosService/Descargar',
-      this._endpoints.getDownload(),
+      this.endpoints!.getDownload(),
       soapBody,
       currentToken,
     );

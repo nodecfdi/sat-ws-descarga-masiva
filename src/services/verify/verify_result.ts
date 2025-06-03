@@ -1,6 +1,6 @@
-import { type CodeRequest } from '../../shared/code_request.js';
-import { type StatusCode } from '../../shared/status_code.js';
-import { type StatusRequest } from '../../shared/status_request.js';
+import { type CodeRequest } from '#src/shared/code_request';
+import { type StatusCode } from '#src/shared/status_code';
+import { type StatusRequest } from '#src/shared/status_request';
 
 export class VerifyResult {
   private readonly _status: StatusCode;

@@ -2,7 +2,6 @@
 * text=auto eol=lf
 
 # Do not put this files on a distribution package
-/.changeset/                export-ignore
 /.github/                   export-ignore
 /.husky/                    export-ignore
 /.vscode/                   export-ignore

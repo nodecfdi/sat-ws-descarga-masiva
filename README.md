@@ -18,6 +18,9 @@
 
 :mexico: La documentación del proyecto está en español porque ese es el lenguaje principal de los usuarios.
 
+> [!WARNING]
+> This package is native [ESM](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) and no longer provides a CommonJS export. If your project uses CommonJS, you will have to [convert to ESM](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c). Please don't open issues for questions regarding CommonJS / ESM.
+
 ## Instalación
 
 ```shell
@@ -140,7 +143,7 @@ Especifica si la solicitud es de documentos emitidos DownloadType::issued() o re
 
 ### Tipo de solicitud (`RequestType`)
 
-Especifica si la solicitud es de Metadatos RequestType::metadata() o archivos XML RequestType::xml(). Si no se especifica utiliza el valor de Metadatos.
+Establece si la solicitud es de Metadatos RequestType::metadata() o archivos XML RequestType::xml(). Si no se especifica utiliza el valor de Metadatos.
 
 ### Tipo de comprobante (`DocumentType`)
 
@@ -207,7 +210,7 @@ Valores predeterminados de una consulta:
 import { RfcMatch } from '@nodecfdi/sat-ws-descarga-masiva';
 
 const rfcMatch = RfcMatch.create('XXX01010199A');
-parameters = parameters->withRfcMatch(rfcMatch);
+parameters = parameters.withRfcMatch(rfcMatch);
 console.log(rfcMatch === parameters.getRfcMatch()); // bool(true)
 ```
 
@@ -312,7 +315,34 @@ Nota: **Todos los demás argumentos de la consulta son ignorados**.
 ```ts
 import { QueryParameters, Uuid } from '@nodecfdi/sat-ws-descarga-masiva';
 
-$query = QueryParameters.create().withUuid(Uuid.create('96623061-61fe-49de-b298-c7156476aa8b'));
+query = QueryParameters.create().withUuid(Uuid.create('96623061-61fe-49de-b298-c7156476aa8b'));
+```
+
+#### Prevalidación de una consulta
+
+Hay algunos casos que seguramente resultarán en un error al momento de presentar la consulta al SAT.
+Para prevenir esta situación *opcionalmente* se puede validar la consulta antes de presentarla.
+Estos errores son devueltos en un listado de cadenas de caracteres.
+
+```ts
+import { QueryParameters } from '@nodecfdi/sat-ws-descarga-masiva';
+import { DocumentStatus } from '@nodecfdi/sat-ws-descarga-masiva';
+import { DocumentType } from '@nodecfdi/sat-ws-descarga-masiva';
+import { Uuid } from '@nodecfdi/sat-ws-descarga-masiva';
+
+const query = QueryParameters.create()
+    .withUuid(Uuid.create('96623061-61fe-49de-b298-c7156476aa8b'))
+    .withDocumentType(new DocumentType('nomina'))
+    .withDocumentStatus(new DocumentStatus('active'));
+
+// get list of errors
+const errors = query.validate();
+if (errors.length > 0) { // if there are errors
+    console.log('Query errors:');
+    errors.forEach(error => {
+        console.log(`  - ${error}`);
+    });
+}
 ```
 
 ## Verificar una consulta

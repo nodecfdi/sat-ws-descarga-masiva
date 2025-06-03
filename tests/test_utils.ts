@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { getParser, getSerializer } from '@nodecfdi/cfdi-core';
-import { Credential } from '@nodecfdi/credentials';
+import { Credential } from '@nodecfdi/credentials/node';
 import { Fiel } from '#src/request_builder/fiel_request_builder/fiel';
 import { FielRequestBuilder } from '#src/request_builder/fiel_request_builder/fiel_request_builder';
 

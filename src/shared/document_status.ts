@@ -13,6 +13,19 @@ export class DocumentStatus extends BaseEnum<DocumentStatusTypes> {
     return DocumentStatusEnum[this._id];
   }
 
+  public getQueryAttributeValue(): string {
+    if (this.isTypeOf('undefined')) {
+      return 'Todos';
+    }
+    if (this.isTypeOf('active')) {
+      return 'Vigente';
+    }
+    if (this.isTypeOf('cancelled')) {
+      return 'Cancelado';
+    }
+    throw new Error('Impossible case');
+  }
+
   public override toJSON(): string {
     return DocumentStatusEnum[this._id];
   }

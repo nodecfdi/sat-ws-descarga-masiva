@@ -15,6 +15,10 @@ export class Token {
     this._created = created;
   }
 
+  public static empty(): Token {
+    return new Token(DateTime.create(0), DateTime.create(0), '');
+  }
+
   public getCreated(): DateTime {
     return this._created;
   }

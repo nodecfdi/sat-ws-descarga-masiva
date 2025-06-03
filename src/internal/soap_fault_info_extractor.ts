@@ -1,4 +1,5 @@
-import { SoapFaultInfo } from '../web_client/soap_fault_info.js';
+import { type Element } from '@nodecfdi/cfdi-core';
+import { SoapFaultInfo } from '#src/web_client/soap_fault_info';
 import { InteractsXmlTrait } from './interacts_xml_trait.js';
 
 export class SoapFaultInfoExtractor extends InteractsXmlTrait {
@@ -13,7 +14,6 @@ export class SoapFaultInfoExtractor extends InteractsXmlTrait {
     } catch {
       return;
     }
-
     const code = (this.findElement(env, 'body', 'fault', 'faultcode')?.textContent ?? '').trim();
     const message = (
       this.findElement(env, 'body', 'fault', 'faultstring')?.textContent ?? ''

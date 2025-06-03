@@ -37,7 +37,7 @@ export class MetadataPreprocessor {
         firstLineFeedPosition > 0
           ? this._contents.slice(firstLineFeedPosition - 1, firstLineFeedPosition) ===
             this.CONTROL_CR
-          : this._contents.lastIndexOf(this.CONTROL_CR) === -1;
+          : !this._contents.includes(this.CONTROL_CR);
     }
 
     // exit early if nothing to do

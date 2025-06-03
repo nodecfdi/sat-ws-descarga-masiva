@@ -3,7 +3,6 @@ export class Uuid {
 
   public static create(value: string): Uuid {
     const newValue = value.toLowerCase();
-    // eslint-disable-next-line security/detect-unsafe-regex
     if (!/^[\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12}$/.test(newValue)) {
       throw new Error('UUID does not have the correct format');
     }

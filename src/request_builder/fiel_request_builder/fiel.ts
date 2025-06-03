@@ -1,4 +1,4 @@
-import { Credential } from '@nodecfdi/credentials';
+import { Credential } from '@nodecfdi/credentials/node';
 
 /**
  * Defines a eFirma/FIEL/FEA

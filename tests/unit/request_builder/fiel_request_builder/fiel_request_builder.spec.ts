@@ -1,10 +1,6 @@
-import { getParser } from '@nodecfdi/cfdi-core';
-import {
-  type Certificate,
-  Credential,
-  type PrivateKey,
-  type SerialNumber,
-} from '@nodecfdi/credentials';
+import { type Document, getParser } from '@nodecfdi/cfdi-core';
+import { type SerialNumber } from '@nodecfdi/credentials';
+import { type Certificate, Credential, type PrivateKey } from '@nodecfdi/credentials/node';
 import { mock } from 'vitest-mock-extended';
 import { useNamespaces } from 'xpath';
 import { Helpers } from '#src/internal/helpers';
@@ -30,7 +26,7 @@ import {
 } from '#tests/test_utils';
 
 describe('fiel request builder', () => {
-  test('construct fiel', () => {
+  test('fiel request containst given fiel', () => {
     const fiel = createFielUsingTestingFiles();
     const requestBuilder = new FielRequestBuilder(fiel);
     expect(requestBuilder.getFiel()).toBe(fiel);
@@ -54,7 +50,7 @@ describe('fiel request builder', () => {
     //     ['http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'],
     //     requestBuilder.getFiel().getCertificatePemContents()
     // );
-    // check this verification.
+    // // check this verification.
     // expect(xmlSecVeritifaction).toBeTruthy();
   });
 
@@ -80,7 +76,8 @@ describe('fiel request builder', () => {
     expect(securityTokenId).not.toBe('');
     expect(otherSecurityTokenId).not.toBe(securityTokenId);
   });
-  test('query received filters', () => {
+
+  test('query received', () => {
     const requestBuilder = createFielRequestBuilderUsingTestingFiles();
     const parameters = QueryParameters.create()
       .withServiceType(new ServiceType('cfdi'))
@@ -96,7 +93,7 @@ describe('fiel request builder', () => {
     const requestBody = requestBuilder.query(parameters);
 
     expect(Helpers.nospaces(xmlFormat(requestBody))).toBe(
-      Helpers.nospaces(fileContents('query/request-received-by-filters.xml')),
+      Helpers.nospaces(fileContents('query/request-received.xml')),
     );
 
     // const xmlSecVeritifaction = await new EnvelopSignatureVerifier().verify(
@@ -108,7 +105,7 @@ describe('fiel request builder', () => {
     // expect(xmlSecVeritifaction).toBeTruthy();
   });
 
-  test('query received by uuid', () => {
+  test('query by uuid', () => {
     const requestBuilder = createFielRequestBuilderUsingTestingFiles();
     const parameters = QueryParameters.create()
       .withServiceType(new ServiceType('cfdi'))
@@ -117,7 +114,7 @@ describe('fiel request builder', () => {
     const requestBody = requestBuilder.query(parameters);
 
     expect(Helpers.nospaces(xmlFormat(requestBody))).toBe(
-      Helpers.nospaces(fileContents('query/request-received-by-uuid.xml')),
+      Helpers.nospaces(fileContents('query/request-item.xml')),
     );
 
     // const xmlSecVeritifaction = await new EnvelopSignatureVerifier().verify(
@@ -191,23 +188,25 @@ describe('fiel request builder', () => {
 
     const parser = getParser();
 
-    const document = parser.parseFromString(requestBody, 'text/xml');
+    const document: Document = parser.parseFromString(requestBody, 'text/xml');
 
     const selectValue = useNamespaces({
       des: 'http://DescargaMasivaTerceros.sat.gob.mx',
       xd: 'http://www.w3.org/2000/09/xmldsig#',
     });
-    let selectedValue = selectValue('//des:solicitud/@IdSolicitud', document.documentElement);
+    // @ts-expect-error misssing Node properties are not needed
+    const documentElement: Node = document.documentElement!;
+    let selectedValue = selectValue('//des:solicitud/@IdSolicitud', documentElement);
     if (!Array.isArray(selectedValue)) {
       throw new TypeError('selected value //des:solicitud/@IdSolicitud not found');
     }
     expect((selectedValue[0] as Attr).value).toBe(requestId);
-    selectedValue = selectValue('//des:solicitud/@RfcSolicitante', document.documentElement);
+    selectedValue = selectValue('//des:solicitud/@RfcSolicitante', documentElement);
     if (!Array.isArray(selectedValue)) {
       throw new TypeError('selected value //des:solicitud/@RfcSolicitante not found');
     }
     expect((selectedValue[0] as Attr).value).toBe(rfc);
-    selectedValue = selectValue('//xd:X509IssuerName/text()', document.documentElement);
+    selectedValue = selectValue('//xd:X509IssuerName/text()', documentElement);
     if (!Array.isArray(selectedValue)) {
       throw new TypeError('selected value //xd:X509IssuerName/text() not found');
     }
@@ -260,17 +259,19 @@ describe('fiel request builder', () => {
       des: 'http://DescargaMasivaTerceros.sat.gob.mx',
       xd: 'http://www.w3.org/2000/09/xmldsig#',
     });
-    let selectedValue = selectValue('//des:peticionDescarga/@idPaquete', document.documentElement);
+    // @ts-expect-error misssing Node properties are not needed
+    const documentElement: Node = document.documentElement!;
+    let selectedValue = selectValue('//des:peticionDescarga/@idPaquete', documentElement);
     if (!Array.isArray(selectedValue)) {
       throw new TypeError('selected value //des:peticionDescarga/@idPaquete not found');
     }
     expect((selectedValue[0] as Attr).value).toBe(packageId);
-    selectedValue = selectValue('//des:peticionDescarga/@RfcSolicitante', document.documentElement);
+    selectedValue = selectValue('//des:peticionDescarga/@RfcSolicitante', documentElement);
     if (!Array.isArray(selectedValue)) {
       throw new TypeError('selected value //des:peticionDescarga/@RfcSolicitante not found');
     }
     expect((selectedValue[0] as Attr).value).toBe(rfc);
-    selectedValue = selectValue('//xd:X509IssuerName/text()', document.documentElement);
+    selectedValue = selectValue('//xd:X509IssuerName/text()', documentElement);
     if (!Array.isArray(selectedValue)) {
       throw new TypeError('selected value //xd:X509IssuerName/text() not found');
     }

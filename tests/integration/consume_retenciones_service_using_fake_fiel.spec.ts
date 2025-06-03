@@ -1,8 +1,9 @@
+import { DateTime as LDateTime } from 'luxon';
 import { type RequestBuilderInterface } from '#src/request_builder/request_builder_interface';
 import { Service } from '#src/service';
 import { QueryParameters } from '#src/services/query/query_parameters';
-import { type QueryResult } from '#src/services/query/query_result';
 import { ComplementoRetenciones } from '#src/shared/complemento_retenciones';
+import { DateTime } from '#src/shared/date_time';
 import { DateTimePeriod } from '#src/shared/date_time_period';
 import { DocumentStatus } from '#src/shared/document_status';
 import { DownloadType } from '#src/shared/download_type';
@@ -10,7 +11,6 @@ import { RequestType } from '#src/shared/request_type';
 import { RfcMatch } from '#src/shared/rfc_match';
 import { RfcOnBehalf } from '#src/shared/rfc_on_behalf';
 import { ServiceEndpoints } from '#src/shared/service_endpoints';
-import { ServiceType } from '#src/shared/service_type';
 import { Uuid } from '#src/shared/uuid';
 import { HttpsWebClient } from '#src/web_client/https_web_client';
 import { createFielRequestBuilderUsingTestingFiles } from '#tests/test_utils';
@@ -42,9 +42,14 @@ describe('consume retenciones service using fake fiel', () => {
     expect(result.getStatus().getCode()).toBe(305);
   }, 50_000);
 
-  test('query change all parameteres', async () => {
+  test('query change filters', async () => {
+    const startDate = DateTime.create(
+      LDateTime.now().minus({month: 1}).startOf('month').toUnixInteger(),
+    );
+    const endDate = startDate.modify({days: 5});
+    const period = DateTimePeriod.create(startDate, endDate);
     const parameters = QueryParameters.create()
-      .withPeriod(DateTimePeriod.createFromValues('2019-01-01 00:00:00', '2019-01-01 00:04:00'))
+      .withPeriod(period)
       .withDownloadType(new DownloadType('received'))
       .withRequestType(new RequestType('xml'))
       .withComplement(new ComplementoRetenciones('undefined'))
@@ -53,6 +58,7 @@ describe('consume retenciones service using fake fiel', () => {
       .withRfcMatch(RfcMatch.create('AAA010101AAA'));
 
     const result = await service.query(parameters);
+
     expect(result.getStatus().getCode()).toBe(305);
   }, 50_000);
 
@@ -63,13 +69,6 @@ describe('consume retenciones service using fake fiel', () => {
 
     const result = await service.query(parameters);
     expect(result.getStatus().getCode()).toBe(305);
-  }, 50_000);
-
-  test('service endpoints different than query endpoints throws error', async () => {
-    const otherServiceType = new ServiceType('cfdi');
-    const parameters = QueryParameters.create().withServiceType(otherServiceType);
-    const result = async (): Promise<QueryResult> => service.query(parameters);
-    await expect(result).rejects.toThrow(Error);
   }, 50_000);
 
   test('verify', async () => {

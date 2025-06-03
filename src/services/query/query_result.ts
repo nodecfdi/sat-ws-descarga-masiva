@@ -1,4 +1,4 @@
-import { type StatusCode } from '../../shared/status_code.js';
+import { type StatusCode } from '#src/shared/status_code';
 
 export class QueryResult {
   private readonly _status: StatusCode;

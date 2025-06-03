@@ -13,7 +13,7 @@ export class CResponse {
     this._headers = headers;
   }
 
-  static timeout(milliseconds?: number): CResponse {
+  public static timeout(milliseconds?: number): CResponse {
     return new CResponse(
       CResponse.TIMEOUT_CODE,
       `Timeout after ${milliseconds ?? 'unknown'} ms`,

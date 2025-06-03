@@ -2,8 +2,8 @@
 <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" xmlns:des="http://DescargaMasivaTerceros.sat.gob.mx" xmlns:xd="http://www.w3.org/2000/09/xmldsig#">
   <s:Header/>
   <s:Body>
-    <des:SolicitaDescarga>
-      <des:solicitud Folio="96623061-61fe-49de-b298-c7156476aa8b" RfcSolicitante="EKU9003173C9" TipoSolicitud="Metadata">
+    <des:SolicitaDescargaRecibidos>
+      <des:solicitud Complemento="nomina12" EstadoComprobante="Vigente" FechaFinal="2019-01-01T00:04:00" FechaInicial="2019-01-01T00:00:00" RfcACuentaTerceros="XXX01010199A" RfcEmisor="AAA010101AAA" RfcReceptor="EKU9003173C9" RfcSolicitante="EKU9003173C9" TipoComprobante="N" TipoSolicitud="CFDI">
         <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
           <SignedInfo>
             <CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
@@ -13,10 +13,10 @@
                 <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
               </Transforms>
               <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
-              <DigestValue>A0teWlShxOD/65O111KTBA+TOSk=</DigestValue>
+              <DigestValue>kb02ycztMva0O2fcJU4VMV2gOkg=</DigestValue>
             </Reference>
           </SignedInfo>
-          <SignatureValue>iCuD+MJm/U1Gs/DRvfoXYG8d4apE6WiKhn4R1jBshliHWGwi00pl32zZtofXbrsYG7vxuySgykIwd/bWE2io9OxmaX8kZfPCCI9M5LVB0RjGC+9iuAJrv6dvaAJZ6txKlj8B5eX2JvxXkuA5Uq7E9/KK4Zwbw3SlYd67wYffeXnnRG4WAdmstTpOJuSrD3Ma5xTT/oScWvuTYG24Z3y+bN9AxAZri/qeoHaxgnbyrgX7ukJMUbC+2Rut6fhpCVzFF16kCZlAIZCUlHKIJMS3KCwvTn/Xab9EYgJL5dcL0fhiuK13QLLaa8hX3RtZdWCWYBDqt7/uFi8E2VXjSCU2TQ==</SignatureValue>
+          <SignatureValue>Z2q9IvrEL/sDwHxAgc9ZPB2uJN5I6/kqhrXtIRdNwMJfXVKO+QSewanPkJutMefNE2qUPpPCkwC1ia0wSrygft9irS7N5TSqI7q1wCeNilFIjIxS3/SfHmZ5LjgqghkENiPb3pB5CfUMoyvhfZsgY9rn61yxHaKV+5hCSjTpuAbO9HRbiP8oUzEl4n2NZGoZVfkKrgxaJg4av6uFXVlytMyWcYka+MaR79xxXoku7XufFfP08WeEtqhMAinAFKKzauFC9cioOlyw1OJSGSsUJjAwCUHacqIEJzZc1lDWVX3hX840udgpt0SMeRuL776HQ2SNwubCmZi21rjRh7ZgEg==</SignatureValue>
           <KeyInfo>
             <X509Data>
               <X509IssuerSerial>
@@ -28,6 +28,6 @@
           </KeyInfo>
         </Signature>
       </des:solicitud>
-    </des:SolicitaDescarga>
+    </des:SolicitaDescargaRecibidos>
   </s:Body>
 </s:Envelope>
