@@ -9,13 +9,6 @@ import { RfcMatches } from '#src/shared/rfc_matches';
 export class FielRequestBuilder implements RequestBuilderInterface {
   public constructor(private readonly _fiel: Fiel) {}
 
-  private static createXmlSecurityToken(): string {
-    // eslint-disable-next-line sonarjs/hashing
-    const md5 = createHash('md5').update(randomUUID()).digest('hex');
-
-    return `uuid-${md5.slice(0, 8)}-${md5.slice(4, 8)}-${md5.slice(4, 12)}-${md5.slice(4, 16)}-${md5.slice(20)}-1`;
-  }
-
   public getFiel(): Fiel {
     return this._fiel;
   }
@@ -63,93 +56,68 @@ export class FielRequestBuilder implements RequestBuilderInterface {
   }
 
   public query(queryParameters: QueryParameters): string {
-    const queryByUuid = !queryParameters.getUuid().isEmpty();
+    if (!queryParameters.getUuid().isEmpty()) {
+      return this.queryFolio(queryParameters);
+    }
+
+    return this.queryIssuedReceived(queryParameters);
+  }
+
+  private queryFolio(queryParameters: QueryParameters): string {
+    const rfcSigner = this.getFiel().getRfc().toUpperCase();
+    const attributes = new Map<string, string>();
+    attributes.set('RfcSolicitante', rfcSigner);
+    attributes.set('Folio', queryParameters.getUuid().getValue());
+
+    return this.buildFinalXml('SolicitaDescarga', attributes, '');
+  }
+
+  private queryIssuedReceived(queryParameters: QueryParameters): string {
     let xmlRfcReceived = '';
     const requestType = queryParameters
       .getRequestType()
       .getQueryAttributeValue(queryParameters.getServiceType());
     const rfcSigner = this.getFiel().getRfc().toUpperCase();
-
-    const solicitudAttributes = new Map<string, string>();
-    solicitudAttributes.set('RfcSolicitante', rfcSigner);
-    solicitudAttributes.set('TipoSolicitud', requestType);
-
-    if (queryByUuid) {
-      solicitudAttributes.set('Folio', queryParameters.getUuid().getValue());
+    const start = queryParameters.getPeriod().getStart().format("yyyy-MM-dd'T'HH:mm:ss");
+    const end = queryParameters.getPeriod().getEnd().format("yyyy-MM-dd'T'HH:mm:ss");
+    let rfcIssuer: string;
+    let rfcReceivers: RfcMatches;
+    if (queryParameters.getDownloadType().isTypeOf('issued')) {
+      // issued documents, counterparts are receivers
+      rfcIssuer = rfcSigner;
+      rfcReceivers = queryParameters.getRfcMatches();
     } else {
-      const start = queryParameters.getPeriod().getStart().format("yyyy-MM-dd'T'HH:mm:ss");
-      const end = queryParameters.getPeriod().getEnd().format("yyyy-MM-dd'T'HH:mm:ss");
-      let rfcIssuer: string;
-      let rfcReceivers: RfcMatches;
-      if (queryParameters.getDownloadType().isTypeOf('issued')) {
-        // issued documents, counterparts are receivers
-        rfcIssuer = rfcSigner;
-        rfcReceivers = queryParameters.getRfcMatches();
-      } else {
-        // received documents, counterpart is issuer
-        rfcIssuer = queryParameters.getRfcMatches().getFirst().getValue();
-        rfcReceivers = RfcMatches.createFromValues(rfcSigner);
-      }
-
-      solicitudAttributes.set('FechaInicial', start);
-      solicitudAttributes.set('FechaFinal', end);
-      solicitudAttributes.set('RfcEmisor', rfcIssuer);
-      solicitudAttributes.set('TipoComprobante', queryParameters.getDocumentType().value());
-      solicitudAttributes.set('EstadoComprobante', queryParameters.getDocumentStatus().value());
-      solicitudAttributes.set('RfcACuentaTerceros', queryParameters.getRfcOnBehalf().getValue());
-      solicitudAttributes.set('Complemento', queryParameters.getComplement().value());
-      if (!rfcReceivers.isEmpty()) {
-        xmlRfcReceived = rfcReceivers
-          .itemsToArray()
-          .map(
-            (rfcMatch) =>
-              `<des:RfcReceptor>${this.parseXml(rfcMatch.getValue())}</des:RfcReceptor>`,
-          )
-          .join('');
-        xmlRfcReceived = `<des:RfcReceptores>${xmlRfcReceived}</des:RfcReceptores>`;
-      }
+      // received documents, counterpart is issuer
+      rfcIssuer = queryParameters.getRfcMatches().getFirst().getValue();
+      rfcReceivers = RfcMatches.createFromValues(rfcSigner);
     }
-
-    const cleanedSolicitudAttributes = new Map();
-    for (const [key, value] of solicitudAttributes) {
-      if (value !== '') {
-        cleanedSolicitudAttributes.set(key, value);
-      }
+    const attributes = new Map<string, string>();
+    attributes.set('RfcSolicitante', rfcSigner);
+    attributes.set('TipoSolicitud', requestType);
+    attributes.set('FechaInicial', start);
+    attributes.set('FechaFinal', end);
+    attributes.set('RfcEmisor', rfcIssuer);
+    attributes.set('TipoComprobante', queryParameters.getDocumentType().value());
+    attributes.set('EstadoComprobante', queryParameters.getDocumentStatus().value());
+    attributes.set('RfcACuentaTerceros', queryParameters.getRfcOnBehalf().getValue());
+    attributes.set('Complemento', queryParameters.getComplement().value());
+    if (queryParameters.getDownloadType().isTypeOf('received')) {
+      attributes.set('RfcReceptor', rfcSigner);
     }
+    if (!rfcReceivers.isEmpty()) {
+      xmlRfcReceived = rfcReceivers
+        .itemsToArray()
+        .map(
+          (rfcMatch) => `<des:RfcReceptor>${this.parseXml(rfcMatch.getValue())}</des:RfcReceptor>`,
+        )
+        .join('');
+      xmlRfcReceived = `<des:RfcReceptores>${xmlRfcReceived}</des:RfcReceptores>`;
+    }
+    const nodeName = queryParameters.getDownloadType().isTypeOf('issued')
+      ? 'SolicitaDescargaEmitidos'
+      : 'SolicitaDescargaRecibidos';
 
-    const sortedValues = new Map(
-      [...cleanedSolicitudAttributes].sort((a, b) => String(a[0]).localeCompare(b[0] as string)),
-    );
-
-    const solicitudAttributesAsText = [...sortedValues]
-      .map(
-        ([name, value]) => `${this.parseXml(name as string)}="${this.parseXml(value as string)}"`,
-      )
-      .join(' ');
-
-    const toDigestXml = `
-            <des:SolicitaDescarga xmlns:des="http://DescargaMasivaTerceros.sat.gob.mx">
-                <des:solicitud ${solicitudAttributesAsText}>
-                    ${xmlRfcReceived}
-                </des:solicitud>
-            </des:SolicitaDescarga>
-           `;
-    const signatureData = this.createSignature(toDigestXml);
-    const xml = `
-            <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" xmlns:des="http://DescargaMasivaTerceros.sat.gob.mx" xmlns:xd="http://www.w3.org/2000/09/xmldsig#">
-                <s:Header/>
-                <s:Body>
-                    <des:SolicitaDescarga>
-                        <des:solicitud ${solicitudAttributesAsText}>
-                            ${xmlRfcReceived}
-                            ${signatureData}
-                        </des:solicitud>
-                    </des:SolicitaDescarga>
-                </s:Body>
-            </s:Envelope>
-        `;
-
-    return Helpers.nospaces(xml);
+    return this.buildFinalXml(nodeName, attributes, xmlRfcReceived);
   }
 
   public verify(requestId: string): string {
@@ -199,6 +167,52 @@ export class FielRequestBuilder implements RequestBuilderInterface {
                             ${signatureData}
                         </des:peticionDescarga>
                     </des:PeticionDescargaMasivaTercerosEntrada>
+                </s:Body>
+            </s:Envelope>
+        `;
+
+    return Helpers.nospaces(xml);
+  }
+
+  private buildFinalXml(
+    nodeName: string,
+    attributes: Map<string, string>,
+    xmlExtra: string,
+  ): string {
+    const cleanedSolicitudAttributes = new Map();
+    for (const [key, value] of attributes) {
+      if (value !== '') {
+        cleanedSolicitudAttributes.set(key, value);
+      }
+    }
+    const sortedValues = new Map(
+      [...cleanedSolicitudAttributes].sort((a, b) => String(a[0]).localeCompare(b[0] as string)),
+    );
+
+    const solicitudAttributesAsText = [...sortedValues]
+      .map(
+        ([name, value]) => `${this.parseXml(name as string)}="${this.parseXml(value as string)}"`,
+      )
+      .join(' ');
+
+    const toDigestXml = `
+            <des:${nodeName} xmlns:des="http://DescargaMasivaTerceros.sat.gob.mx">
+                <des:solicitud ${solicitudAttributesAsText}>
+                    ${xmlExtra}
+                </des:solicitud>
+            </des:${nodeName}>
+           `;
+    const signatureData = this.createSignature(toDigestXml);
+    const xml = `
+            <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" xmlns:des="http://DescargaMasivaTerceros.sat.gob.mx" xmlns:xd="http://www.w3.org/2000/09/xmldsig#">
+                <s:Header/>
+                <s:Body>
+                    <des:${nodeName}>
+                        <des:solicitud ${solicitudAttributesAsText}>
+                            ${xmlExtra}
+                            ${signatureData}
+                        </des:solicitud>
+                    </des:${nodeName}>
                 </s:Body>
             </s:Envelope>
         `;
@@ -273,5 +287,12 @@ export class FielRequestBuilder implements RequestBuilderInterface {
 
   private parseXml(text: string): string {
     return Helpers.htmlspecialchars(text);
+  }
+
+  private static createXmlSecurityToken(): string {
+    // eslint-disable-next-line sonarjs/hashing
+    const md5 = createHash('md5').update(randomUUID()).digest('hex');
+
+    return `uuid-${md5.slice(0, 8)}-${md5.slice(4, 8)}-${md5.slice(4, 12)}-${md5.slice(4, 16)}-${md5.slice(20)}-1`;
   }
 }
