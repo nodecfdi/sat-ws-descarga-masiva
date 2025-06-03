@@ -32,6 +32,7 @@ export * from './src/services/download/download_translator.js';
 export * from './src/services/query/query_parameters.js';
 export * from './src/services/query/query_result.js';
 export * from './src/services/query/query_translator.js';
+export * from './src/services/query/query_validator.js';
 export * from './src/services/verify/verify_result.js';
 export * from './src/services/verify/verify_translator.js';
 export * from './src/shared/abstract_rfc_filter.js';
