@@ -26,7 +26,7 @@ import {
 } from '#tests/test_utils';
 
 describe('fiel request builder', () => {
-  test('construct fiel', () => {
+  test('fiel request containst given fiel', () => {
     const fiel = createFielUsingTestingFiles();
     const requestBuilder = new FielRequestBuilder(fiel);
     expect(requestBuilder.getFiel()).toBe(fiel);
@@ -50,7 +50,7 @@ describe('fiel request builder', () => {
     //     ['http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'],
     //     requestBuilder.getFiel().getCertificatePemContents()
     // );
-    // check this verification.
+    // // check this verification.
     // expect(xmlSecVeritifaction).toBeTruthy();
   });
 
@@ -76,7 +76,8 @@ describe('fiel request builder', () => {
     expect(securityTokenId).not.toBe('');
     expect(otherSecurityTokenId).not.toBe(securityTokenId);
   });
-  test('query received filters', () => {
+
+  test('query received', () => {
     const requestBuilder = createFielRequestBuilderUsingTestingFiles();
     const parameters = QueryParameters.create()
       .withServiceType(new ServiceType('cfdi'))
@@ -92,7 +93,7 @@ describe('fiel request builder', () => {
     const requestBody = requestBuilder.query(parameters);
 
     expect(Helpers.nospaces(xmlFormat(requestBody))).toBe(
-      Helpers.nospaces(fileContents('query/request-received-by-filters.xml')),
+      Helpers.nospaces(fileContents('query/request-received.xml')),
     );
 
     // const xmlSecVeritifaction = await new EnvelopSignatureVerifier().verify(
@@ -104,7 +105,7 @@ describe('fiel request builder', () => {
     // expect(xmlSecVeritifaction).toBeTruthy();
   });
 
-  test('query received by uuid', () => {
+  test('query by uuid', () => {
     const requestBuilder = createFielRequestBuilderUsingTestingFiles();
     const parameters = QueryParameters.create()
       .withServiceType(new ServiceType('cfdi'))
@@ -113,7 +114,7 @@ describe('fiel request builder', () => {
     const requestBody = requestBuilder.query(parameters);
 
     expect(Helpers.nospaces(xmlFormat(requestBody))).toBe(
-      Helpers.nospaces(fileContents('query/request-received-by-uuid.xml')),
+      Helpers.nospaces(fileContents('query/request-item.xml')),
     );
 
     // const xmlSecVeritifaction = await new EnvelopSignatureVerifier().verify(

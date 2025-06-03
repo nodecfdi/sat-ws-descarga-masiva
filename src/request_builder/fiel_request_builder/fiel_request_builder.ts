@@ -69,14 +69,12 @@ export class FielRequestBuilder implements RequestBuilderInterface {
     attributes.set('RfcSolicitante', rfcSigner);
     attributes.set('Folio', queryParameters.getUuid().getValue());
 
-    return this.buildFinalXml('SolicitaDescarga', attributes, '');
+    return this.buildFinalXml('SolicitaDescargaFolio', attributes, '');
   }
 
   private queryIssuedReceived(queryParameters: QueryParameters): string {
     let xmlRfcReceived = '';
-    const requestType = queryParameters
-      .getRequestType()
-      .getQueryAttributeValue(queryParameters.getServiceType());
+    const requestType = queryParameters.getRequestType().getQueryAttributeValue();
     const rfcSigner = this.getFiel().getRfc().toUpperCase();
     const start = queryParameters.getPeriod().getStart().format("yyyy-MM-dd'T'HH:mm:ss");
     const end = queryParameters.getPeriod().getEnd().format("yyyy-MM-dd'T'HH:mm:ss");
@@ -89,7 +87,7 @@ export class FielRequestBuilder implements RequestBuilderInterface {
     } else {
       // received documents, counterpart is issuer
       rfcIssuer = queryParameters.getRfcMatches().getFirst().getValue();
-      rfcReceivers = RfcMatches.createFromValues(rfcSigner);
+      rfcReceivers = RfcMatches.create();
     }
     const attributes = new Map<string, string>();
     attributes.set('RfcSolicitante', rfcSigner);
@@ -98,7 +96,10 @@ export class FielRequestBuilder implements RequestBuilderInterface {
     attributes.set('FechaFinal', end);
     attributes.set('RfcEmisor', rfcIssuer);
     attributes.set('TipoComprobante', queryParameters.getDocumentType().value());
-    attributes.set('EstadoComprobante', queryParameters.getDocumentStatus().value());
+    attributes.set(
+      'EstadoComprobante',
+      queryParameters.getDocumentStatus().getQueryAttributeValue(),
+    );
     attributes.set('RfcACuentaTerceros', queryParameters.getRfcOnBehalf().getValue());
     attributes.set('Complemento', queryParameters.getComplement().value());
     if (queryParameters.getDownloadType().isTypeOf('received')) {

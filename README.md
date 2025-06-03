@@ -140,7 +140,7 @@ Especifica si la solicitud es de documentos emitidos DownloadType::issued() o re
 
 ### Tipo de solicitud (`RequestType`)
 
-Especifica si la solicitud es de Metadatos RequestType::metadata() o archivos XML RequestType::xml(). Si no se especifica utiliza el valor de Metadatos.
+Establece si la solicitud es de Metadatos RequestType::metadata() o archivos XML RequestType::xml(). Si no se especifica utiliza el valor de Metadatos.
 
 ### Tipo de comprobante (`DocumentType`)
 

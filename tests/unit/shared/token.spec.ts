@@ -12,6 +12,14 @@ describe('token', () => {
     );
   });
 
+  test('create token empty', () => {
+    const token = Token.empty();
+    const created = token.getCreated().formatSat();
+    const expires = token.getExpires().formatSat();
+    expect(created).toBe('1970-01-01T00:00:00.000Z');
+    expect(expires).toBe('1970-01-01T00:00:00.000Z');
+  });
+
   test('token not expired', () => {
     const created = DateTime.create();
     const expires = created.modify({ second: +5 });

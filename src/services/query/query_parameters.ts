@@ -11,15 +11,14 @@ import { RequestType } from '#src/shared/request_type';
 import { type RfcMatch } from '#src/shared/rfc_match';
 import { RfcMatches } from '#src/shared/rfc_matches';
 import { RfcOnBehalf } from '#src/shared/rfc_on_behalf';
-import { type ServiceType } from '#src/shared/service_type';
+import { ServiceType } from '#src/shared/service_type';
 import { Uuid } from '#src/shared/uuid';
+import { QueryValidator } from './query_validator.js';
 
 /**
  * This class contains all the information required to perform a query on the SAT Web Service
  */
 export class QueryParameters {
-  private _serviceType?: ServiceType;
-
   public constructor(
     private _period: DateTimePeriod,
     private _downloadType: DownloadType,
@@ -30,19 +29,23 @@ export class QueryParameters {
     private _uuid: Uuid,
     private _rfcOnBehalf: RfcOnBehalf,
     private _rfcMatches: RfcMatches,
+    private _serviceType: ServiceType,
   ) {}
 
   public static create(
     period?: DateTimePeriod,
     downloadType?: DownloadType,
     requestType?: RequestType,
+    serviceType?: ServiceType,
   ): QueryParameters {
     const defaultDownloadType = downloadType ?? new DownloadType('issued');
     const defaultRequestType = requestType ?? new RequestType('metadata');
-    const currentTime = DateTime.now().formatSat();
+    const currentDateTime = DateTime.now();
+    const currentTime = currentDateTime.formatSat();
+    const currentTimeplusOne = currentDateTime.modify({ seconds: 1 }).formatSat();
 
     return new QueryParameters(
-      period ?? DateTimePeriod.createFromValues(currentTime, currentTime),
+      period ?? DateTimePeriod.createFromValues(currentTime, currentTimeplusOne),
       defaultDownloadType,
       defaultRequestType,
       new DocumentType('undefined'),
@@ -51,18 +54,11 @@ export class QueryParameters {
       Uuid.empty(),
       RfcOnBehalf.empty(),
       RfcMatches.create(),
+      serviceType ?? new ServiceType('cfdi'),
     );
   }
 
-  public hasServiceType(): boolean {
-    return undefined !== this._serviceType;
-  }
-
   public getServiceType(): ServiceType {
-    if (undefined === this._serviceType) {
-      throw new Error('Service type has not been set');
-    }
-
     return this._serviceType;
   }
 
@@ -174,8 +170,12 @@ export class QueryParameters {
     return this;
   }
 
+  public validate(): string[] {
+    return new QueryValidator().validate(this);
+  }
+
   public toJSON(): {
-    serviceType: ServiceType | undefined;
+    serviceType: ServiceType;
     period: DateTimePeriod;
     downloadType: DownloadType;
     requestType: RequestType;
