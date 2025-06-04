@@ -3,44 +3,10 @@ on:
   push:
     branches:
       - main
-      - dev
 
 jobs:
   tests-coverage:
-    name: Build code coverage
-    runs-on: 'ubuntu-latest'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Cache .pnpm-store
-        uses: actions/cache@v3
-        with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-node16-${{ hashFiles('**/pnpm-lock.yaml') }}
-
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-
-      - name: Install dependencies
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
-          run_install: true
-
-      - name: Create code coverage
-        run: |
-          pnpm test:coverage
-        env:
-          CI: true
-
-      - name: Store code coverage
-        uses: actions/upload-artifact@v3
-        with:
-          name: code-coverage
-          path: coverage
+    uses: nodecfdi/.github/.github/workflows/test_coverage.yml@main
 
   sonarcloud-secrets:
     name: SonarCloud check secrets are present
@@ -72,36 +38,19 @@ jobs:
     runs-on: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Unshallow clone to provide blame information
         run: git fetch --unshallow
 
-      - name: Cache .pnpm-store
-        uses: actions/cache@v3
-        with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-node16-${{ hashFiles('**/pnpm-lock.yaml') }}
-
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-
-      - name: Install dependencies
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
-          run_install: true
-
       - name: Obtain code coverage
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: code-coverage
           path: coverage
 
       - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@master
+        uses: SonarSource/sonarqube-scan-action@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
