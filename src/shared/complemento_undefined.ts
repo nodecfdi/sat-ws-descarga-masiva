@@ -7,7 +7,7 @@ export class ComplementoUndefined
   extends BaseEnum<ComplementoUndefinedTypes>
   implements ComplementoInterface<ComplementoUndefinedTypes>
 {
-  private readonly Map = {
+  public readonly Map = {
     undefined: {
       satCode: '',
       label: 'Sin complemento definido',

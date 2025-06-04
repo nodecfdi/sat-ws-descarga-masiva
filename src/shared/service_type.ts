@@ -2,10 +2,10 @@ import { BaseEnum } from './enum/base_enum.js';
 
 export type ServiceTypeValues = 'cfdi' | 'retenciones';
 
-enum ServiceTypeEnum {
-  cfdi = 'cfdi',
-  retenciones = 'retenciones',
-}
+export const ServiceTypeEnum = {
+  cfdi: 'cfdi',
+  retenciones:'retenciones',
+} as const;
 
 export class ServiceType extends BaseEnum<ServiceTypeValues> {
   public equalTo(serviceType: ServiceType): boolean {

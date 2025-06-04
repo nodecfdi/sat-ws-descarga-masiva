@@ -21,7 +21,7 @@ export class ComplementoRetenciones
   extends BaseEnum<ComplementoRetencionesTypes>
   implements ComplementoInterface<ComplementoRetencionesTypes>
 {
-  private readonly Map = {
+  public readonly Map = {
     undefined: {
       satCode: '',
       label: 'Sin complemento definido',

@@ -2,14 +2,14 @@ import { BaseEnum } from './enum/base_enum.js';
 
 export type DocumentTypeTypes = 'undefined' | 'ingreso' | 'egreso' | 'traslado' | 'nomina' | 'pago';
 
-enum DocumentTypeEnum {
-  undefined = '',
-  ingreso = 'I',
-  egreso = 'E',
-  traslado = 'T',
-  nomina = 'N',
-  pago = 'P',
-}
+export const DocumentTypeEnum = {
+  undefined: '',
+  ingreso: 'I',
+  egreso: 'E',
+  traslado: 'T',
+  nomina: 'N',
+  pago: 'P',
+} as const;
 
 export class DocumentType extends BaseEnum<DocumentTypeTypes> {
   public value(): string {

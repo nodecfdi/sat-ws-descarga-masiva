@@ -45,7 +45,7 @@ export class ComplementoCfdi
   extends BaseEnum<ComplementoCfdiTypes>
   implements ComplementoInterface<ComplementoCfdiTypes>
 {
-  private readonly Map = {
+  public readonly Map = {
     undefined: {
       satCode: '',
       label: 'Sin complemento definido',
