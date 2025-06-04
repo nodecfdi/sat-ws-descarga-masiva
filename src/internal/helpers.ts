@@ -3,13 +3,10 @@
  */
 export class Helpers {
   public static nospaces(input: string): string {
-    return (
-      input
-        .replaceAll(/^\s*/gm, '') //  A: remove horizontal spaces at beginning
-        .replaceAll(/\s*\n/g, '') // B: remove horizontal spaces + optional CR + LF
-        .replaceAll('?><', '?>\n<') || // C: xml definition on its own line
-      ''
-    );
+    return input
+      .replaceAll(/^\s*/gm, '') //  A: remove horizontal spaces at beginning
+      .replaceAll(/\s*\n/g, '') // B: remove horizontal spaces + optional CR + LF
+      .replaceAll('?><', '?>\n<'); // C: xml definition on its own line
   }
 
   public static cleanPemContents(pemContents: string): string {

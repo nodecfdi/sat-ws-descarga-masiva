@@ -1,3 +1,4 @@
+import { QueryValidator } from '#src/services/query/query_validator';
 import { type ComplementoCfdiTypes } from '#src/shared/complemento_cfdi';
 import { type ComplementoInterface } from '#src/shared/complemento_interface';
 import { type ComplementoRetencionesTypes } from '#src/shared/complemento_retenciones';
@@ -13,7 +14,6 @@ import { RfcMatches } from '#src/shared/rfc_matches';
 import { RfcOnBehalf } from '#src/shared/rfc_on_behalf';
 import { ServiceType } from '#src/shared/service_type';
 import { Uuid } from '#src/shared/uuid';
-import { QueryValidator } from './query_validator.js';
 
 /**
  * This class contains all the information required to perform a query on the SAT Web Service

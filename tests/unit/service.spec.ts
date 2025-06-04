@@ -13,11 +13,11 @@ describe('service', () => {
     const service = new Service(mockRequestBuilder, mockWebClient);
 
     // test token when not set
-    expect(service.getToken()?.isValid()).toBeFalsy();
-    expect(service.getToken()?.isValueEmpty).toBeTruthy();
+    expect(service.getToken().isValid()).toBeFalsy();
+    expect(service.getToken().isValueEmpty).toBeTruthy();
 
     // test endpoints when not set
-    expect(service.endpoints?.getServiceType().isTypeOf('cfdi')).toBeTruthy();
+    expect(service.endpoints.getServiceType().isTypeOf('cfdi')).toBeTruthy();
   });
 
   test('create service with all parameters', () => {
