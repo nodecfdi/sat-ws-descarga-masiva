@@ -16,7 +16,7 @@ export class DownloadTranslator extends InteractsXmlTrait {
       'Paquete',
     );
 
-    return new DownloadResult(status, Buffer.from(cpackage).toString() || '');
+    return new DownloadResult(status, Buffer.from(cpackage).toString());
   }
 
   public createSoapRequest(requestBuilder: RequestBuilderInterface, packageId: string): string {

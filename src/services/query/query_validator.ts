@@ -1,8 +1,8 @@
 import { DateTime as LDateTime } from 'luxon';
+import { type QueryParameters } from '#src/services/query/query_parameters';
 import { ComplementoCfdi } from '#src/shared/complemento_cfdi';
 import { ComplementoRetenciones } from '#src/shared/complemento_retenciones';
 import { DateTime } from '#src/shared/date_time';
-import { type QueryParameters } from './query_parameters.js';
 
 export class QueryValidator {
   public validate(query: QueryParameters): string[] {

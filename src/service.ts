@@ -13,6 +13,10 @@ import { Token } from './shared/token.js';
 import { type WebClientInterface } from './web_client/web_client_interface.js';
 
 export class Service {
+  public readonly endpoints: ServiceEndpoints;
+
+  private _currentToken: Token;
+
   /**
    * Client constructor of "servicio de consulta y recuperación de comprobantes"
    *
@@ -21,8 +25,8 @@ export class Service {
   public constructor(
     private readonly _requestBuilder: RequestBuilderInterface,
     private readonly _webClient: WebClientInterface,
-    private _currentToken: Token | null = null,
-    public readonly endpoints: ServiceEndpoints | null = null,
+    _currentToken: Token | null = null,
+    endpoints: ServiceEndpoints | null = null,
   ) {
     this._currentToken = _currentToken ?? Token.empty();
     this.endpoints = endpoints ?? ServiceEndpoints.cfdi();
@@ -33,14 +37,14 @@ export class Service {
    * it will create a new one if there is none or the current token is no longer valid
    */
   public async obtainCurrentToken(): Promise<Token> {
-    if (!this._currentToken?.isValid()) {
+    if (!this._currentToken.isValid()) {
       this._currentToken = await this.authenticate();
     }
 
     return this._currentToken;
   }
 
-  public getToken(): Token | null {
+  public getToken(): Token {
     return this._currentToken;
   }
 
@@ -56,7 +60,7 @@ export class Service {
     const soapBody = authenticateTranslator.createSoapRequest(this._requestBuilder);
     const responseBody = await this.consume(
       'http://DescargaMasivaTerceros.gob.mx/IAutenticacion/Autentica',
-      this.endpoints!.getAuthenticate(),
+      this.endpoints.getAuthenticate(),
       soapBody,
     );
 
@@ -69,8 +73,8 @@ export class Service {
   public async query(parameters: QueryParameters): Promise<QueryResult> {
     let defaultParameters = parameters;
 
-    if (!this.endpoints!.getServiceType().equalTo(defaultParameters.getServiceType())) {
-      defaultParameters = defaultParameters.withServiceType(this.endpoints!.getServiceType());
+    if (!this.endpoints.getServiceType().equalTo(defaultParameters.getServiceType())) {
+      defaultParameters = defaultParameters.withServiceType(this.endpoints.getServiceType());
     }
 
     const queryTranslator = new QueryTranslator();
@@ -80,7 +84,7 @@ export class Service {
     const currentToken = await this.obtainCurrentToken();
     const responseBody = await this.consume(
       `http://DescargaMasivaTerceros.sat.gob.mx/ISolicitaDescargaService/${soapAction}`,
-      this.endpoints!.getQuery(),
+      this.endpoints.getQuery(),
       soapBody,
       currentToken,
     );
@@ -107,7 +111,7 @@ export class Service {
     const currentToken = await this.obtainCurrentToken();
     const responseBody = await this.consume(
       'http://DescargaMasivaTerceros.sat.gob.mx/IVerificaSolicitudDescargaService/VerificaSolicitudDescarga',
-      this.endpoints!.getVerify(),
+      this.endpoints.getVerify(),
       soapBody,
       currentToken,
     );
@@ -121,7 +125,7 @@ export class Service {
     const currentToken = await this.obtainCurrentToken();
     const responseBody = await this.consume(
       'http://DescargaMasivaTerceros.sat.gob.mx/IDescargaMasivaTercerosService/Descargar',
-      this.endpoints!.getDownload(),
+      this.endpoints.getDownload(),
       soapBody,
       currentToken,
     );
