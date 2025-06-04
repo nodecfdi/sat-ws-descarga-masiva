@@ -133,6 +133,6 @@
     "format": "esm",
     "dts": true,
     "target": "esnext",
-    "platform": "neutral"
+    "platform": "node"
   }
 }

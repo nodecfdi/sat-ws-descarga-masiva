@@ -1,5 +1,7 @@
 # @nodecfdi/sat-ws-descarga-masiva ChangeLog
 
+<!-- auto-changelog-above -->
+
 ## 1.0.1
 
 ### Fix missing types
