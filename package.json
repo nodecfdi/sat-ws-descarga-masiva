@@ -1,7 +1,7 @@
 {
   "name": "@nodecfdi/sat-ws-descarga-masiva",
   "description": "Librería para usar el servicio web del SAT de Descarga Masiva",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "type": "module",
   "module": "./build/index.js",
   "types": "./build/index.d.ts",
