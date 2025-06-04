@@ -4,7 +4,7 @@ export type DownloadTypeTypes = 'issued' | 'received';
 
 export const DownloadTypeEnum = {
   issued: 'RfcEmisor',
-  received:'RfcReceptor',
+  received: 'RfcReceptor',
 } as const;
 
 export class DownloadType extends BaseEnum<DownloadTypeTypes> {

@@ -44,9 +44,9 @@ describe('consume retenciones service using fake fiel', () => {
 
   test('query change filters', async () => {
     const startDate = DateTime.create(
-      LDateTime.now().minus({month: 1}).startOf('month').toUnixInteger(),
+      LDateTime.now().minus({ month: 1 }).startOf('month').toUnixInteger(),
     );
-    const endDate = startDate.modify({days: 5});
+    const endDate = startDate.modify({ days: 5 });
     const period = DateTimePeriod.create(startDate, endDate);
     const parameters = QueryParameters.create()
       .withPeriod(period)

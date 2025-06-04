@@ -5,7 +5,7 @@ export type RequestTypeTypes = 'xml' | 'metadata';
 export const RequestTypeEnum = {
   xml: 'xml',
   metadata: 'metadata',
-}
+};
 
 export class RequestType extends BaseEnum<RequestTypeTypes> {
   public getQueryAttributeValue(): string {

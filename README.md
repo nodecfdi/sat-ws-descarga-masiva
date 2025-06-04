@@ -321,7 +321,7 @@ query = QueryParameters.create().withUuid(Uuid.create('96623061-61fe-49de-b298-c
 #### Prevalidación de una consulta
 
 Hay algunos casos que seguramente resultarán en un error al momento de presentar la consulta al SAT.
-Para prevenir esta situación *opcionalmente* se puede validar la consulta antes de presentarla.
+Para prevenir esta situación _opcionalmente_ se puede validar la consulta antes de presentarla.
 Estos errores son devueltos en un listado de cadenas de caracteres.
 
 ```ts
@@ -331,17 +331,18 @@ import { DocumentType } from '@nodecfdi/sat-ws-descarga-masiva';
 import { Uuid } from '@nodecfdi/sat-ws-descarga-masiva';
 
 const query = QueryParameters.create()
-    .withUuid(Uuid.create('96623061-61fe-49de-b298-c7156476aa8b'))
-    .withDocumentType(new DocumentType('nomina'))
-    .withDocumentStatus(new DocumentStatus('active'));
+  .withUuid(Uuid.create('96623061-61fe-49de-b298-c7156476aa8b'))
+  .withDocumentType(new DocumentType('nomina'))
+  .withDocumentStatus(new DocumentStatus('active'));
 
 // get list of errors
 const errors = query.validate();
-if (errors.length > 0) { // if there are errors
-    console.log('Query errors:');
-    errors.forEach(error => {
-        console.log(`  - ${error}`);
-    });
+if (errors.length > 0) {
+  // if there are errors
+  console.log('Query errors:');
+  errors.forEach((error) => {
+    console.log(`  - ${error}`);
+  });
 }
 ```
 
